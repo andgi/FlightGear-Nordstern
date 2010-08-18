@@ -1,0 +1,154 @@
+<?xml version="1.0"?>
+<!--
+  Zeppelin LZ 121 "Nordstern" airship for FlightGear.
+
+  Copyright (C) 2010  Anders Gidenstam  (anders(at)gidenstam.org)
+  This file is licensed under the GPL license version 2 or later.
+-->
+<PropertyList>
+
+ <path>Nordstern.ac</path>
+ <offsets>
+  <!-- x/y/z == back/right/up -->
+  <x-m> 0.0 </x-m>
+  <y-m> 0.0 </y-m>
+  <z-m> 0.0 </z-m>
+ </offsets>
+
+ <model>
+  <name>Control car interior</name>
+  <path>Aircraft/Nordstern/Models/Nordstern-car-interior.xml</path>
+  <offsets>
+   <!-- x/y/z == back/right/up -->
+   <x-m>  20.00 </x-m>
+   <y-m>   0.00 </y-m>
+   <z-m> -11.00 </z-m>
+  </offsets>
+ </model>
+
+ <model>
+  <name>Left propeller</name>
+  <path>Aircraft/Nordstern/Models/propeller3m.xml</path>
+  <offsets>
+   <!-- x/y/z == back/right/up -->
+   <x-m>  62.00 </x-m>
+   <y-m>  -6.50 </y-m>
+   <z-m> -10.00 </z-m>
+  </offsets>
+  <overlay>
+   <parameters>
+    <engine-rpm>engines/engine[0]/rpm</engine-rpm>
+   </parameters>
+  </overlay>
+ </model>
+
+ <model>
+  <name>Right propeller</name>
+  <path>Aircraft/Nordstern/Models/propeller3m.xml</path>
+  <offsets>
+   <!-- x/y/z == back/right/up -->
+   <x-m>  62.00 </x-m>
+   <y-m>   6.50 </y-m>
+   <z-m> -10.00 </z-m>
+  </offsets>
+  <overlay>
+   <parameters>
+    <engine-rpm>engines/engine[1]/rpm</engine-rpm>
+   </parameters>
+  </overlay>
+ </model>
+
+ <model>
+  <name>Aft propeller</name>
+  <path>Aircraft/Nordstern/Models/propeller5m.xml</path>
+  <offsets>
+   <!-- x/y/z == back/right/up -->
+   <x-m>  92.00 </x-m>
+   <y-m>   0.00 </y-m>
+   <z-m> -11.20 </z-m>
+  </offsets>
+  <overlay>
+   <parameters>
+    <engine-rpm>engines/engine[2]/rpm</engine-rpm>
+   </parameters>
+  </overlay>
+ </model>
+
+ <!-- Control surface animations ===========================================-->
+ <animation>
+  <type>rotate</type>
+  <object-name>rudders</object-name>
+  <property>surface-positions/rudder-pos-norm</property>
+  <factor>30</factor>
+  <axis>
+   <x1-m> 120.653 </x1-m>
+   <y1-m>   0.000 </y1-m>
+   <z1-m>  -3.282 </z1-m>
+   <x2-m> 120.653 </x2-m>
+   <y2-m>   0.000 </y2-m>
+   <z2-m>   3.282 </z2-m>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>elevators</object-name>
+  <property>surface-positions/elevator-pos-norm</property>
+  <factor>30</factor>
+  <axis>
+   <x1-m> 119.90 </x1-m>
+   <y1-m>  -3.65 </y1-m>
+   <z1-m>   0.00 </z1-m>
+   <x2-m> 119.90 </x2-m>
+   <y2-m>   3.65 </y2-m>
+   <z2-m>   0.00 </z2-m>
+  </axis>
+ </animation>
+
+
+ <!-- LOD for model parts ==================================================-->
+
+ <animation>
+  <type>range</type>
+  <object-name>Control car interior</object-name>
+  <min-m>0</min-m>
+  <max-m>500</max-m>
+ </animation>
+
+ <animation>
+  <type>range</type>
+  <object-name>red_tent</object-name>
+  <object-name>red_tent_floor</object-name>
+  <object-name>fuel_tank</object-name>
+  <object-name>fuel_tank.001</object-name>
+  <object-name>fuel_tank.002</object-name>
+  <object-name>fuel_tank.003</object-name>
+  <object-name>fuel_tank.004</object-name>
+  <object-name>fuel_tank.005</object-name>
+  <object-name>fuel_tank.006</object-name>
+  <object-name>fuel_tank.007</object-name>
+  <object-name>fuel_tank.008</object-name>
+  <object-name>fuel_tank.009</object-name>
+  <object-name>fuel_tank.010</object-name>
+  <object-name>fuel_tank.011</object-name>
+  <min-m>0</min-m>
+  <max-m>150</max-m>
+ </animation>
+
+ <animation>
+  <type>range</type>
+  <object-name>Left propeller</object-name>
+  <object-name>Right propeller</object-name>
+  <object-name>Aft propeller</object-name>
+  <min-m>0</min-m>
+  <max-m>5000</max-m>
+ </animation>
+
+ <!-- LOD for the model as a whole =========================================-->
+ <animation>
+  <type>range</type>
+  <min-m>0</min-m>
+  <max-m>15000</max-m>
+ </animation>
+
+</PropertyList>

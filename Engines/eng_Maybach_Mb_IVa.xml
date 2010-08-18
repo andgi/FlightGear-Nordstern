@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Zeppelin LZ 121 "Nordstern" airship flight model for JSBSim.
+
+    Copyright (C) 2010  Anders Gidenstam  (anders(at)gidenstam.org)
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+  
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+  
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+  
+-->
+<piston_engine name="Maybach Mb IVa">
+ <documentation>
+   Maybach Mb IVa high altitude engine.
+
+   [Vissering:1922:ZS]:
+     260 HP above 10000ft
+     From engine performance table, assuming that Maybach 1918 is MbIVa:
+     260 HP, 1400 RPM, 390 kg, 0.200 kg/(hp hr)
+
+   [PK:1994:LZ120] for Bodensee:
+     Side engines had a propeller diameter of 3.2 m
+     The aft engine had a propeller diameter of 5.2 m geared down about 2:1.
+     4 Maybach Mb IVa-Höhenleistungsmotoren (6 cylinder inline)
+       190 kW max above 1800 m
+       180 kW max below 1800 m
+       2.2 kg/kW (implying an engine weight of 418kg)
+       Specific fuel consumption: 270 g/kWh @ 1400 RPM
+       Cruise consumption: about 45 kg/h (per engine)
+
+   [Flight:1918:MB, pages 960 - 965]
+     Technical description of captured Maybach 300 HP aircraft engine.
+     Seems very similar to the Mb IVa so the dimensions may match.
+
+     Bore:              165 mm
+     Stroke:            180 mm (Computed from bore, compression ratio
+                                and clearance volume)
+     Compression ratio: 5.94:1
+     Clearance volume:  778.9 cm^3
+
+ </documentation>
+
+ <displacement unit="LTR"> 23.09  </displacement>
+ <bore unit="M">            0.165 </bore>
+ <stroke unit="M">          0.180 </stroke>
+ <compression-ratio>        5.94  </compression-ratio> 
+ <cylinders>                6.00  </cylinders>
+ <cycles>                   4.00  </cycles>
+
+ <minmp unit="INHG">          6.5 </minmp>
+ <maxmp unit="INHG">         27.9 </maxmp>
+
+ <maxhp>                   240.00 </maxhp>
+
+ <idlerpm>                 200.00 </idlerpm>
+ <maxrpm>                 1400.00 </maxrpm>
+
+ <!-- bsfc unit="LBS/HP*HR">     0.37 </bsfc -->
+ <!-- volumetric_efficiency>          <volumetric_efficiency -->
+ <sparkfaildrop>             0.10 </sparkfaildrop>
+
+ <minthrottle> 0.1 </minthrottle>
+ <maxthrottle> 1.0 </maxthrottle>
+
+</piston_engine>

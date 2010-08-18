@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<!--
+  Zeppelin LZ 121 "Nordstern" airship for FlightGear.
+
+  Copyright (C) 2010  Anders Gidenstam  (anders(at)gidenstam.org)
+  This file is licensed under the GPL license version 2 or later.
+-->
+<PropertyList>
+
+ <path>Nordstern-car-interior.ac</path>
+ <offsets>
+  <!-- x/y/z == back/right/up -->
+  <x-m>   0.0 </x-m>
+  <y-m>   0.0 </y-m>
+  <z-m>   0.0 </z-m>
+ </offsets>
+
+ <model>
+  <name>Rudder wheel</name>
+  <path>Aircraft/Nordstern/Models/control_wheel.ac</path>
+  <offsets>
+   <!-- x/y/z == back/right/up -->
+   <x-m>  0.15 </x-m>
+   <y-m>  0.00 </y-m>
+   <z-m>  1.02 </z-m>
+  </offsets>
+ </model>
+
+ <model>
+  <name>Elevator wheel</name>
+  <path>Aircraft/Nordstern/Models/control_wheel.ac</path>
+  <offsets>
+   <!-- x/y/z == back/right/up -->
+   <x-m>  2.22 </x-m>
+   <y-m> -0.95 </y-m>
+   <z-m>  1.02 </z-m>
+   <heading-deg>78.7</heading-deg>
+  </offsets>
+ </model>
+
+ <model>
+  <name>Altimeter</name>
+  <path>Aircraft/Superwal/Models/Instruments/Hoehenmesser/Hoehenmesser.xml</path>
+  <offsets>
+   <!-- x/y/z == back/right/up -->
+   <x-m>  2.232 </x-m>
+   <y-m> -1.040 </y-m>
+   <z-m>  1.700 </z-m>
+   <heading-deg>80.0</heading-deg>
+  </offsets>
+ </model>
+
+ <animation>
+  <type>pick</type>
+  <object-name>ladder</object-name>
+  <action>
+   <button>0</button>
+   <repeatable>false</repeatable>
+   <binding>
+    <command>nasal</command>
+    <script>Nordstern.climbLadder();</script>
+   </binding>
+  </action>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>Rudder wheel</object-name>
+  <property>surface-positions/rudder-pos-norm</property>
+  <factor>-250.0</factor>
+  <center>
+   <x-m>  0.15 </x-m>
+   <y-m>  0.00 </y-m>
+   <z-m>  1.02 </z-m>
+  </center>
+  <axis>
+   <x>1.0</x>
+   <y>0.0</y>
+   <z>0.0</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>Elevator wheel</object-name>
+  <property>surface-positions/elevator-pos-norm</property>
+  <factor>-250.0</factor>
+  <axis>
+   <x1-m>  2.22 </x1-m>
+   <y1-m> -0.95 </y1-m>
+   <z1-m>  1.02 </z1-m>
+   <x2-m>  2.24 </x2-m>
+   <y2-m> -0.85 </y2-m>
+   <z2-m>  1.02 </z2-m>
+  </axis>
+ </animation>
+
+</PropertyList>

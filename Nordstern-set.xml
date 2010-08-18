@@ -1,0 +1,730 @@
+<?xml version="1.0"?>
+<!--
+  Zeppelin LZ 121 "Nordstern" airship for FlightGear.
+
+  Copyright (C) 2010  Anders Gidenstam  (anders(at)gidenstam.org)
+  This file is licensed under the GPL license version 2 or later.
+-->
+<PropertyList>
+
+ <sim>
+
+  <description>Zeppelin LZ 121 "Nordstern" airship</description>
+  <author>Anders Gidenstam</author>
+  <status>development</status>
+  <aircraft-version>$Id: Nordstern-set.xml,v 1.8 2010-08-18 20:07:37 anders Exp $</aircraft-version>
+
+  <flight-model>jsb</flight-model>
+  <aero>Nordstern</aero>
+  <!-- The added-mass module might be unstable at 120 Hz? -->
+  <model-hz type="double">240.0</model-hz>
+
+  <presets>
+   <onground type="bool">true</onground>
+   <!-- altitude-agl-ft type="double">6.0</altitude-agl-ft -->
+  </presets>
+  <!-- startup>
+   <splash-texture>Aircraft/Nordstern/splash.jpg</splash-texture>
+  </startup -->
+
+  <!-- 3d model -->
+  <model>
+   <path>Aircraft/Nordstern/Models/Nordstern.xml</path>
+   <!-- livery>
+    <file type="string">Nordstern</file>
+   </livery -->
+   <mast-truck>
+    <mast-head-height-m type="double">11.8</mast-head-height-m>
+    <mast-head-heading-deg type="double"/>
+    <mast-head-pitch-deg type="double"/>
+    <mast-fold-norm type="double">0.0</mast-fold-norm>
+    <legs-fold-norm type="double">0.0</legs-fold-norm>
+   </mast-truck>
+  </model>
+
+  <!-- Views -->
+  <view n="0">
+   <!-- Officer of the watch's position. -->
+   <name>Watch Officer View</name>
+   <internal>true</internal>
+   <config>
+    <!-- x/y/z == right/up/back -->
+    <x-offset-m type="double">  0.50 </x-offset-m>
+    <y-offset-m type="double"> -9.00 </y-offset-m>
+    <z-offset-m type="double"> 22.00 </z-offset-m>
+    <pitch-offset-deg type="double"> -10.0 </pitch-offset-deg>
+   </config>
+  </view>
+  <!-- Views -->
+  <view n="100">
+   <!-- Rudder helmsman's position. -->
+   <name>Rudder Man View</name>
+   <internal>true</internal>
+   <config>
+    <!-- x/y/z == right/up/back -->
+    <from-model type="bool">true</from-model>
+    <from-model-idx type="int">0</from-model-idx>
+    <x-offset-m type="double">  0.00 </x-offset-m>
+    <y-offset-m type="double"> -9.00 </y-offset-m>
+    <z-offset-m type="double"> 20.50 </z-offset-m>
+    <pitch-offset-deg type="double"> -20.0 </pitch-offset-deg>
+    <default-field-of-view-deg type="double"> 65 </default-field-of-view-deg>
+   </config>
+  </view>
+  <view n="101">
+   <!-- Elevator helmsman's position. -->
+   <name>Elevator Man View</name>
+   <internal>true</internal>
+   <config>
+    <!-- x/y/z == right/up/back -->
+    <from-model type="bool">true</from-model>
+    <from-model-idx type="int">0</from-model-idx>
+    <x-offset-m type="double"> -0.50 </x-offset-m>
+    <y-offset-m type="double"> -9.00 </y-offset-m>
+    <z-offset-m type="double"> 22.22 </z-offset-m>
+    <pitch-offset-deg type="double"> -20.0 </pitch-offset-deg>
+    <heading-offset-deg type="double"> 90.0 </heading-offset-deg>
+    <default-field-of-view-deg type="double"> 65 </default-field-of-view-deg>
+   </config>
+  </view>
+  <view n="102">
+   <name>Steward View</name>
+   <internal>true</internal>
+   <config>
+    <!-- x/y/z == right/up/back -->
+    <from-model type="bool">true</from-model>
+    <from-model-idx type="int">0</from-model-idx>
+    <x-offset-m type="double">  0.50 </x-offset-m>
+    <y-offset-m type="double"> -9.00 </y-offset-m>
+    <z-offset-m type="double"> 33.00 </z-offset-m>
+    <heading-offset-deg type="double"> 0.0 </heading-offset-deg>
+    <pitch-offset-deg type="double"> 0.0 </pitch-offset-deg>
+    <default-field-of-view-deg type="double"> 65 </default-field-of-view-deg>
+   </config>
+  </view>
+  <view n="103">
+   <name>Rigger View</name>
+   <internal>true</internal>
+   <config>
+    <!-- x/y/z == right/up/back -->
+    <from-model type="bool">true</from-model>
+    <from-model-idx type="int">0</from-model-idx>
+    <x-offset-m type="double">  0.00 </x-offset-m>
+    <y-offset-m type="double"> -7.50 </y-offset-m>
+    <z-offset-m type="double"> 51.00 </z-offset-m>
+    <heading-offset-deg type="double"> 0.0 </heading-offset-deg>
+    <pitch-offset-deg type="double"> 0.0 </pitch-offset-deg>
+    <default-field-of-view-deg type="double"> 65 </default-field-of-view-deg>
+   </config>
+  </view>
+
+  <!-- Move the center of the external views. -->
+  <view n="1">
+   <config>
+    <target-z-offset-m type="double"> 25.0 </target-z-offset-m>
+   </config>
+  </view>
+  <view n="2">
+   <config>
+    <target-z-offset-m type="double"> 25.0 </target-z-offset-m>
+   </config>
+  </view>
+  <view n="3">
+   <config>
+    <target-z-offset-m type="double"> 25.0 </target-z-offset-m>
+   </config>
+  </view>
+  <view n="5">
+   <config>
+    <target-z-offset-m type="double"> 25.0 </target-z-offset-m>
+   </config>
+  </view>
+  <view n="6">
+   <config>
+    <target-z-offset-m type="double"> 25.0 </target-z-offset-m>
+   </config>
+  </view>
+
+  <chase-distance-m type="double">-150.0</chase-distance-m>
+
+  <sound>
+   <audible>true</audible>
+   <path>Aircraft/Nordstern/Sounds/Nordstern-sound.xml</path>
+  </sound>
+
+  <!-- Aircraft specific help. -->
+  <help include="help.xml"/>
+
+  <systems>
+   <electrical>
+    <path/>
+   </electrical>
+   <autopilot>
+    <path/>
+   </autopilot>
+
+   <pitot>
+    <name>pitot</name>
+    <number>0</number>
+   </pitot>
+   <static>
+    <name>static</name>
+    <number>0</number>
+   </static>
+
+   <vacuum>
+    <name>vacuum</name>
+    <number>0</number>
+    <rpm>engines/engine[0]/rpm</rpm>
+    <scale>1.0</scale>
+   </vacuum>
+   <vacuum>
+    <name>vacuum</name>
+    <number>1</number>
+    <rpm>engines/engine[1]/rpm</rpm>
+    <scale>1.0</scale>
+   </vacuum>
+  </systems>
+
+  <instrumentation>
+   <path>Aircraft/Nordstern/Systems/instrumentation.xml</path>
+  </instrumentation>
+
+  <multiplay>
+   <generic>
+    <!-- float n="0" alias="/fdm/jsbsim/propulsion/engine[0]/pitch-angle-rad"/>
+    <float n="1" alias="/fdm/jsbsim/propulsion/engine[1]/pitch-angle-rad"/>
+    <float n="2" alias="/fdm/jsbsim/propulsion/engine[2]/pitch-angle-rad"/>
+    <float n="3"
+           alias="/instrumentation/heading-indicator/indicated-heading-deg"/>
+    <float n="4"
+           alias="/instrumentation/attitude-indicator/indicated-pitch-deg"/>
+    <float n="5"
+           alias="/instrumentation/attitude-indicator/indicated-roll-deg"/ -->
+    <!-- int n="0" type="int">0</int -->         <!-- MP switches 1 -->
+    <!-- string n="0" type="string"></string --> <!-- MP events -->
+    <!-- string n="1" type="string"></string --> <!-- MP TDM1 -->
+    <!-- string n="2" type="string"></string --> <!-- MP TDM2 -->
+    <!-- string n="3" type="string"></string --> <!-- MP TDM3 -->
+   </generic>
+  </multiplay>
+
+  <max-simtime-per-frame n="0" type="double">0.1</max-simtime-per-frame>
+
+  <menubar>
+   <default>
+    <menu n="100">
+     <label>LZ 121 Nordstern</label>
+     <!-- item>
+      <label>Select MP-copilot</label>
+      <binding>
+       <command>nasal</command>
+       <script>
+        dual_control_tools.
+          copilot_dialog.show(aircraft_dual_control.copilot_type);
+       </script>
+      </binding>
+     </item -->
+     <item>
+      <label>About</label>
+      <binding>
+       <command>nasal</command>
+       <script>Nordstern.about();</script>
+      </binding>
+     </item>
+     <!-- item>
+      <label>Select Livery</label>
+      <binding>
+       <command>nasal</command>
+       <script>aircraft.livery.dialog.toggle()</script>
+      </binding>
+     </item -->
+    </menu>
+   </default>
+  </menubar>
+ </sim>
+
+ <controls>
+  <lighting>
+   <nav-lights type="bool">true</nav-lights> <!-- Should be MP enabled. -->
+  </lighting>
+ </controls>
+
+ <payload>
+  <weight>
+   <name type="string">Control car payload</name>
+   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[16]"/>
+   <min-lb type="double">0.0</min-lb>
+   <max-lb type="double">5500.0</max-lb>
+  </weight>
+  <weight>
+   <name type="string">Cargo hold Frame 40L</name>
+   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[17]"/>
+   <min-lb type="double">0.0</min-lb>
+   <max-lb type="double">441.0</max-lb>
+  </weight>
+  <weight>
+   <name type="string">Cargo hold Frame 40R</name>
+   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[18]"/>
+   <min-lb type="double">0.0</min-lb>
+   <max-lb type="double">441.0</max-lb>
+  </weight>
+  <weight>
+   <name type="string">Cargo hold Frame 45L</name>
+   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[19]"/>
+   <min-lb type="double">0.0</min-lb>
+   <max-lb type="double">441.0</max-lb>
+  </weight>
+  <weight>
+   <name type="string">Cargo hold Frame 45R</name>
+   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[20]"/>
+   <min-lb type="double">0.0</min-lb>
+   <max-lb type="double">441.0</max-lb>
+  </weight>
+  <weight>
+   <name type="string">Cargo hold Frame 75R Aft</name>
+   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[21]"/>
+   <min-lb type="double">0.0</min-lb>
+   <max-lb type="double">441.0</max-lb>
+  </weight>
+  <weight>
+   <name type="string">Cargo hold Frame 75L Fore</name>
+   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[22]"/>
+   <min-lb type="double">0.0</min-lb>
+   <max-lb type="double">441.0</max-lb>
+  </weight>
+  <weight>
+   <name type="string">Cargo hold Frame 75R Fore</name>
+   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[23]"/>
+   <min-lb type="double">0.0</min-lb>
+   <max-lb type="double">441.0</max-lb>
+  </weight>
+
+  <weight>
+   <name type="string">Quick-release Ballast Fore</name>
+   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[12]"/>
+   <min-lb type="double">0.0</min-lb>
+   <max-lb type="double">220.5</max-lb>
+  </weight>
+  <weight>
+   <name type="string">Quick-release Ballast Fore</name>
+   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[13]"/>
+   <min-lb type="double">0.0</min-lb>
+   <max-lb type="double">220.5</max-lb>
+  </weight>
+  <weight>
+   <name type="string">Quick-release Ballast Fore</name>
+   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[14]"/>
+   <min-lb type="double">0.0</min-lb>
+   <max-lb type="double">220.5</max-lb>
+  </weight>
+  <weight>
+   <name type="string">Quick-release Ballast Fore</name>
+   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[15]"/>
+   <min-lb type="double">0.0</min-lb>
+   <max-lb type="double">220.5</max-lb>
+  </weight>
+
+  <weight>
+   <name type="string">Quick-release Ballast Aft</name>
+   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[0]"/>
+   <min-lb type="double">0.0</min-lb>
+   <max-lb type="double">220.5</max-lb>
+  </weight>
+  <weight>
+   <name type="string">Quick-release Ballast Aft</name>
+   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[1]"/>
+   <min-lb type="double">0.0</min-lb>
+   <max-lb type="double">220.5</max-lb>
+  </weight>
+  <weight>
+   <name type="string">Quick-release Ballast Aft</name>
+   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[2]"/>
+   <min-lb type="double">0.0</min-lb>
+   <max-lb type="double">220.5</max-lb>
+  </weight>
+  <weight>
+   <name type="string">Quick-release Ballast Aft</name>
+   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[3]"/>
+   <min-lb type="double">0.0</min-lb>
+   <max-lb type="double">220.5</max-lb>
+  </weight>
+
+  <weight>
+   <name type="string">Ballast Frame 20L</name>
+   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[4]"/>
+   <min-lb type="double">0.0</min-lb>
+   <max-lb type="double">1102.3</max-lb>
+  </weight>
+  <weight>
+   <name type="string">Ballast Frame 20R</name>
+   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[5]"/>
+   <min-lb type="double">0.0</min-lb>
+   <max-lb type="double">1102.3</max-lb>
+  </weight>
+
+  <weight>
+   <name type="string">Ballast Frame 50L</name>
+   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[6]"/>
+   <min-lb type="double">0.0</min-lb>
+   <max-lb type="double">1102.3</max-lb>
+  </weight>
+  <weight>
+   <name type="string">Ballast Frame 50R</name>
+   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[7]"/>
+   <min-lb type="double">0.0</min-lb>
+   <max-lb type="double">1102.3</max-lb>
+  </weight>
+
+  <weight>
+   <name type="string">Ballast Frame 70L</name>
+   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[8]"/>
+   <min-lb type="double">0.0</min-lb>
+   <max-lb type="double">1102.3</max-lb>
+  </weight>
+  <weight>
+   <name type="string">Ballast Frame 70R</name>
+   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[9]"/>
+   <min-lb type="double">0.0</min-lb>
+   <max-lb type="double">1102.3</max-lb>
+  </weight>
+
+  <weight>
+   <name type="string">Ballast Frame 105L</name>
+   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[10]"/>
+   <min-lb type="double">0.0</min-lb>
+   <max-lb type="double">1102.3</max-lb>
+  </weight>
+  <weight>
+   <name type="string">Ballast Frame 105R</name>
+   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[11]"/>
+   <min-lb type="double">0.0</min-lb>
+   <max-lb type="double">1102.3</max-lb>
+  </weight>
+
+ </payload>
+
+ <nasal>
+  <walkview>
+   <file>Aircraft/Generic/WalkView/walkview.nas</file>
+  </walkview>
+  <ZLTNT>
+   <file>Aircraft/Nordstern/Systems/Nordstern.nas</file>
+   <file>Aircraft/Nordstern/Systems/walk-views.nas</file>
+   <file>Aircraft/ZLT-NT/Systems/ground_handling.nas</file>
+   <file>Aircraft/ZLT-NT/Systems/mp-network.nas</file>
+   <script><![CDATA[
+     # Ground handling configuration.
+     MAX_WIRE_LENGTH = 300.0 * FT2M;
+
+     globals["Nordstern"] = globals["ZLTNT"];
+    ]]>
+   </script>
+  </ZLTNT>
+  <limits>
+   <file>Aircraft/Generic/limits.nas</file>
+  </limits>
+  <!--  Instrument drivers. -->
+  <!-- Dual control. -->
+  <dual_control_tools>
+   <file>Aircraft/ZLT-NT/DualControl/dual-control-tools.nas</file>
+  </dual_control_tools>
+  <!-- aircraft_dual_control>
+   <file>Aircraft/ZLT-NT/Systems/ZLT-NT-dual-control.nas</file>
+  </aircraft_dual_control>
+  <dual_control>
+   <file>Aircraft/ZLT-NT/DualControl/pilot-dual-control.nas</file>
+  </dual_control -->
+ </nasal>
+
+ <input>
+  <keyboard>
+   <!-- Keyboard commands -->
+
+   <!-- Ballast commands ====================================== -->
+   <key n="87">
+    <name>W</name>
+    <desc>Perform on-ground weigh-off.</desc>
+    <binding>
+     <command>nasal</command>
+     <script>
+      if (!walkview.forward(5.0)) {
+          gui.popupTip("Weigh-off in progress.");
+          Nordstern.autoWeighoff();
+      }
+     </script>
+    </binding>
+    <mod-up>
+     <binding>
+      <command>nasal</command>
+      <script>
+       walkview.forward(0);
+      </script>
+     </binding>
+    </mod-up>
+   </key>
+
+   <key n="119">
+    <name>w</name>
+    <desc>Show current on-ground weight.</desc>
+    <binding>
+     <command>nasal</command>
+     <script>
+      if (!walkview.forward(1.0)) {
+          Nordstern.printWOW();
+      }
+     </script>
+    </binding>
+    <mod-up>
+     <binding>
+      <command>nasal</command>
+      <script>
+       walkview.forward(0);
+      </script>
+     </binding>
+    </mod-up>
+   </key>
+
+   <!-- Ballast commands ======================================= -->
+
+   <key n="101">
+    <name>e</name>
+    <desc>Shift 100 lb trim ballast forwards</desc>
+    <repeatable type="bool">false</repeatable>
+    <binding>
+     <command>nasal</command>
+     <script>
+       gui.popupTip("Shifting ballast forward.");
+       Nordstern.shiftTrimBallast(Nordstern.FORWARD, 100);
+     </script>
+    </binding>
+   </key>
+   <key n="100">
+    <name>d</name>
+    <desc>Shift 100 lb trim ballast aftwards</desc>
+    <repeatable type="bool">false</repeatable>
+    <binding>
+     <command>nasal</command>
+     <script>
+       if (!walkview.side_step(0.5)) {
+           gui.popupTip("Shifting ballast aftward.");
+           Nordstern.shiftTrimBallast(Nordstern.AFT, 100);
+       }
+     </script>
+    </binding>
+    <mod-up>
+     <binding>
+      <command>nasal</command>
+      <script>
+       walkview.side_step(0);
+      </script>
+     </binding>
+    </mod-up>
+   </key>
+
+   <key n="69">
+    <name>E</name>
+    <desc>Drop one ballast fore</desc>
+    <repeatable type="bool">false</repeatable>
+    <binding>
+     <command>nasal</command>
+     <script>
+       gui.popupTip("Releasing ballast fore!");
+       Nordstern.releaseBallast(Nordstern.FORE_BALLAST, 1);
+     </script>
+    </binding>
+   </key>
+   <key n="68">
+    <name>D</name>
+    <desc>Drop one ballast aft</desc>
+    <repeatable type="bool">false</repeatable>
+    <binding>
+     <command>nasal</command>
+     <script>
+       if (!walkview.side_step(1.0)) {
+           gui.popupTip("Releasing ballast aft!");
+           Nordstern.releaseBallast(Nordstern.AFT_BALLAST, 1);
+       }
+     </script>
+    </binding>
+    <mod-up>
+     <binding>
+      <command>nasal</command>
+      <script>
+       walkview.side_step(0);
+      </script>
+     </binding>
+    </mod-up>
+   </key>
+   <key n="23">
+    <name>Ctrl-W</name>
+    <desc>Refill quick release ballast bags</desc>
+    <binding>
+     <command>nasal</command>
+     <script>
+       Nordstern.refillQuickReleaseBallast(Nordstern.FORE_BALLAST);
+       Nordstern.refillQuickReleaseBallast(Nordstern.AFT_BALLAST);
+     </script>
+    </binding>
+   </key>
+
+   <!-- Gas cell commands ====================================== -->
+   <key n="70">
+    <name>F</name>
+    <desc>Open fore gas valves.</desc>
+    <binding>
+     <command>nasal</command>
+     <script>
+       gui.popupTip("Fore gas valves open!");
+       Nordstern.setForwardGasValves(1.00);
+     </script>
+    </binding>
+   </key>
+   <key n="102">
+    <name>f</name>
+    <desc>Close fore gas valves.</desc>
+    <binding>
+     <command>nasal</command>
+     <script>
+       gui.popupTip("Fore gas valves closed!");
+       Nordstern.setForwardGasValves(0.00);
+     </script>
+    </binding>
+   </key>
+
+   <key n="71">
+    <name>G</name>
+    <desc>Open aft gas valves.</desc>
+    <binding>
+     <command>nasal</command>
+     <script>
+       gui.popupTip("Aft gas valves open!");
+       Nordstern.setAftGasValves(1.00);
+     </script>
+    </binding>
+   </key>
+   <key n="103">
+    <name>g</name>
+    <desc>Close aft gas valves.</desc>
+    <binding>
+     <command>nasal</command>
+     <script>
+       gui.popupTip("Aft gas valves closed!");
+       Nordstern.setAftGasValves(0.00);
+     </script>
+    </binding>
+   </key>
+
+   <!-- Mooring commands ======================================= -->
+   <key n="85">
+    <name>U</name>
+    <desc>Attach mooring wire.</desc>
+    <binding>
+     <command>nasal</command>
+     <script>
+       Nordstern.mooring.attach_mooring_wire();
+     </script>
+    </binding>
+   </key>
+
+   <key n="89">
+    <name>Y</name>
+    <desc>Release mooring connection or wire.</desc>
+    <binding>
+     <command>nasal</command>
+     <script>
+       Nordstern.mooring.release_mooring();
+     </script>
+    </binding>
+   </key>
+
+   <key n="117">
+    <name>u</name>
+    <desc>Winch in mooring wire.</desc>
+    <binding>
+     <command>nasal</command>
+     <script>
+       var sp = getprop("/fdm/jsbsim/mooring/winch-speed-fps");
+       Nordstern.mooring.set_winch_speed(sp - 0.5);
+     </script>
+    </binding>
+   </key>
+
+   <key n="121">
+    <name>y</name>
+    <desc>Winch out mooring wire.</desc>
+    <binding>
+     <command>nasal</command>
+     <script>
+       var sp = getprop("/fdm/jsbsim/mooring/winch-speed-fps");
+       Nordstern.mooring.set_winch_speed(sp + 0.5);
+     </script>
+    </binding>
+   </key>
+
+   <!-- WalkView commands ======================================== -->
+   <key n="115">
+    <name>s</name>
+    <desc>Walk backwards.</desc>
+    <binding>
+     <command>nasal</command>
+     <script>
+      if (!walkview.forward(-1.0)) {
+          controls.startEngine(1);
+      }
+     </script>
+    </binding>
+    <mod-up>
+     <binding>
+      <command>nasal</command>
+      <script>
+       walkview.forward(0);
+       controls.startEngine(0);
+      </script>
+     </binding>
+    </mod-up>
+   </key>
+
+   <key n="65">
+    <name>A</name>
+    <desc>Side step left</desc>
+    <binding>
+     <command>nasal</command>
+     <script>
+      if (!walkview.side_step(-1.0)) {
+      }
+     </script>
+    </binding>
+    <mod-up>
+     <binding>
+      <command>nasal</command>
+      <script>
+       walkview.side_step(0);
+      </script>
+     </binding>
+    </mod-up>
+   </key>
+   <key n="97">
+    <name>a</name>
+    <desc>Side step left</desc>
+    <binding>
+     <command>nasal</command>
+     <script>
+      if (!walkview.side_step(-0.5)) {
+      }
+     </script>
+    </binding>
+    <mod-up>
+     <binding>
+      <command>nasal</command>
+      <script>
+       walkview.side_step(0);
+      </script>
+     </binding>
+    </mod-up>
+   </key>
+
+  </keyboard>
+ </input>
+
+</PropertyList>

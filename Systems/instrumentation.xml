@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!--
+  Zeppelin LZ 121 "Nordstern" airship for FlightGear.
+
+  Copyright (C) 2010  Anders Gidenstam  (anders(at)gidenstam.org)
+  This file is licensed under the GPL license version 2 or later.
+-->
+<PropertyList>
+
+ <airspeed-indicator>
+  <name>airspeed-indicator</name>
+  <number>0</number>
+  <total-pressure>/systems/pitot/total-pressure-inhg</total-pressure>
+  <static-pressure>/systems/static/pressure-inhg</static-pressure>
+ </airspeed-indicator>
+
+ <altimeter>
+  <name>altimeter</name>
+  <number>0</number>
+  <static-pressure>/systems/static/pressure-inhg</static-pressure>
+  <quantum>0</quantum>
+  <tau>0</tau>
+ </altimeter>
+
+ <vertical-speed-indicator>
+  <name>vertical-speed-indicator</name>
+  <number>0</number>
+  <static-pressure>/systems/static/pressure-inhg</static-pressure>
+ </vertical-speed-indicator>
+
+ <clock>
+  <name>clock</name>
+  <number>0</number>
+ </clock>
+
+ <magnetic-compass>
+  <name>magnetic-compass</name>
+  <number>0</number>
+ </magnetic-compass>
+
+ <adf>
+  <name>adf</name>
+  <number>0</number>
+ </adf>
+
+ <nav-radio>
+  <name>nav</name>
+  <number>0</number>
+ </nav-radio>
+
+</PropertyList>

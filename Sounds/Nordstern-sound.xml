@@ -1,0 +1,211 @@
+<?xml version="1.0"?>
+<!--
+  Zeppelin LZ 121 "Nordstern" airship for FlightGear.
+
+  Copyright (C) 2010  Anders Gidenstam  (anders(at)gidenstam.org)
+  This file is licensed under the GPL license version 2 or later.
+-->
+<PropertyList>
+
+ <fx>
+
+  <crank>
+   <name>crank 1</name>
+   <path>Sounds/coughing.wav</path>
+   <mode>looped</mode>
+   <condition>
+    <property>engines/engine/cranking</property>
+    <not>
+     <property>engines/engine/running</property>
+    </not>
+   </condition>
+   <position>
+    <!-- x/y/z == back/left/up -->
+    <x>  60.0 </x>
+    <y>   6.5 </y>
+    <z> -10.0 </z>
+   </position>
+   <reference-dist>10.0</reference-dist>
+   <volume>
+    <offset>0.4</offset>
+   </volume>
+  </crank>
+  <crank>
+   <name>crank 2</name>
+   <path>Sounds/coughing.wav</path>
+   <mode>looped</mode>
+   <condition>
+    <property>engines/engine[1]/cranking</property>
+    <not>
+     <property>engines/engine[1]/running</property>
+    </not>
+   </condition>
+   <position>
+    <!-- x/y/z == back/left/up -->
+    <x>  60.0 </x>
+    <y>  -6.5 </y>
+    <z> -10.0 </z>
+   </position>
+   <reference-dist>10.0</reference-dist>
+   <volume>
+    <offset>0.4</offset>
+   </volume>
+  </crank>
+  <crank>
+   <name>crank 3</name>
+   <path>Sounds/coughing.wav</path>
+   <mode>looped</mode>
+   <condition>
+    <property>engines/engine[2]/cranking</property>
+    <not>
+     <property>engines/engine[2]/running</property>
+    </not>
+   </condition>
+   <position>
+    <!-- x/y/z == back/left/up -->
+    <x>  92.5 </x>
+    <y>   0.0 </y>
+    <z> -11.2 </z>
+   </position>
+   <reference-dist>10.0</reference-dist>
+   <volume>
+    <offset>0.4</offset>
+   </volume>
+  </crank>
+  <crank>
+   <name>crank 4</name>
+   <path>Sounds/coughing.wav</path>
+   <mode>looped</mode>
+   <condition>
+    <property>engines/engine[3]/cranking</property>
+    <not>
+     <property>engines/engine[3]/running</property>
+    </not>
+   </condition>
+   <position>
+    <!-- x/y/z == back/left/up -->
+    <x>  92.5 </x>
+    <y>   0.0 </y>
+    <z> -11.2 </z>
+   </position>
+   <reference-dist>10.0</reference-dist>
+   <volume>
+    <offset>0.4</offset>
+   </volume>
+  </crank>
+
+  <engine>
+   <name>engine 1</name>
+   <path>Sounds/wasp.wav</path>
+   <mode>looped</mode>
+   <property>engines/engine/running</property>
+   <position>
+    <!-- x/y/z == back/left/up -->
+    <x>  60.0 </x>
+    <y>   6.5 </y>
+    <z> -10.0 </z>
+   </position>
+   <reference-dist>10.0</reference-dist>
+   <volume>
+    <property>engines/engine/mp-inhg</property>
+    <factor>0.010</factor>
+    <min>0.20</min>
+    <max>0.5</max>
+    <offset>0.15</offset>
+   </volume>
+   <pitch>
+    <property>engines/engine/rpm</property>
+    <factor>0.0016</factor>
+    <min>.3</min>
+    <max>5.0</max>
+    <offset>0.3</offset>
+   </pitch>
+  </engine>
+
+  <engine>
+   <name>engine 2</name>
+   <path>Sounds/wasp.wav</path>
+   <mode>looped</mode>
+   <property>engines/engine[1]/running</property>
+   <position>
+    <!-- x/y/z == back/left/up -->
+    <x>  60.0 </x>
+    <y>  -6.5 </y>
+    <z> -10.0 </z>
+   </position>
+   <reference-dist>10.0</reference-dist>
+   <volume>
+    <property>engines/engine[1]/mp-inhg</property>
+    <factor>0.010</factor>
+    <min>0.20</min>
+    <max>0.5</max>
+    <offset>0.15</offset>
+   </volume>
+   <pitch>
+    <property>engines/engine[1]/rpm</property>
+    <factor>0.0016</factor>
+    <min>.3</min>
+    <max>5.0</max>
+    <offset>0.3</offset>
+   </pitch>
+  </engine>
+
+  <engine>
+   <name>engine 3</name>
+   <path>Sounds/wasp.wav</path>
+   <mode>looped</mode>
+   <property>engines/engine[2]/running</property>
+   <position>
+    <!-- x/y/z == back/left/up -->
+    <x>  92.5 </x>
+    <y>   0.0 </y>
+    <z> -11.2 </z>
+   </position>
+   <reference-dist>10.0</reference-dist>
+   <volume>
+    <property>engines/engine[2]/mp-inhg</property>
+    <factor>0.010</factor>
+    <min>0.20</min>
+    <max>0.5</max>
+    <offset>0.15</offset>
+   </volume>
+   <pitch>
+    <property>engines/engine[2]/rpm</property>
+    <factor>0.0016</factor>
+    <min>.3</min>
+    <max>5.0</max>
+    <offset>0.3</offset>
+   </pitch>
+  </engine>
+
+  <engine>
+   <name>engine 4</name>
+   <path>Sounds/wasp.wav</path>
+   <mode>looped</mode>
+   <property>engines/engine[3]/running</property>
+   <position>
+    <!-- x/y/z == back/left/up -->
+    <x>  92.5 </x>
+    <y>   0.0 </y>
+    <z> -11.2 </z>
+   </position>
+   <reference-dist>10.0</reference-dist>
+   <volume>
+    <property>engines/engine[3]/mp-inhg</property>
+    <factor>0.010</factor>
+    <min>0.20</min>
+    <max>0.5</max>
+    <offset>0.15</offset>
+   </volume>
+   <pitch>
+    <property>engines/engine[3]/rpm</property>
+    <factor>0.0016</factor>
+    <min>.3</min>
+    <max>5.0</max>
+    <offset>0.3</offset>
+   </pitch>
+  </engine>
+
+ </fx>
+
+</PropertyList>

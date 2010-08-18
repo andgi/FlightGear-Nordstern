@@ -1,0 +1,1950 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Zeppelin LZ 121 "Nordstern" airship flight model for JSBSim.
+
+    Copyright (C) 2010  Anders Gidenstam  (anders(at)gidenstam.org)
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+  
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+  
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+  
+-->
+<?xml-stylesheet type="text/xsl" href="http://jsbsim.sourceforge.net/JSBSim.xsl"?>
+<fdm_config name="LZ 121" version="2.0" release="BETA"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:noNamespaceSchemaLocation="http://jsbsim.sourceforge.net/JSBSim.xsd">
+
+ <fileheader>
+
+  <author>Anders Gidenstam</author>
+  <email>anders at gidenstam dot org</email>
+
+  <filecreationdate>2010-04-20</filecreationdate>
+  <version>$Id: Nordstern.xml,v 1.6 2010-08-18 20:33:42 anders Exp $</version>
+
+  <description>JSBSim model of the Zeppelin LZ 121 "Nordstern".</description>
+
+  <license>
+   <licenseName>GPL</licenseName>
+   <licenseURL>http://www.gnu.org/licenses/gpl.html</licenseURL>
+  </license>
+  <note>
+   This model was created using publicly available data, publicly available
+   technical reports, textbooks, and guesses. It contains no proprietary or
+   restricted data. It has been validated only to the extent that it may seem
+   to "fly right", and possibly to comply to published, publicly known, 
+   performance data (maximum speed, endurance, etc.).
+
+   This model is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+  </note>
+
+  <reference
+   refID="PK:1994:LZ120"
+   author="Peter Kleinheins"
+   title="LZ 120 „Bodensee“ und LZ 121 „Nordstern“  Luftschiffe im Schatten des Versailler Vertrages"
+   date="1994"/>
+
+  <reference
+   refID="Vissering:1922:ZS"
+   author="Harry Vissering"
+   title="Zeppelin  The Story of a Great Achievement"
+   date="1922"/>
+
+  <reference
+   refID="Flight:1918:MB"
+   author="Flight"
+   title="THE 300 H.P. MAYBACH ENGINE."
+   date="29 Aug. 1918"/>
+
+ </fileheader>
+
+ <!--
+ ==== Metrics ===============================================================
+ -->
+
+ <metrics>
+
+  <documentation>
+   NOTE: The center of the mooring coupler at bow of the hull is the
+         origo of the body coordinate system.
+         x/y/z = back/right/up
+  </documentation>
+
+  <documentation>
+   Summary of technical data in [PK:1994:LZ120] and
+   [http://de.wikipedia.org/wiki/LZ_120]:
+
+   Hull
+     Length:       130.8 m
+     Max diameter:  18.71 m
+     #gas cells:    13
+     Gas volume:    22500 m^3 hydrogen
+     Material: "... Baumwolle und war mit Zellonlack getränkt."
+               "... verlieh dem Schiff ein silbergraues Äußeres."
+
+   Engines
+     Type:   Maybach-Reihen-Sechszylinder-Motoren Mb IVa
+     Number: 4
+     Power:  240 HP (below 1800 m)
+     
+   Propellers
+     Side cars (2):
+       Engines:  1 (each)
+       Diameter: 3.2 m
+       #blades:  2
+       Reversible.
+     Aft car:
+       Engines:  2
+       Diameter: 5.2 m
+       #blades:  2
+       Gearing:  2:1
+
+   Empty weight: 14700 kg
+   Useful load:  11500 kg
+
+   Range: 1700 km
+
+   Crew:
+     "Standardbesatzung: 12 Mann:
+      Kommandant, „Steuermann“ bzw. Wachhabender (entspr. 1. Offizier),
+      1 Höhensteuermann, 1 Seitensteuermann, 1 Funker, 1 Steward,
+      6 Maschinisten"
+  </documentation>
+
+  <wingarea unit="M2"> 2400.0 </wingarea>  <!-- Planfold area (approximated).-->
+  <wingspan unit="M">    18.7 </wingspan>  <!-- Hull diameter. -->
+  <chord unit="M">      130.8 </chord>     <!-- Hull length. -->
+  <htailarea unit="M2"> 119.0 </htailarea> <!-- FIX these... -->
+  <htailarm unit="M">    51.0 </htailarm>  <!-- From CG? -->
+  <vtailarea unit="M2">  55.0 </vtailarea>
+  <vtailarm unit="M">    51.0 </vtailarm>  <!-- From CG? -->
+  <!-- Total gas volume vol = 22500 m^3 -->
+
+  <!-- Aerodynamic Reference Point. -->
+  <location name="AERORP" unit="M">
+   <x> 59.8 </x>
+   <y>  0.0 </y>
+   <z>  0.0 </z>
+  </location>
+
+  <location name="EYEPOINT" unit="M">
+   <x> 21.0 </x>
+   <y>  0.0 </y>
+   <z> -9.0 </z>
+  </location>
+
+  <!-- Visual Reference Point -->
+  <location name="VRP" unit="M">
+   <x>  0.0  </x>
+   <y>  0.0  </y>
+   <z>  0.0  </z>
+  </location>
+
+ </metrics>
+
+ <!--
+ ==== Mass balance =========================================================
+ -->
+
+ <mass_balance>
+
+  <emptywt unit="KG"> 9750 </emptywt>
+
+  <documentation>
+   The empty weight is estimated to consist of:
+    - The hull structure           7000 (guesstimate from LZ-129 ratio)
+    - The hull cover               1125 (guesstimate from LZ-129 ratio)
+    - The empty gas cells          1625 (guesstimate from LZ-129 ratio)
+
+    The car and engines etc will be added as point masses.
+  </documentation>
+
+  <documentation>
+   % Very rough estimation model of the empty weight CG and inertia tensor.
+   % Assume the empty weight of is to 60% a cylindrical shell and
+   % to 40% a thin rod (i.e. the keel).
+   % The keel is located r meters below the centrum line.
+
+   m = 9750.0   % KG
+   r = 7.05     % meter
+   l = 130.8    % meter
+
+   % Very rough estimate of center of gravity (based on the inertial estimate):
+   CGx = l / 2
+   CGy = 0
+   CGz = - 1/6 * pi * r
+
+   % Steiners theorem:
+   % Ixx = \bar{Ixx} + m sqrt(\bar{y}^2 + \bar{z}^2)
+   % Ixy = \bar{Ixy} + m \bar{x} \bar{y}
+
+   % Very rough estimation model of Ixx, Iyy and Izz relative the CG.
+   Ixx = (0.6*m) * r^2 + (0.6*m) * 1/6 * pi * r + \
+         (0.4*m) * r * (1 - 1/6*pi)
+
+   Iyy = 1/2*(0.6*m) * r^2 + 1/12*(0.6*m)*l^2 + (0.6*m) * 1/6 * pi * r + \
+         1/12*(0.4*m)*l^2 + (0.4*m) * r * (1 - 1/6*pi)
+
+   Izz = 1/2*(0.6*m) * r^2 + 1/12*(0.6*m)*l^2 + \
+         1/12*(0.4*m) * l^2
+
+   Ixy = 0
+   Ixz = 0
+   Iyz = 0
+
+  </documentation>
+
+  <ixx unit="KG*M2">   325450.0 </ixx>
+  <iyy unit="KG*M2"> 14081000.0 </iyy>
+  <izz unit="KG*M2"> 14046000.0 </izz>
+  <ixy unit="KG*M2">      0.0 </ixy>
+  <ixz unit="KG*M2">      0.0 </ixz>
+  <iyz unit="KG*M2">      0.0 </iyz>
+
+  <location name="CG" unit="M">
+   <x> 65.400 </x>
+   <y>  0.000 </y>
+   <z> -3.690 </z>
+  </location>
+
+  <!--
+  === Ballast ================================================
+  -->
+  <documentation>
+   Ballast according to [Vissering:1922:ZS]:
+     Frame 10
+       4x 100 l "Ballasthose"
+     Frame 20
+       2x 500 l "Ballastsack"
+     Frame 50
+       2x 500 l "Ballastsack"
+     Frame 70
+       2x 500 l "Ballastsack"
+     Frame 105
+       2x 500 l "Ballastsack"
+     Frame 110
+       4x 100 l "Ballasthose"
+  </documentation>
+
+  <!-- Real ballast setup. -->
+  <pointmass name="Ballasthose 1L Frame 10"> <!-- n=0 -->
+   <location unit="M">
+    <x> 109.8 </x>
+    <y>  -2.5 </y>
+    <z>  -4.5 </z>
+   </location>
+   <weight unit="KG"> 100 </weight>
+  </pointmass>
+  <pointmass name="Ballasthose 2L Frame 10"> <!-- n=1 -->
+   <location unit="M">
+    <x> 109.8 </x>
+    <y>  -1.5 </y>
+    <z>  -4.5 </z>
+   </location>
+   <weight unit="KG"> 100 </weight>
+  </pointmass>
+  <pointmass name="Ballasthose 1R Frame 10"> <!-- n=2 -->
+   <location unit="M">
+    <x> 109.8 </x>
+    <y>   1.5 </y>
+    <z>  -4.5 </z>
+   </location>
+   <weight unit="KG"> 100 </weight>
+  </pointmass>
+  <pointmass name="Ballasthose 2R Frame 10"> <!-- n=3 -->
+   <location unit="M">
+    <x> 109.8 </x>
+    <y>   2.5 </y>
+    <z>  -4.5 </z>
+   </location>
+   <weight unit="KG"> 100 </weight>
+  </pointmass>
+
+  <pointmass name="Ballastsack L Frame 20"> <!-- n=4 -->
+   <location unit="M">
+    <x> 100.0 </x>
+    <y>  -0.6 </y>
+    <z>  -6.3 </z>
+   </location>
+   <weight unit="KG"> 500 </weight>
+  </pointmass>
+  <pointmass name="Ballastsack R Frame 20"> <!-- n=5 -->
+   <location unit="M">
+    <x> 100.0 </x>
+    <y>   0.6 </y>
+    <z>  -6.3 </z>
+   </location>
+   <weight unit="KG"> 500 </weight>
+  </pointmass>
+
+  <pointmass name="Ballastsack L Frame 50"> <!-- n=6 -->
+   <location unit="M">
+    <x>  70.0 </x>
+    <y>  -0.6 </y>
+    <z>  -8.2 </z>
+   </location>
+   <weight unit="KG"> 500 </weight>
+  </pointmass>
+  <pointmass name="Ballastsack R Frame 50"> <!-- n=7 -->
+   <location unit="M">
+    <x>  70.0 </x>
+    <y>   0.6 </y>
+    <z>  -8.2 </z>
+   </location>
+   <weight unit="KG"> 500 </weight>
+  </pointmass>
+
+  <pointmass name="Ballastsack L Frame 70"> <!-- n=8 -->
+   <location unit="M">
+    <x>  50.0 </x>
+    <y>  -0.6 </y>
+    <z>  -8.2 </z>
+   </location>
+   <weight unit="KG"> 500 </weight>
+  </pointmass>
+  <pointmass name="Ballastsack R Frame 70"> <!-- n=9 -->
+   <location unit="M">
+    <x>  50.0 </x>
+    <y>   0.6 </y>
+    <z>  -8.2 </z>
+   </location>
+   <weight unit="KG"> 500 </weight>
+  </pointmass>
+
+  <pointmass name="Ballastsack L Frame 105"> <!-- n=10 -->
+   <location unit="M">
+    <x>  17.5 </x>
+    <y>  -0.6 </y>
+    <z>  -6.7 </z>
+   </location>
+   <weight unit="KG"> 500 </weight>
+  </pointmass>
+  <pointmass name="Ballastsack R Frame 105"> <!-- n=11 -->
+   <location unit="M">
+    <x>  17.5 </x>
+    <y>   0.6 </y>
+    <z>  -6.7 </z>
+   </location>
+   <weight unit="KG"> 500 </weight>
+  </pointmass>
+
+  <pointmass name="Ballasthose 1L Frame 110"> <!-- n=12 -->
+   <location unit="M">
+    <x>  10.8 </x>
+    <y>  -1.0 </y>
+    <z>  -5.5 </z>
+   </location>
+   <weight unit="KG"> 100 </weight>
+  </pointmass>
+  <pointmass name="Ballasthose 2L Frame 110"> <!-- n=13 -->
+   <location unit="M">
+    <x>  10.8 </x>
+    <y>  -0.5 </y>
+    <z>  -5.5 </z>
+   </location>
+   <weight unit="KG"> 100 </weight>
+  </pointmass>
+  <pointmass name="Ballasthose 1R Frame 110"> <!-- n=14 -->
+   <location unit="M">
+    <x>  10.8 </x>
+    <y>   0.5 </y>
+    <z>  -5.5 </z>
+   </location>
+   <weight unit="KG"> 100 </weight>
+  </pointmass>
+  <pointmass name="Ballasthose 2R Frame 110"> <!-- n=15 -->
+   <location unit="M">
+    <x>  10.8 </x>
+    <y>   1.0 </y>
+    <z>  -5.5 </z>
+   </location>
+   <weight unit="KG"> 100 </weight>
+  </pointmass>
+
+  <!-- 
+  === Crew and payload =======================================
+  -->
+  <documentation>
+   Payload storage along the keel according to [Vissering:1922:ZS]:
+     Frame 40-45 (between the frames)
+       4x Gepäcknetz für 200 kg
+     Frame 75 (2 fore and 1 aft right of the frame)
+       3x Gepäcknetz für 200 kg
+  </documentation>
+
+  <pointmass name="Control car payload"> <!-- n=16 -->
+   <weight unit="KG"> 1500.0 </weight>
+   <location name="POINTMASS" unit="M">
+    <x> 21.0 </x>
+    <y>  0.0 </y>
+    <z> -8.5 </z>
+   </location>
+  </pointmass>
+
+  <pointmass name="Frame 40L Cargo"> <!-- n=17 -->
+   <weight unit="KG"> 80.0 </weight>
+   <location name="POINTMASS" unit="M">
+    <x> 78.5 </x>
+    <y> -1.0 </y>
+    <z> -8.0 </z>
+   </location>
+  </pointmass>
+  <pointmass name="Frame 40R Cargo"> <!-- n=18 -->
+   <weight unit="KG"> 80.0 </weight>
+   <location name="POINTMASS" unit="M">
+    <x> 78.5 </x>
+    <y>  1.0 </y>
+    <z> -8.0 </z>
+   </location>
+  </pointmass>
+  <pointmass name="Frame 45L Cargo"> <!-- n=19 -->
+   <weight unit="KG"> 100.0 </weight>
+   <location name="POINTMASS" unit="M">
+    <x> 76.5 </x>
+    <y> -1.0 </y>
+    <z> -8.2 </z>
+   </location>
+  </pointmass>
+  <pointmass name="Frame 45R Cargo"> <!-- n=20 -->
+   <weight unit="KG"> 100.0 </weight>
+   <location name="POINTMASS" unit="M">
+    <x> 76.5 </x>
+    <y>  1.0 </y>
+    <z> -8.2 </z>
+   </location>
+  </pointmass>
+
+  <pointmass name="Frame 75R Aft Cargo"> <!-- n=21 -->
+   <weight unit="KG"> 100.0 </weight>
+   <location name="POINTMASS" unit="M">
+    <x> 46.5 </x>
+    <y>  1.0 </y>
+    <z> -8.7 </z>
+   </location>
+  </pointmass>
+  <pointmass name="Frame 75L Fore Cargo"> <!-- n=22 -->
+   <weight unit="KG"> 100.0 </weight>
+   <location name="POINTMASS" unit="M">
+    <x> 43.5 </x>
+    <y> -1.0 </y>
+    <z> -8.7 </z>
+   </location>
+  </pointmass>
+  <pointmass name="Frame 75R Fore Cargo"> <!-- n=23 -->
+   <weight unit="KG"> 100.0 </weight>
+   <location name="POINTMASS" unit="M">
+    <x> 43.5 </x>
+    <y>  1.0 </y>
+    <z> -8.7 </z>
+   </location>
+  </pointmass>
+
+  <!-- 
+  === Crew ===================================================
+  -->
+  <pointmass name="Watch Officer"> <!-- n=24 -->
+   <weight unit="KG"> 85 </weight>
+   <location unit="M">
+    <x> 22.0 </x>
+    <y>  0.5 </y>
+    <z> -9.9 </z>
+   </location>
+  </pointmass>
+  <pointmass name="Rudder Man"> <!-- n=25 -->
+   <weight unit="KG"> 85 </weight>
+   <location unit="M">
+    <x> 20.5 </x>
+    <y>  0.0 </y>
+    <z> -9.9 </z>
+   </location>
+  </pointmass>
+  <pointmass name="Elevator Man"> <!-- n=26 -->
+   <weight unit="KG"> 85 </weight>
+   <location unit="M">
+    <x> 22.2 </x>
+    <y> -0.5 </y>
+    <z> -9.9 </z>
+   </location>
+  </pointmass>
+  <pointmass name="Steward">  <!-- n=27 -->
+   <weight unit="KG"> 85 </weight>
+   <location unit="M">
+    <x> 33.0 </x>
+    <y>  0.5 </y>
+    <z> -9.9 </z>
+   </location>
+  </pointmass>
+  <pointmass name="Rigger"> <!-- n=28 -->
+   <weight unit="KG"> 85 </weight>
+   <location unit="M">
+    <x> 51.0 </x>
+    <y>  0.0 </y>
+    <z> -8.4 </z>
+   </location>
+  </pointmass>
+
+  <!-- 
+  === Engines ================================================
+  -->
+  <pointmass name="Left Engine Car">
+   <weight unit="KG"> 550.0 </weight>
+   <location name="POINTMASS" unit="M">
+    <x>  60.0 </x>
+    <y>  -6.5 </y>
+    <z> -10.0 </z>
+   </location>
+  </pointmass>
+  <pointmass name="Right Engine Car">
+   <weight unit="KG"> 550.0 </weight>
+   <location name="POINTMASS" unit="M">
+    <x>  60.0 </x>
+    <y>   6.5 </y>
+    <z> -10.0 </z>
+   </location>
+  </pointmass>
+  <pointmass name="Aft Engine Car">
+   <weight unit="KG"> 800.0 </weight>
+   <location name="POINTMASS" unit="M">
+    <x>  90.0 </x>
+    <y>   0.0 </y>
+    <z> -11.0 </z>
+   </location>
+  </pointmass>
+
+  <!-- 
+  === Structure ==============================================
+  -->
+
+  <pointmass name="Mooring cone">
+   <!-- Pure guess. -->
+   <weight unit="KG"> 200.0 </weight>
+   <location name="POINTMASS" unit="M">
+    <x>  0.0 </x>
+    <y>  0.0 </y>
+    <z>  0.0 </z>
+   </location>
+  </pointmass>
+  <pointmass name="Control car">
+   <!-- Pure guess. -->
+   <weight unit="KG"> 3000.0 </weight>
+   <location name="POINTMASS" unit="M">
+    <x> 30.0 </x>
+    <y>  0.0 </y>
+    <z> -9.0 </z>
+   </location>
+  </pointmass>
+
+ </mass_balance>
+
+ <!--
+ ==== Ground reactions ======================================================
+ -->
+
+ <ground_reactions>
+
+  <!--
+  === Landing gears ===================================================
+  -->
+  <contact type="BOGEY" name="CAR_BUMPER_BAG">
+   <location unit="M">
+    <x>  21.50 </x>
+    <y>   0.00 </y>
+    <z> -12.00 </z>
+   </location>
+   <static_friction>  0.8 </static_friction>
+   <dynamic_friction> 0.5 </dynamic_friction>
+   <rolling_friction> 0.5 </rolling_friction>
+   <spring_coeff unit="N/M"> 50000 </spring_coeff>
+   <damping_coeff unit="N/M/SEC"> 10000 </damping_coeff>
+   <max_steer unit="DEG"> 0.0 </max_steer>
+   <brake_group> NONE </brake_group>
+   <retractable>0</retractable>
+  </contact>
+
+  <contact type="BOGEY" name="AFT_ENGINE_CAR_BUMPER_BAG">
+   <location unit="M">
+    <x>  90.00 </x>
+    <y>   0.00 </y>
+    <z> -13.00 </z>
+   </location>
+   <static_friction>  0.8 </static_friction>
+   <dynamic_friction> 0.5 </dynamic_friction>
+   <rolling_friction> 0.5 </rolling_friction>
+   <spring_coeff unit="N/M"> 50000 </spring_coeff>
+   <damping_coeff unit="N/M/SEC"> 10000 </damping_coeff>
+   <max_steer unit="DEG"> 0.0 </max_steer>
+   <brake_group> NONE </brake_group>
+   <retractable>0</retractable>
+  </contact>
+
+  <!--
+  === Other contact points ============================================
+  -->
+  <!-- These should induce structural failure. -->
+  <contact type="STRUCTURE" name="NOSE">
+   <location unit="M">
+    <x> 0.0 </x>
+    <y> 0.0 </y>
+    <z> 0.0 </z>
+   </location>
+   <static_friction>  0.2 </static_friction>
+   <dynamic_friction> 0.2 </dynamic_friction>
+   <spring_coeff unit="N/M">      100000 </spring_coeff>
+   <damping_coeff unit="N/M/SEC">  20000 </damping_coeff>
+  </contact>
+
+  <contact type="STRUCTURE" name="LEFT_ENGINE_CAR">
+   <location unit="M">
+    <x>  60.0 </x>
+    <y>  -7.0 </y>
+    <z> -11.0 </z>
+   </location>
+   <static_friction>  0.2 </static_friction>
+   <dynamic_friction> 0.2 </dynamic_friction>
+   <spring_coeff unit="N/M">      100000 </spring_coeff>
+   <damping_coeff unit="N/M/SEC">  20000 </damping_coeff>
+  </contact>
+
+  <contact type="STRUCTURE" name="RIGHT_ENGINE_CAR">
+   <location unit="M">
+    <x>  60.0 </x>
+    <y>   7.0 </y>
+    <z> -11.0 </z>
+   </location>
+   <static_friction>  0.2 </static_friction>
+   <dynamic_friction> 0.2 </dynamic_friction>
+   <spring_coeff unit="N/M">      100000 </spring_coeff>
+   <damping_coeff unit="N/M/SEC">  20000 </damping_coeff>
+  </contact>
+
+  <contact type="STRUCTURE" name="LOWER_FIN">
+   <location unit="M">
+    <x> 120.0 </x>
+    <y>   0.0 </y>
+    <z>  -8.0 </z>
+   </location>
+   <static_friction>  0.2 </static_friction>
+   <dynamic_friction> 0.2 </dynamic_friction>
+   <spring_coeff unit="N/M">      100000 </spring_coeff>
+   <damping_coeff unit="N/M/SEC">  20000 </damping_coeff>
+  </contact>
+
+  <contact type="STRUCTURE" name="TAIL">
+   <location unit="M">
+    <x> 130.8 </x>
+    <y>   0.0 </y>
+    <z>   0.0 </z>
+   </location>
+   <static_friction>  0.2 </static_friction>
+   <dynamic_friction> 0.2 </dynamic_friction>
+   <spring_coeff unit="N/M">      100000 </spring_coeff>
+   <damping_coeff unit="N/M/SEC">  20000 </damping_coeff>
+  </contact>
+
+ </ground_reactions>
+
+ <!--
+ ==== Propulsion ============================================================
+ -->
+
+ <propulsion>
+ 
+  <documentation>
+   4 Maybach Mb IVa high altitude engine.
+
+   [Vissering:1922:ZS]:
+     260 HP above 10000ft
+     From engine performance table, assuming that Maybach 1918 is MbIVa:
+     260 HP, 1400 RPM, 390 kg, 0.200 kg/(hp hr)
+
+   [PK:1994:LZ120] for Bodensee:
+     Side engines had a propeller diameter of 3.2 m
+     The aft engine had a propeller diameter of 5.2 m geared down about 2:1.
+     4 Maybach Mb IVa-Höhenleistungsmotoren (6 cylinder inline)
+       190 kW max above 1800 m
+       180 kW max below 1800 m
+       2.2 kg/kW (implying an engine weight of 418kg)
+       Specific fuel consumption: 270 g/kWh @ 1400 RPM
+       Cruise consumption: about 45 kg/h (per engine)
+
+   [Flight:1918:MB, pp. 960 - 965, 995 - 1000]
+     Technical description of captured Maybach 300 HP aircraft engine.
+     Seems very similar to the Mb IVa.
+
+     Bore:              165 mm
+     Stroke:            180 mm (Computed from bore, compression ratio
+                                and clearance volume)
+     Compression ratio: 5.94:1
+     Clearance volume:  778.9 cm^3
+
+  </documentation>
+
+  <!--
+  === Engine ================================================
+  -->
+  <!-- Left engine -->
+  <engine file="eng_Maybach_Mb_IVa">
+   <location unit="M">
+    <x>  60.0 </x>
+    <y>  -6.5 </y>
+    <z> -10.0 </z>
+   </location>
+   <orient unit="DEG">
+    <roll>  0.0 </roll>
+    <pitch> 0.0 </pitch>
+    <yaw>   0.0 </yaw>
+   </orient>
+   <feed>4</feed>
+   <feed>6</feed>
+   <feed>8</feed>
+   <feed>10</feed>
+   <thruster file="prop_Zeppelin3m">
+    <location unit="M">
+     <x>  62.5 </x>
+     <y>  -6.5 </y>
+     <z> -10.0 </z>
+    </location>
+    <orient unit="DEG">
+     <roll>  0.0 </roll>
+     <pitch> 0.0 </pitch>
+     <yaw>   0.0 </yaw>
+    </orient>
+   </thruster>
+  </engine>
+  <!-- Right engine -->
+  <engine file="eng_Maybach_Mb_IVa">
+   <location unit="M">
+    <x>  60.0 </x>
+    <y>   6.5 </y>
+    <z> -10.0 </z>
+   </location>
+   <orient unit="DEG">
+    <roll>  0.0 </roll>
+    <pitch> 0.0 </pitch>
+    <yaw>   0.0 </yaw>
+   </orient>
+   <feed>5</feed>
+   <feed>7</feed>
+   <feed>9</feed>
+   <feed>11</feed>
+   <thruster file="prop_Zeppelin3m">
+    <location unit="M">
+     <x>  62.5 </x>
+     <y>   6.5 </y>
+     <z> -10.0 </z>
+    </location>
+    <orient unit="DEG">
+     <roll>  0.0 </roll>
+     <pitch> 0.0 </pitch>
+     <yaw>   0.0 </yaw>
+    </orient>
+   </thruster>
+  </engine>
+  <!-- Aft engines -->
+  <engine file="eng_Maybach_Mb_IVa">
+   <location unit="M">
+    <x>  90.00 </x>
+    <y>  -1.00 </y>
+    <z> -11.20 </z>
+   </location>
+   <orient unit="DEG">
+    <roll>  0.0 </roll>
+    <pitch> 0.0 </pitch>
+    <yaw>   0.0 </yaw>
+   </orient>
+   <feed>0</feed>
+   <feed>1</feed>
+   <feed>2</feed>
+   <feed>3</feed>
+   <thruster file="prop_Zeppelin3m">
+    <location unit="M">
+     <x>  92.50 </x>
+     <y>   0.00 </y>
+     <z> -11.20 </z>
+    </location>
+    <orient unit="DEG">
+     <roll>  0.0 </roll>
+     <pitch> 0.0 </pitch>
+     <yaw>   0.0 </yaw>
+    </orient>
+   </thruster>
+  </engine>
+  <engine file="eng_Maybach_Mb_IVa">
+   <location unit="M">
+    <x>  90.00 </x>
+    <y>   1.00 </y>
+    <z> -11.20 </z>
+   </location>
+   <orient unit="DEG">
+    <roll>  0.0 </roll>
+    <pitch> 0.0 </pitch>
+    <yaw>   0.0 </yaw>
+   </orient>
+   <feed>0</feed>
+   <feed>1</feed>
+   <feed>2</feed>
+   <feed>3</feed>
+   <thruster file="prop_Zeppelin3m">
+    <location unit="M">
+     <x>  92.50 </x>
+     <y>   0.00 </y>
+     <z> -11.20 </z>
+    </location>
+    <orient unit="DEG">
+     <roll>  0.0 </roll>
+     <pitch> 0.0 </pitch>
+     <yaw>   0.0 </yaw>
+    </orient>
+   </thruster>
+  </engine>
+
+  <!--
+  === Fuel tanks ============================================
+  -->
+  <documentation>
+   Fuel tanks according to [Vissering:1922:ZS]:
+   Along the keel walkway.
+     Frame 40 (aft of)
+       4x "Benzinfass" the two on the right jettisonable.
+     Frame 50 (fore and aft of)
+       4x "Benzinfass"
+     Frame 70 (fore and aft of)
+       4x "Benzinfass" all jettisonable.
+
+   According to [PK:1994:LZ120] for Bodensee:
+     12 "Benzinfass" of 260 l / 185 kg each.
+     4  "Ölfass" of 60 kg each. One close each engine.
+  </documentation>
+
+  <!-- Tanks at frame 40. n = 0 - 3 -->
+  <tank type="FUEL">
+   <location unit="M">
+    <x> 81.9 </x>
+    <y> -0.8</y>
+    <z> -7.8 </z>
+   </location>
+   <capacity unit="KG"> 185.0 </capacity>
+   <contents unit="KG"> 150.0 </contents>
+  </tank>
+  <tank type="FUEL">
+   <location unit="M">
+    <x> 81.9 </x>
+    <y>  0.8</y>
+    <z> -7.8 </z>
+   </location>
+   <capacity unit="KG"> 185.0 </capacity>
+   <contents unit="KG"> 150.0 </contents>
+  </tank>
+  <tank type="FUEL">
+   <location unit="M">
+    <x> 80.9 </x>
+    <y> -0.8</y>
+    <z> -7.8 </z>
+   </location>
+   <capacity unit="KG"> 185.0 </capacity>
+   <contents unit="KG"> 150.0 </contents>
+  </tank>
+  <tank type="FUEL">
+   <location unit="M">
+    <x> 80.9 </x>
+    <y>  0.8</y>
+    <z> -7.8 </z>
+   </location>
+   <capacity unit="KG"> 185.0 </capacity>
+   <contents unit="KG"> 150.0 </contents>
+  </tank>
+
+  <!-- Tanks at frame 50. n = 4 - 7 -->
+  <tank type="FUEL">
+   <location unit="M">
+    <x> 71.5 </x>
+    <y> -0.8</y>
+    <z> -8.0 </z>
+   </location>
+   <capacity unit="KG"> 185.0 </capacity>
+   <contents unit="KG"> 150.0 </contents>
+  </tank>
+  <tank type="FUEL">
+   <location unit="M">
+    <x> 71.5 </x>
+    <y>  0.8</y>
+    <z> -8.0 </z>
+   </location>
+   <capacity unit="KG"> 185.0 </capacity>
+   <contents unit="KG"> 150.0 </contents>
+  </tank>
+  <tank type="FUEL">
+   <location unit="M">
+    <x> 68.5 </x>
+    <y> -0.8</y>
+    <z> -8.0 </z>
+   </location>
+   <capacity unit="KG"> 185.0 </capacity>
+   <contents unit="KG"> 150.0 </contents>
+  </tank>
+  <tank type="FUEL">
+   <location unit="M">
+    <x> 68.5 </x>
+    <y>  0.8</y>
+    <z> -8.0 </z>
+   </location>
+   <capacity unit="KG"> 185.0 </capacity>
+   <contents unit="KG"> 150.0 </contents>
+  </tank>
+
+  <!-- Tanks at frame 70. n = 8 - 11 -->
+  <tank type="FUEL">
+   <location unit="M">
+    <x> 51.5 </x>
+    <y> -0.8</y>
+    <z> -8.0 </z>
+   </location>
+   <capacity unit="KG"> 185.0 </capacity>
+   <contents unit="KG"> 150.0 </contents>
+  </tank>
+  <tank type="FUEL">
+   <location unit="M">
+    <x> 51.5 </x>
+    <y>  0.8</y>
+    <z> -8.0 </z>
+   </location>
+   <capacity unit="KG"> 185.0 </capacity>
+   <contents unit="KG"> 150.0 </contents>
+  </tank>
+  <tank type="FUEL">
+   <location unit="M">
+    <x> 48.5 </x>
+    <y> -0.8</y>
+    <z> -8.0 </z>
+   </location>
+   <capacity unit="KG"> 185.0 </capacity>
+   <contents unit="KG"> 150.0 </contents>
+  </tank>
+  <tank type="FUEL">
+   <location unit="M">
+    <x> 48.5 </x>
+    <y>  0.8</y>
+    <z> -8.0 </z>
+   </location>
+   <capacity unit="KG"> 185.0 </capacity>
+   <contents unit="KG"> 150.0 </contents>
+  </tank>
+
+ </propulsion>
+
+ <!--
+ === Gas cell ==============================================================
+ -->
+
+ <buoyant_forces>
+  <documentation>
+   According to [PK:1994:LZ120]:
+     Total gas volume 22500m^3 in 13 cells.
+     Each cell had a relief valve in the lower part (Bodensee).
+     4 cells had maneuvering valves (Bodensee, before the lengthening).
+  </documentation>
+
+  <documentation>
+   % Estimation of gas cell sizes and volumes.
+   % 13 cells numbered 1 to 13 in aft to fore order.
+   % Layout:
+   %   fcf (frame cell frame) 
+   %   r r (radius at frame)
+   %    h  (width of cell)
+   % Radius of cell ends from drawing in [Vissering:1922:ZS].
+   %r = [1.2 2.9 5.3 6.9 8.0 8.6 9.0 9.2 9.2 9.1 8.7 7.9 6.2 2];
+   %h = [6.4 10.0 10.0 10.0 10.0 10.0 10.0 10.0 10.0 10.0 10.0 10.0 9.0];
+   % The first two cells are connected and have a single relief valve.
+   r = [1.2 5.3 6.9 8.0 8.6 9.0 9.2 9.2 9.1 8.7 7.9 6.2 2];
+   h = [16.4 10.0 10.0 10.0 10.0 10.0 10.0 10.0 10.0 10.0 10.0 9.0];
+
+   % Assumption: Each cell is shaped like a frustum of right cone.
+   %   s        = sqrt((r1 + r2)^2 + h^2)
+   %   S_tot    = pi*(r1^2 + r2^2 + (r1 +r2)*s)
+   %   S_mantel = pi*(r1 +r2)*s
+   %   V        = pi*h/3 * (r1^2 + r1*r2 + r2^2)
+
+   for i = 1:length(h)
+     V(i) = pi*h(i)/3 * (r(i)^2 + r(i)*r(i+1) + r(i+1)^2);
+     S_mantel(i) = pi*(r(i) +r(i+1))*sqrt((r(i) + r(i+1))^2 + h(i)^2);
+   endfor
+   
+   % Radius of cylinder with same width and volume
+   r_eq = sqrt(V./(pi.*h));
+
+  </documentation>
+  <limitations>
+  </limitations>
+
+  <!-- External environment properties -->
+  <property> environment/sun-angle-rad </property>
+  <property> environment/sun-radiation-norm </property>
+
+  <!-- Gas cell constants -->
+
+  <!-- Conductivity [lb / (K ft sec)] (Guess) -->
+  <property value="0.05">buoyant_forces/heat-coeffs/conductivity</property>
+  <!-- Emissivity [0,1] (Guess) -->
+  <property value="0.1">buoyant_forces/heat-coeffs/emissivity</property>
+
+  <property value="3877.6">buoyant_forces/gas-cell[0]/external-area-ft2</property>
+  <property value="6507.9">buoyant_forces/gas-cell[1]/external-area-ft2</property>
+  <property value="9041.5">buoyant_forces/gas-cell[2]/external-area-ft2</property>
+  <property value="10878.0">buoyant_forces/gas-cell[3]/external-area-ft2</property>
+  <property value="12048.0">buoyant_forces/gas-cell[4]/external-area-ft2</property>
+  <property value="12781.0">buoyant_forces/gas-cell[5]/external-area-ft2</property>
+  <property value="13030.0">buoyant_forces/gas-cell[6]/external-area-ft2</property>
+  <property value="12905.0">buoyant_forces/gas-cell[7]/external-area-ft2</property>
+  <property value="12289.0">buoyant_forces/gas-cell[8]/external-area-ft2</property>
+  <property value="10878.0">buoyant_forces/gas-cell[9]/external-area-ft2</property>
+  <property value="8242.1">buoyant_forces/gas-cell[10]/external-area-ft2</property>
+  <property value="3376.1">buoyant_forces/gas-cell[11]/external-area-ft2</property>
+
+  <!-- Cell 1 and 2 -->
+  <gas_cell type="HYDROGEN">
+   <location unit="M">
+    <x> 115.0 </x>
+    <y> 0.0 </y>
+    <z> 2.0 </z>
+   </location>
+   <x_width  unit="M"> 16.4 </x_width>
+   <y_radius unit="M"> 3.46 </y_radius>
+   <z_radius unit="M"> 3.46 </z_radius>
+   <max_overpressure unit="PA"> 0.0 </max_overpressure> 
+   <valve_coefficient unit="M4*SEC/KG"> 0.02 </valve_coefficient>
+   <fullness> 0.95 </fullness>
+   <!-- heat exchange with the environment. [lb ft / sec] -->
+   <heat>
+    <!-- Heat transfer due to temperature difference. -->
+    <function name="buoyant_forces/gas-cell[0]/dU_conduction">
+     <product>
+      <property> buoyant_forces/gas-cell[0]/external-area-ft2 </property>
+      <difference>
+       <property> atmosphere/T-R </property>
+       <property> buoyant_forces/gas-cell/temp-R </property>
+      </difference>
+     </product>
+    </function>
+    <function name="buoyant_forces/gas-cell[0]/dU_radiation">
+     <product>
+      <value> 0.1714e-8 </value> <!-- Stefan-Boltzmann's constant
+                                      [Btu / (h ft^2 R^4)] -->
+      <property> buoyant_forces/heat-coeffs/emissivity </property>
+      <property> buoyant_forces/gas-cell[0]/external-area-ft2 </property>
+      <difference>
+       <pow>
+        <property> atmosphere/T-R </property>
+        <value> 4.0 </value>
+       </pow>
+       <pow>
+        <property> buoyant_forces/gas-cell/temp-R </property>
+        <value> 4.0 </value>
+       </pow>
+      </difference>
+     </product>
+    </function>
+   </heat>
+  </gas_cell>
+
+  <!-- Cell 3 -->
+  <gas_cell type="HYDROGEN">
+   <location unit="M">
+    <x> 105.0 </x>
+    <y> 0.0 </y>
+    <z> 3.0 </z>
+   </location>
+   <x_width  unit="M"> 10.0 </x_width>
+   <y_radius unit="M"> 6.12 </y_radius>
+   <z_radius unit="M"> 6.12 </z_radius>
+   <max_overpressure unit="PA"> 0.0 </max_overpressure> 
+   <valve_coefficient unit="M4*SEC/KG"> 0.02 </valve_coefficient>
+   <fullness> 0.95 </fullness>
+   <!-- heat exchange with the environment. [lb ft / sec] -->
+   <heat>
+    <!-- Heat transfer due to temperature difference. -->
+    <function name="buoyant_forces/gas-cell[1]/dU_conduction">
+     <product>
+      <property> buoyant_forces/gas-cell[1]/external-area-ft2 </property>
+      <difference>
+       <property> atmosphere/T-R </property>
+       <property> buoyant_forces/gas-cell/temp-R </property>
+      </difference>
+     </product>
+    </function>
+    <function name="buoyant_forces/gas-cell[1]/dU_radiation">
+     <product>
+      <value> 0.1714e-8 </value> <!-- Stefan-Boltzmann's constant
+                                      [Btu / (h ft^2 R^4)] -->
+      <property> buoyant_forces/heat-coeffs/emissivity </property>
+      <property> buoyant_forces/gas-cell[1]/external-area-ft2 </property>
+      <difference>
+       <pow>
+        <property> atmosphere/T-R </property>
+        <value> 4.0 </value>
+       </pow>
+       <pow>
+        <property> buoyant_forces/gas-cell/temp-R </property>
+        <value> 4.0 </value>
+       </pow>
+      </difference>
+     </product>
+    </function>
+   </heat>
+  </gas_cell>
+
+  <!-- Cell 4 -->
+  <gas_cell type="HYDROGEN">
+   <location unit="M">
+    <x> 95.0 </x>
+    <y> 0.0 </y>
+    <z> 3.0 </z>
+   </location>
+   <x_width  unit="M"> 10.0 </x_width>
+   <y_radius unit="M"> 7.46 </y_radius>
+   <z_radius unit="M"> 7.46 </z_radius>
+   <max_overpressure unit="PA"> 0.0 </max_overpressure> 
+   <valve_coefficient unit="M4*SEC/KG"> 0.02 </valve_coefficient>
+   <fullness> 0.95 </fullness>
+   <!-- heat exchange with the environment. [lb ft / sec] -->
+   <heat>
+    <!-- Heat transfer due to temperature difference. -->
+    <function name="buoyant_forces/gas-cell[2]/dU_conduction">
+     <product>
+      <property> buoyant_forces/gas-cell[2]/external-area-ft2 </property>
+      <difference>
+       <property> atmosphere/T-R </property>
+       <property> buoyant_forces/gas-cell/temp-R </property>
+      </difference>
+     </product>
+    </function>
+    <function name="buoyant_forces/gas-cell[2]/dU_radiation">
+     <product>
+      <value> 0.1714e-8 </value> <!-- Stefan-Boltzmann's constant
+                                      [Btu / (h ft^2 R^4)] -->
+      <property> buoyant_forces/heat-coeffs/emissivity </property>
+      <property> buoyant_forces/gas-cell[2]/external-area-ft2 </property>
+      <difference>
+       <pow>
+        <property> atmosphere/T-R </property>
+        <value> 4.0 </value>
+       </pow>
+       <pow>
+        <property> buoyant_forces/gas-cell/temp-R </property>
+        <value> 4.0 </value>
+       </pow>
+      </difference>
+     </product>
+    </function>
+   </heat>
+  </gas_cell>
+
+  <!-- Cell 5 -->
+  <gas_cell type="HYDROGEN">
+   <location unit="M">
+    <x> 85.0 </x>
+    <y> 0.0 </y>
+    <z> 3.0 </z>
+   </location>
+   <x_width  unit="M"> 10.0 </x_width>
+   <y_radius unit="M"> 8.30 </y_radius>
+   <z_radius unit="M"> 8.30 </z_radius>
+   <max_overpressure unit="PA"> 0.0 </max_overpressure> 
+   <valve_coefficient unit="M4*SEC/KG"> 0.02 </valve_coefficient>
+   <fullness> 0.95 </fullness>
+   <!-- heat exchange with the environment. [lb ft / sec] -->
+   <heat>
+    <!-- Heat transfer due to temperature difference. -->
+    <function name="buoyant_forces/gas-cell[3]/dU_conduction">
+     <product>
+      <property> buoyant_forces/gas-cell[3]/external-area-ft2 </property>
+      <difference>
+       <property> atmosphere/T-R </property>
+       <property> buoyant_forces/gas-cell/temp-R </property>
+      </difference>
+     </product>
+    </function>
+    <function name="buoyant_forces/gas-cell[3]/dU_radiation">
+     <product>
+      <value> 0.1714e-8 </value> <!-- Stefan-Boltzmann's constant
+                                      [Btu / (h ft^2 R^4)] -->
+      <property> buoyant_forces/heat-coeffs/emissivity </property>
+      <property> buoyant_forces/gas-cell[3]/external-area-ft2 </property>
+      <difference>
+       <pow>
+        <property> atmosphere/T-R </property>
+        <value> 4.0 </value>
+       </pow>
+       <pow>
+        <property> buoyant_forces/gas-cell/temp-R </property>
+        <value> 4.0 </value>
+       </pow>
+      </difference>
+     </product>
+    </function>
+   </heat>
+  </gas_cell>
+
+  <!-- Cell 6 -->
+  <gas_cell type="HYDROGEN">
+   <location unit="M">
+    <x> 75.0 </x>
+    <y> 0.0 </y>
+    <z> 3.0 </z>
+   </location>
+   <x_width  unit="M"> 10.0 </x_width>
+   <y_radius unit="M"> 8.80 </y_radius>
+   <z_radius unit="M"> 8.80 </z_radius>
+   <max_overpressure unit="PA"> 0.0 </max_overpressure> 
+   <valve_coefficient unit="M4*SEC/KG"> 0.02 </valve_coefficient>
+   <fullness> 0.95 </fullness>
+   <!-- heat exchange with the environment. [lb ft / sec] -->
+   <heat>
+    <!-- Heat transfer due to temperature difference. -->
+    <function name="buoyant_forces/gas-cell[4]/dU_conduction">
+     <product>
+      <property> buoyant_forces/gas-cell[4]/external-area-ft2 </property>
+      <difference>
+       <property> atmosphere/T-R </property>
+       <property> buoyant_forces/gas-cell/temp-R </property>
+      </difference>
+     </product>
+    </function>
+    <function name="buoyant_forces/gas-cell[4]/dU_radiation">
+     <product>
+      <value> 0.1714e-8 </value> <!-- Stefan-Boltzmann's constant
+                                      [Btu / (h ft^2 R^4)] -->
+      <property> buoyant_forces/heat-coeffs/emissivity </property>
+      <property> buoyant_forces/gas-cell[4]/external-area-ft2 </property>
+      <difference>
+       <pow>
+        <property> atmosphere/T-R </property>
+        <value> 4.0 </value>
+       </pow>
+       <pow>
+        <property> buoyant_forces/gas-cell/temp-R </property>
+        <value> 4.0 </value>
+       </pow>
+      </difference>
+     </product>
+    </function>
+   </heat>
+  </gas_cell>
+
+  <!-- Cell 7 -->
+  <gas_cell type="HYDROGEN">
+   <location unit="M">
+    <x> 65.0 </x>
+    <y> 0.0 </y>
+    <z> 3.0 </z>
+   </location>
+   <x_width  unit="M"> 10.0 </x_width>
+   <y_radius unit="M"> 9.10 </y_radius>
+   <z_radius unit="M"> 9.10 </z_radius>
+   <max_overpressure unit="PA"> 0.0 </max_overpressure> 
+   <valve_coefficient unit="M4*SEC/KG"> 0.02 </valve_coefficient>
+   <fullness> 0.95 </fullness>
+   <!-- heat exchange with the environment. [lb ft / sec] -->
+   <heat>
+    <!-- Heat transfer due to temperature difference. -->
+    <function name="buoyant_forces/gas-cell[5]/dU_conduction">
+     <product>
+      <property> buoyant_forces/gas-cell[5]/external-area-ft2 </property>
+      <difference>
+       <property> atmosphere/T-R </property>
+       <property> buoyant_forces/gas-cell/temp-R </property>
+      </difference>
+     </product>
+    </function>
+    <function name="buoyant_forces/gas-cell[5]/dU_radiation">
+     <product>
+      <value> 0.1714e-8 </value> <!-- Stefan-Boltzmann's constant
+                                      [Btu / (h ft^2 R^4)] -->
+      <property> buoyant_forces/heat-coeffs/emissivity </property>
+      <property> buoyant_forces/gas-cell[5]/external-area-ft2 </property>
+      <difference>
+       <pow>
+        <property> atmosphere/T-R </property>
+        <value> 4.0 </value>
+       </pow>
+       <pow>
+        <property> buoyant_forces/gas-cell/temp-R </property>
+        <value> 4.0 </value>
+       </pow>
+      </difference>
+     </product>
+    </function>
+   </heat>
+  </gas_cell>
+
+  <!-- Cell 8 -->
+  <gas_cell type="HYDROGEN">
+   <location unit="M">
+    <x> 55.0 </x>
+    <y> 0.0 </y>
+    <z> 3.0 </z>
+   </location>
+   <x_width  unit="M"> 10.0 </x_width>
+   <y_radius unit="M"> 9.20 </y_radius>
+   <z_radius unit="M"> 9.20 </z_radius>
+   <max_overpressure unit="PA"> 0.0 </max_overpressure> 
+   <valve_coefficient unit="M4*SEC/KG"> 0.02 </valve_coefficient>
+   <fullness> 0.95 </fullness>
+   <!-- heat exchange with the environment. [lb ft / sec] -->
+   <heat>
+    <!-- Heat transfer due to temperature difference. -->
+    <function name="buoyant_forces/gas-cell[6]/dU_conduction">
+     <product>
+      <property> buoyant_forces/gas-cell[6]/external-area-ft2 </property>
+      <difference>
+       <property> atmosphere/T-R </property>
+       <property> buoyant_forces/gas-cell/temp-R </property>
+      </difference>
+     </product>
+    </function>
+    <function name="buoyant_forces/gas-cell[6]/dU_radiation">
+     <product>
+      <value> 0.1714e-8 </value> <!-- Stefan-Boltzmann's constant
+                                      [Btu / (h ft^2 R^4)] -->
+      <property> buoyant_forces/heat-coeffs/emissivity </property>
+      <property> buoyant_forces/gas-cell[6]/external-area-ft2 </property>
+      <difference>
+       <pow>
+        <property> atmosphere/T-R </property>
+        <value> 4.0 </value>
+       </pow>
+       <pow>
+        <property> buoyant_forces/gas-cell/temp-R </property>
+        <value> 4.0 </value>
+       </pow>
+      </difference>
+     </product>
+    </function>
+   </heat>
+  </gas_cell>
+
+  <!-- Cell 9 -->
+  <gas_cell type="HYDROGEN">
+   <location unit="M">
+    <x> 45.0 </x>
+    <y> 0.0 </y>
+    <z> 3.0 </z>
+   </location>
+   <x_width  unit="M"> 10.0 </x_width>
+   <y_radius unit="M"> 9.15 </y_radius>
+   <z_radius unit="M"> 9.15 </z_radius>
+   <max_overpressure unit="PA"> 0.0 </max_overpressure> 
+   <valve_coefficient unit="M4*SEC/KG"> 0.02 </valve_coefficient>
+   <fullness> 0.95 </fullness>
+   <!-- heat exchange with the environment. [lb ft / sec] -->
+   <heat>
+    <!-- Heat transfer due to temperature difference. -->
+    <function name="buoyant_forces/gas-cell[7]/dU_conduction">
+     <product>
+      <property> buoyant_forces/gas-cell[7]/external-area-ft2 </property>
+      <difference>
+       <property> atmosphere/T-R </property>
+       <property> buoyant_forces/gas-cell/temp-R </property>
+      </difference>
+     </product>
+    </function>
+    <function name="buoyant_forces/gas-cell[7]/dU_radiation">
+     <product>
+      <value> 0.1714e-8 </value> <!-- Stefan-Boltzmann's constant
+                                      [Btu / (h ft^2 R^4)] -->
+      <property> buoyant_forces/heat-coeffs/emissivity </property>
+      <property> buoyant_forces/gas-cell[7]/external-area-ft2 </property>
+      <difference>
+       <pow>
+        <property> atmosphere/T-R </property>
+        <value> 4.0 </value>
+       </pow>
+       <pow>
+        <property> buoyant_forces/gas-cell/temp-R </property>
+        <value> 4.0 </value>
+       </pow>
+      </difference>
+     </product>
+    </function>
+   </heat>
+  </gas_cell>
+
+  <!-- Cell 10 -->
+  <gas_cell type="HYDROGEN">
+   <location unit="M">
+    <x> 35.0 </x>
+    <y> 0.0 </y>
+    <z> 3.0 </z>
+   </location>
+   <x_width  unit="M"> 10.0 </x_width>
+   <y_radius unit="M"> 8.90 </y_radius>
+   <z_radius unit="M"> 8.90 </z_radius>
+   <max_overpressure unit="PA"> 0.0 </max_overpressure> 
+   <valve_coefficient unit="M4*SEC/KG"> 0.02 </valve_coefficient>
+   <fullness> 0.95 </fullness>
+   <!-- heat exchange with the environment. [lb ft / sec] -->
+   <heat>
+    <!-- Heat transfer due to temperature difference. -->
+    <function name="buoyant_forces/gas-cell[8]/dU_conduction">
+     <product>
+      <property> buoyant_forces/gas-cell[8]/external-area-ft2 </property>
+      <difference>
+       <property> atmosphere/T-R </property>
+       <property> buoyant_forces/gas-cell/temp-R </property>
+      </difference>
+     </product>
+    </function>
+    <function name="buoyant_forces/gas-cell[8]/dU_radiation">
+     <product>
+      <value> 0.1714e-8 </value> <!-- Stefan-Boltzmann's constant
+                                      [Btu / (h ft^2 R^4)] -->
+      <property> buoyant_forces/heat-coeffs/emissivity </property>
+      <property> buoyant_forces/gas-cell[8]/external-area-ft2 </property>
+      <difference>
+       <pow>
+        <property> atmosphere/T-R </property>
+        <value> 4.0 </value>
+       </pow>
+       <pow>
+        <property> buoyant_forces/gas-cell/temp-R </property>
+        <value> 4.0 </value>
+       </pow>
+      </difference>
+     </product>
+    </function>
+   </heat>
+  </gas_cell>
+
+  <!-- Cell 11 -->
+  <gas_cell type="HYDROGEN">
+   <location unit="M">
+    <x> 25.0 </x>
+    <y> 0.0 </y>
+    <z> 3.0 </z>
+   </location>
+   <x_width  unit="M"> 10.0 </x_width>
+   <y_radius unit="M"> 8.30 </y_radius>
+   <z_radius unit="M"> 8.30 </z_radius>
+   <max_overpressure unit="PA"> 0.0 </max_overpressure> 
+   <valve_coefficient unit="M4*SEC/KG"> 0.02 </valve_coefficient>
+   <fullness> 0.95 </fullness>
+   <!-- heat exchange with the environment. [lb ft / sec] -->
+   <heat>
+    <!-- Heat transfer due to temperature difference. -->
+    <function name="buoyant_forces/gas-cell[9]/dU_conduction">
+     <product>
+      <property> buoyant_forces/gas-cell[9]/external-area-ft2 </property>
+      <difference>
+       <property> atmosphere/T-R </property>
+       <property> buoyant_forces/gas-cell/temp-R </property>
+      </difference>
+     </product>
+    </function>
+    <function name="buoyant_forces/gas-cell[9]/dU_radiation">
+     <product>
+      <value> 0.1714e-8 </value> <!-- Stefan-Boltzmann's constant
+                                      [Btu / (h ft^2 R^4)] -->
+      <property> buoyant_forces/heat-coeffs/emissivity </property>
+      <property> buoyant_forces/gas-cell[9]/external-area-ft2 </property>
+      <difference>
+       <pow>
+        <property> atmosphere/T-R </property>
+        <value> 4.0 </value>
+       </pow>
+       <pow>
+        <property> buoyant_forces/gas-cell/temp-R </property>
+        <value> 4.0 </value>
+       </pow>
+      </difference>
+     </product>
+    </function>
+   </heat>
+  </gas_cell>
+
+  <!-- Cell 12 -->
+  <gas_cell type="HYDROGEN">
+   <location unit="M">
+    <x> 15.0 </x>
+    <y> 0.0 </y>
+    <z> 3.0 </z>
+   </location>
+   <x_width  unit="M"> 10.0 </x_width>
+   <y_radius unit="M"> 7.07 </y_radius>
+   <z_radius unit="M"> 7.07 </z_radius>
+   <max_overpressure unit="PA"> 0.0 </max_overpressure> 
+   <valve_coefficient unit="M4*SEC/KG"> 0.02 </valve_coefficient>
+   <fullness> 0.95 </fullness>
+   <!-- heat exchange with the environment. [lb ft / sec] -->
+   <heat>
+    <!-- Heat transfer due to temperature difference. -->
+    <function name="buoyant_forces/gas-cell[10]/dU_conduction">
+     <product>
+      <property> buoyant_forces/gas-cell[10]/external-area-ft2 </property>
+      <difference>
+       <property> atmosphere/T-R </property>
+       <property> buoyant_forces/gas-cell/temp-R </property>
+      </difference>
+     </product>
+    </function>
+    <function name="buoyant_forces/gas-cell[10]/dU_radiation">
+     <product>
+      <value> 0.1714e-8 </value> <!-- Stefan-Boltzmann's constant
+                                      [Btu / (h ft^2 R^4)] -->
+      <property> buoyant_forces/heat-coeffs/emissivity </property>
+      <property> buoyant_forces/gas-cell[10]/external-area-ft2 </property>
+      <difference>
+       <pow>
+        <property> atmosphere/T-R </property>
+        <value> 4.0 </value>
+       </pow>
+       <pow>
+        <property> buoyant_forces/gas-cell/temp-R </property>
+        <value> 4.0 </value>
+       </pow>
+      </difference>
+     </product>
+    </function>
+   </heat>
+  </gas_cell>
+
+  <!-- Cell 13 -->
+  <gas_cell type="HYDROGEN">
+   <location unit="M">
+    <x> 5.0 </x>
+    <y> 0.0 </y>
+    <z> 2.0 </z>
+   </location>
+   <x_width  unit="M"> 9.0 </x_width>
+   <y_radius unit="M"> 7.07 </y_radius>
+   <z_radius unit="M"> 7.07 </z_radius>
+   <max_overpressure unit="PA"> 0.0 </max_overpressure> 
+   <valve_coefficient unit="M4*SEC/KG"> 0.02 </valve_coefficient>
+   <fullness> 0.95 </fullness>
+   <!-- heat exchange with the environment. [lb ft / sec] -->
+   <heat>
+    <!-- Heat transfer due to temperature difference. -->
+    <function name="buoyant_forces/gas-cell[11]/dU_conduction">
+     <product>
+      <property> buoyant_forces/gas-cell[11]/external-area-ft2 </property>
+      <difference>
+       <property> atmosphere/T-R </property>
+       <property> buoyant_forces/gas-cell/temp-R </property>
+      </difference>
+     </product>
+    </function>
+    <function name="buoyant_forces/gas-cell[11]/dU_radiation">
+     <product>
+      <value> 0.1714e-8 </value> <!-- Stefan-Boltzmann's constant
+                                      [Btu / (h ft^2 R^4)] -->
+      <property> buoyant_forces/heat-coeffs/emissivity </property>
+      <property> buoyant_forces/gas-cell[11]/external-area-ft2 </property>
+      <difference>
+       <pow>
+        <property> atmosphere/T-R </property>
+        <value> 4.0 </value>
+       </pow>
+       <pow>
+        <property> buoyant_forces/gas-cell/temp-R </property>
+        <value> 4.0 </value>
+       </pow>
+      </difference>
+     </product>
+    </function>
+   </heat>
+  </gas_cell>
+
+ </buoyant_forces>
+
+ <!--
+ ==== Initial static condition weigh-off ====================================
+ -->
+ <system name="Weigh_Off">
+  <channel name="Initial_Static_Weigh_Off">
+   <!-- This system ensures that the ship starts slightly heavy. -->
+   <!-- The weight of inertia/pointmass-weight-lbs[0] is set from Nasal. -->
+
+   <summer name="static-condition/net-lift-lbs">
+    <input> buoyant_forces/gas-cell[0]/buoyancy-lbs </input>
+    <input> buoyant_forces/gas-cell[1]/buoyancy-lbs </input>
+    <input> buoyant_forces/gas-cell[2]/buoyancy-lbs </input>
+    <input> buoyant_forces/gas-cell[3]/buoyancy-lbs </input>
+    <input> buoyant_forces/gas-cell[4]/buoyancy-lbs </input>
+    <input> buoyant_forces/gas-cell[5]/buoyancy-lbs </input>
+    <input> buoyant_forces/gas-cell[6]/buoyancy-lbs </input>
+    <input> buoyant_forces/gas-cell[7]/buoyancy-lbs </input>
+    <input> buoyant_forces/gas-cell[8]/buoyancy-lbs </input>
+    <input> buoyant_forces/gas-cell[9]/buoyancy-lbs </input>
+    <input> buoyant_forces/gas-cell[10]/buoyancy-lbs </input>
+    <input> buoyant_forces/gas-cell[11]/buoyancy-lbs </input>
+    <input> -inertia/weight-lbs </input>
+   </summer>
+
+  </channel>
+ </system>
+
+ <!--
+ === Static Trim ============================================================
+ -->
+ <system name="Static trim">
+  <!-- Note: static-trim-cmd-norm is for FDM development. -->
+  <property value="0.5">fcs/static-trim-cmd-norm</property>
+
+  <channel name="StaticTrim">
+   <!--
+    This is for CG tweaking.
+   -->
+<!--
+   <summer name="fcs/static-trim-norm">
+    <input>fcs/static-trim-cmd-norm</input>
+    <clipto>
+     <min>0</min>
+     <max>1</max>
+    </clipto>
+   </summer>
+
+   <summer name="fcs/inverse-static-trim-norm">
+    <input>-fcs/static-trim-norm</input>
+    <bias>1</bias>
+    <clipto>
+     <min>0</min>
+     <max>1</max>
+    </clipto>
+   </summer>
+
+   <aerosurface_scale name="Ballast Trim Fore">
+    <input>fcs/inverse-static-trim-norm</input>
+     <domain>
+     <min>0</min>
+     <max>1</max>
+    </domain>
+    <range>
+     <min>0</min>
+     <max>500</max>
+    </range>
+    <output>inertia/pointmass-weight-lbs[1]</output>
+   </aerosurface_scale>
+
+   <aerosurface_scale name="Ballast Trim Aft">
+    <input>fcs/static-trim-norm</input>
+    <domain>
+     <min>0</min>
+     <max>1</max>
+    </domain>
+    <range>
+     <min>0</min>
+     <max>500</max>
+    </range>
+    <output>inertia/pointmass-weight-lbs[2]</output>
+   </aerosurface_scale>
+-->
+  </channel>
+ </system>
+
+ <!--
+ ==== Flight control system =================================================
+ -->
+
+ <flight_control name="FCS">
+
+  <documentation>
+  </documentation>
+
+  <!--
+  === Pitch ==================================================
+  -->
+  <channel name="Pitch">
+
+   <pid name="fcs/elevator-pos-cmd-norm">
+    <input>fcs/elevator-cmd-norm</input>
+    <kp> 0.0 </kp>
+    <ki> 0.2 </ki>
+   </pid>
+
+   <summer name="fcs/pitch-trim-sum">
+    <input>fcs/elevator-pos-cmd-norm</input>
+    <input>fcs/pitch-trim-cmd-norm</input>
+    <clipto>
+     <min>-1</min>
+     <max>1</max>
+    </clipto>
+   </summer>
+
+   <aerosurface_scale name="Elevator Control">
+    <input>fcs/pitch-trim-sum</input>
+    <domain>
+     <min>-1</min>
+     <max>1</max>
+    </domain>
+    <range>
+     <min>-0.5236</min>
+     <max>0.5236</max>
+    </range>
+    <output>fcs/elevator-pos-rad</output>
+   </aerosurface_scale>
+
+   <aerosurface_scale name="Elevator Position Normalized">
+    <input>fcs/elevator-pos-rad</input>
+    <domain>
+     <min>-0.5236</min>
+     <max>0.5236</max>
+    </domain>
+    <range>
+     <min>-1</min>
+     <max>1</max>
+    </range>
+    <output>fcs/elevator-pos-norm</output>
+   </aerosurface_scale>
+  </channel>
+
+  <!--
+  === Yaw ====================================================
+  -->
+  <channel name="Yaw">
+
+   <!-- pid name="fcs/rudder-pos-cmd-norm">
+    <input>-fcs/aileron-cmd-norm</input>
+    <kp> 0.0 </kp>
+    <ki> 0.2 </ki>
+   </pid -->
+
+   <summer name="Yaw Trim Sum">
+    <input>-fcs/aileron-cmd-norm</input>
+    <input>fcs/rudder-cmd-norm</input>
+    <input>fcs/yaw-trim-cmd-norm</input>
+    <clipto>
+     <min>-1</min>
+     <max>1</max>
+    </clipto>
+   </summer>
+
+   <aerosurface_scale name="Rudder Control">
+    <input>fcs/yaw-trim-sum</input>
+    <domain>
+     <min>-1</min>
+     <max>1</max>
+    </domain>
+    <range>
+     <min>-0.5236</min>
+     <max>0.5236</max>
+    </range>
+    <output>fcs/rudder-pos-rad</output>
+   </aerosurface_scale>
+
+   <aerosurface_scale name="Rudder Position Normalized">
+    <input>fcs/rudder-pos-rad</input>
+    <domain>
+     <min>-0.5236</min>
+     <max>0.5236</max>
+    </domain>
+    <range>
+     <min>-1</min>
+     <max>1</max>
+    </range>
+    <output>fcs/rudder-pos-norm</output>
+   </aerosurface_scale>
+
+  </channel>
+
+ </flight_control>
+
+ <!--
+ ==== External reactions ====================================================
+ -->
+
+ <external_reactions>
+
+  <force name="mooring-coupling-north" frame="LOCAL">
+   <location unit="M">
+    <x> 0.0 </x>
+    <y> 0.0 </y>
+    <z> 0.0 </z>
+   </location>
+   <direction>
+    <x> 1.0 </x>
+    <y> 0.0 </y>
+    <z> 0.0 </z>
+   </direction>
+  </force>
+  <force name="mooring-coupling-east" frame="LOCAL">
+   <location unit="M">
+    <x> 0.0 </x>
+    <y> 0.0 </y>
+    <z> 0.0 </z>
+   </location>
+   <direction>
+    <x> 0.0 </x>
+    <y> 1.0 </y>
+    <z> 0.0 </z>
+   </direction>
+  </force>
+  <force name="mooring-coupling-down" frame="LOCAL">
+   <location unit="M">
+    <x> 0.0 </x>
+    <y> 0.0 </y>
+    <z> 0.0 </z>
+   </location>
+   <direction>
+    <x> 0.0 </x>
+    <y> 0.0 </y>
+    <z> 1.0 </z>
+   </direction>
+  </force>
+
+  <force name="added-mass-bx" frame="BODY">
+   <location unit="M">
+    <x> 59.8 </x>
+    <y>  0.0 </y>
+    <z>  0.0 </z>
+   </location>
+   <direction>
+    <x> 1.0 </x>
+    <y> 0.0 </y>
+    <z> 0.0 </z>
+   </direction>
+  </force>
+  <force name="added-mass-by" frame="BODY">
+   <location unit="M">
+    <x> 59.8 </x>
+    <y>  0.0 </y>
+    <z>  0.0 </z>
+   </location>
+   <direction>
+    <x> 0.0 </x>
+    <y> 1.0 </y>
+    <z> 0.0 </z>
+   </direction>
+  </force>
+  <force name="added-mass-bz" frame="BODY">
+   <location unit="M">
+    <x> 59.8 </x>
+    <y>  0.0 </y>
+    <z>  0.0 </z>
+   </location>
+   <direction>
+    <x> 0.0 </x>
+    <y> 0.0 </y>
+    <z> 1.0 </z>
+   </direction>
+  </force>
+
+  <force name="added-mass-pitch[0]" frame="BODY">
+   <location unit="M">
+    <x> 59.8 </x>
+    <y>  0.0 </y>
+    <z> -0.3048 </z>
+   </location>
+   <direction>
+    <x> 1.0 </x>
+    <y> 0.0 </y>
+    <z> 0.0 </z>
+   </direction>
+  </force>
+  <force name="added-mass-pitch[1]" frame="BODY">
+   <location unit="M">
+    <x> 59.8 </x>
+    <y>  0.0 </y>
+    <z>  0.3048 </z>
+   </location>
+   <direction>
+    <x> 1.0 </x>
+    <y> 0.0 </y>
+    <z> 0.0 </z>
+   </direction>
+  </force>
+
+  <force name="added-mass-yaw[0]" frame="BODY">
+   <location unit="M">
+    <x> 59.8 </x>
+    <y> -0.3048 </y>
+    <z>  0.0 </z>
+   </location>
+   <direction>
+    <x> 1.0 </x>
+    <y> 0.0 </y>
+    <z> 0.0 </z>
+   </direction>
+  </force>
+  <force name="added-mass-yaw[1]" frame="BODY">
+   <location unit="M">
+    <x> 59.8 </x>
+    <y>  0.3048 </y>
+    <z>  0.0 </z>
+   </location>
+   <direction>
+    <x> 1.0 </x>
+    <y> 0.0 </y>
+    <z> 0.0 </z>
+   </direction>
+  </force>
+
+ </external_reactions>
+
+ <!-- system file="fgfs4jsbsim"/ -->
+ <system file="mooring-jsbsim">     <!-- Mooring setup for FlightGear. -->
+
+  <!-- Configuration -->
+  <!--  Mooring -->
+  <property value="4000.0"> mooring/mooring-spring-coeff-lbs_ft </property>
+  <property value="-1000.0"> mooring/mooring-damping-coeff-lbs_fps </property>
+  <property value="100000.0"> mooring/max-mooring-force-lbs </property>
+  <!--  Wire -->
+  <property value="250.0"> mooring/wire-spring-coeff-lbs_ft </property>
+  <property value="10000.0"> mooring/max-wire-force-lbs </property>
+  <property value="5.0"> mooring/max-winch-speed-fps </property>
+
+ </system>
+ 
+ <!--
+ ==== Aerodynamics ==========================================================
+ -->
+ <system name="constants">
+
+  <!-- Aerodynamic constants. -->
+  <property value="429.1"> aero/constants/length-ft </property>
+  <property value="61.4"> aero/constants/diameter-ft </property>
+  <property value="188201.6"> aero/constants/length-diameter-ft2 </property>
+  <property value="796345.7"> aero/constants/volume-ft3 </property>
+  <property value="8591.5"> aero/constants/volume-ft3_2_3 </property>
+
+  <!-- Added mass constants. -->
+  <property value="-0.02"> aero/constants/added-mass/k-axial </property>
+  <property value="-0.94"> aero/constants/added-mass/k-traverse </property>
+  <property value="-0.81"> aero/constants/added-mass/k-rotational </property>
+
+  <channel name="Temporary hack to prevent oscillations.">
+   <fcs_function name="aero/constants/added-mass/tweak-factor">
+    <function>
+     <!-- value>1.0</value -->
+     <difference>
+      <value> 1.0 </value>
+      <property> mooring/moored </property>
+     </difference>
+    </function>
+    <clipto>
+     <min> 0.0 </min>
+     <max> 1.0 </max>
+    </clipto>
+   </fcs_function>
+  </channel>
+
+ </system>
+
+ <system file="airship_added_mass"/>
+
+ <!-- aerodynamics file="Systems/gerris_aero"/ -->
+ <aerodynamics file="Systems/datcom_aero"/>
+
+</fdm_config>

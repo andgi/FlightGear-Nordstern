@@ -1,0 +1,1166 @@
+<?xml version="1.0"?>
+<!--
+
+  Zeppelin LZ 121 "Nordstern" airship flight model for JSBSim.
+
+    Copyright (C) 2010  Anders Gidenstam  (anders(at)gidenstam.org)
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+  
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+  
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+  
+-->
+<!--
+  This file contains an aerodynamic section for JSBSim based on coefficients
+  computed by the USAF Digital DATCOM program.
+
+  The coefficient data computed by DATCOM are based on the following
+  configurations:
+  - Hull only
+    - aero/force/L_env_aoa
+    - aero/force/D_env_aoa
+    - aero/moment/M_env_aoa
+    - aero/moment/Cmq_hull
+    - aero/moment/Cnr_hull
+  - The two horizontal fins only
+    - aero/force/L_htail_alpha
+    - aero/force/D_htail_alpha
+    - aero/moment/M_htail_alpha
+    - aero/moment/N_htail_beta
+    - aero/moment/Cmq_htail
+    - aero/force/L_dr
+    - aero/force/D_de
+    - aero/moment/M_de
+  - The two vertical fins only (modelled as horizontal fins in DATCOM)
+    - aero/force/D_vtail_beta
+    - aero/force/Y_vtail_beta
+    - aero/moment/N_vtail_beta
+    - aero/moment/Cnr_vtail
+    - aero/moment/Clp_tail
+    - aero/force/D_dr
+    - aero/force/Y_dr
+    - aero/moment/N_dr
+-->
+ <aerodynamics>
+
+  <!-- Tuning parameter for CD, CL due to hull alpha. -->
+  <function name="aero/hull-lift-force-tweak-factor">
+   <value> 1.0 </value>
+  </function>
+  <!-- Tuning parameter for CM and CN due to alpha and beta. -->
+  <function name="aero/hull-moment-tweak-factor">
+   <value> 0.75 </value>
+  </function>
+  <!-- Tuning parameter for CN for the vertical fins and rudder. -->
+  <function name="aero/vtail-moment-tweak-factor">
+   <value> 1.5 </value>
+  </function>
+
+  <!-- Relation between wind and body coordinate systems. -->
+  <function name="aero/tmp/wx">
+   <product>
+    <cos>
+     <property> aero/alpha-rad </property>
+    </cos>
+    <cos>
+     <property> aero/beta-rad </property>
+    </cos>
+   </product>
+  </function>
+  <function name="aero/tmp/wy">
+   <product>
+    <cos>
+     <property> aero/alpha-rad </property>
+    </cos>
+    <sin>
+     <property> aero/beta-rad </property>
+    </sin>
+   </product>   
+  </function>
+  <function name="aero/tmp/wz">
+   <sin>
+    <property> aero/alpha-rad </property>
+   </sin>
+  </function>
+  <function name="aero/tmp/h_wy_wz">
+   <pow>
+    <sum>
+     <pow>
+      <property> aero/tmp/wy </property>
+      <value>2.0</value>
+     </pow>
+     <pow>
+      <property> aero/tmp/wz </property>
+      <value>2.0</value>
+     </pow>
+    </sum>
+    <value>0.5</value>
+   </pow>
+  </function>
+
+  <!-- Effective angle between hull and relative wind. -->
+  <function name="aero/hull-aoa-mag-rad">
+   <max>
+    <value>0.0</value>
+    <acos>
+     <property> aero/tmp/wx </property>
+    </acos>
+   </max>
+  </function>
+  <function name="aero/hull-aoa-mag-deg">
+   <product>
+    <value> 57.29578 </value>
+    <property> aero/hull-aoa-mag-rad </property>
+   </product>
+  </function>
+
+  <!--
+  === Hull Lift Force ====================================
+  -->
+  <limitation>
+   The current method of splitting L_env_aoa into LIFT and SIDE forces
+   seems to have the wrong sign when alpha GT 90 and beta LT 0?
+  </limitation>
+  <function name="aero/force/L_env_aoa">
+   <description>Total_lift_force_from_hull_due_to_aoa</description>
+   <!--
+        Standard DATCOM formulation
+
+           C = L / (q * Sref)
+
+   -->
+   <product>
+    <property>aero/qbar-psf</property>
+    <property>metrics/Sw-sqft</property>
+    <!-- Start CL_env -->
+    <property>aero/hull-lift-force-tweak-factor</property>
+    <table>
+     <independentVar lookup="row">aero/hull-aoa-mag-deg</independentVar>
+     <!--  Body only coefficient computed by DATCOM. -->
+     <tableData>
+     .0    .000
+    2.0    .003
+    4.0    .008
+    6.0    .014
+    8.0    .021
+   10.0    .030
+   15.0    .056
+   20.0    .088
+   25.0    .123
+   30.0    .157
+   45.0    .238
+   60.0    .241
+   75.0    .150
+   90.0    .000
+  105.0   -.144
+  120.0   -.221
+  135.0   -.207
+  150.0   -.127
+  165.0   -.039
+  180.0    .000
+     </tableData>
+    </table>
+   </product>
+  </function>
+
+  <!--
+  === Hull Moment ========================================
+  -->
+  <limitation>
+   Same as for L_env_aoa.
+  </limitation>
+  <function name="aero/moment/M_env_aoa">
+   <description>Total_moment_from_hull_due_to_aoa</description>
+   <!--
+       Standard DATCOM formulation
+
+           Cm = M / (q * Sref * Cbarr)
+
+   -->
+   <product>
+    <property>aero/qbar-psf</property>
+    <property>metrics/Sw-sqft</property>
+    <property>metrics/cbarw-ft</property>
+    <!-- Start Cm -->
+    <property>aero/hull-moment-tweak-factor</property>
+    <table>
+     <independentVar lookup="row">aero/hull-aoa-mag-deg</independentVar>
+     <!--  Body only coefficient computed by DATCOM. -->
+     <tableData> 
+    .0     .0000
+    2.0     .0035
+    4.0     .0069
+    6.0     .0103
+    8.0     .0137
+   10.0     .0169
+   15.0     .0246
+   20.0     .0314
+   25.0     .0370
+   30.0     .0413
+   45.0     .0454
+   60.0     .0365
+   75.0     .0187
+   90.0    -.0011
+  105.0    -.0161
+  120.0    -.0223
+  135.0    -.0196
+  150.0    -.0114
+  165.0    -.0033
+  180.0     .0000
+     </tableData>
+    </table>
+   </product>
+  </function>
+
+
+  <!--
+  === Forces =================================================
+  -->
+  <axis name="DRAG">
+
+   <function name="aero/force/D_env_aoa">
+    <description>Drag_from_hull_due_to_angle_of_attack</description>
+    <!--
+        Standard DATCOM formulation
+
+            CD = D / (q * Sref)
+
+    -->
+    <!-- Note: This function accounts for drag due to both alpha and beta. -->
+    <product>
+     <property>aero/qbar-psf</property>
+     <property>metrics/Sw-sqft</property>
+     <!-- Start CD -->
+     <property>aero/hull-lift-force-tweak-factor</property>
+     <table>
+      <independentVar lookup="row">aero/hull-aoa-mag-deg</independentVar>
+      <!--  Body only coefficient computed by DATCOM. -->
+      <tableData>
+     .0     .008
+    2.0     .008
+    4.0     .008
+    6.0     .009
+    8.0     .011
+   10.0     .013
+   15.0     .023
+   20.0     .040
+   25.0     .064
+   30.0     .098
+   45.0     .243
+   60.0     .421
+   75.0     .562
+   90.0     .607
+  105.0     .535
+  120.0     .378
+  135.0     .201
+  150.0     .066
+  165.0     .003
+  180.0     .008
+      </tableData>
+     </table>
+    </product>
+   </function>
+
+   <function name="aero/force/D_htail_alpha">
+    <description>Drag_from_horizontal_tail_due_to_alpha</description>
+    <!--
+        Standard DATCOM formulation
+
+            CD = D / (q * Sref)
+
+    -->
+    <product>
+     <property>aero/qbar-psf</property>
+     <property>metrics/Sw-sqft</property>
+     <!-- Start CD -->
+     <table>  
+      <independentVar lookup="row">aero/alpha-deg</independentVar>
+      <!--  Wing only coefficient computed by DATCOM. -->
+      <tableData>
+ -180.0     .000
+ -165.0     .001
+ -150.0     .001
+ -135.0     .008
+ -120.0     .016
+ -105.0     .009
+  -90.0     .000
+  -75.0     .015
+  -60.0     .047
+  -45.0     .055
+  -30.0     .035
+  -25.0     .026
+  -20.0     .016
+  -15.0     .008
+  -10.0     .003
+   -8.0     .002
+   -6.0     .001
+   -4.0     .001
+   -2.0     .000
+     .0     .000
+    2.0     .000
+    4.0     .001
+    6.0     .001
+    8.0     .002
+   10.0     .003
+   15.0     .008
+   20.0     .016
+   25.0     .026
+   30.0     .035
+   45.0     .170
+   60.0     .408
+   75.0     .269
+   90.0     .000
+  105.0     .241
+  120.0     .299
+  135.0     .069
+  150.0     .006
+  165.0     .058
+  180.0     .001
+      </tableData>
+     </table>
+    </product>
+   </function>
+
+   <function name="aero/force/D_de">
+    <description>Drag_due_to_elevator_deflection</description>
+    <!--
+        Standard DATCOM formulation
+
+            CD = D / (q * Sref)
+
+    -->
+    <product>
+     <property>aero/qbar-psf</property>
+     <property>metrics/Sw-sqft</property>
+     <!-- Start CD -->
+     <table>
+      <independentVar lookup="row">aero/alpha-deg</independentVar>
+      <independentVar lookup="column">fcs/elevator-pos-deg</independentVar>
+      <!--  Wing only coefficient computed by DATCOM. -->
+      <tableData>
+                -30.0     -15.0     -10.0      -5.0       0.0       5.0      10.0      15.0      30.0
+  -180.0        2.91E-02  2.11E-02  1.44E-02  7.17E-03 -1.43E-05 -7.11E-03 -1.42E-02 -2.05E-02 -2.80E-02
+  -165.0        2.69E-02  1.95E-02  1.33E-02  6.62E-03 -1.30E-05 -6.55E-03 -1.30E-02 -1.89E-02 -2.58E-02
+  -150.0        2.45E-02  1.77E-02  1.21E-02  6.02E-03 -1.21E-05 -5.95E-03 -1.18E-02 -1.72E-02 -2.34E-02
+  -135.0        2.21E-02  1.60E-02  1.09E-02  5.42E-03 -1.07E-05 -5.35E-03 -1.06E-02 -1.54E-02 -2.10E-02
+  -120.0        1.97E-02  1.42E-02  9.71E-03  4.82E-03 -9.60E-06 -4.76E-03 -9.45E-03 -1.37E-02 -1.86E-02
+  -105.0        1.73E-02  1.25E-02  8.51E-03  4.22E-03 -8.36E-06 -4.16E-03 -8.25E-03 -1.19E-02 -1.62E-02
+   -90.0        1.49E-02  1.07E-02  7.31E-03  3.62E-03 -7.21E-06 -3.56E-03 -7.05E-03 -1.02E-02 -1.38E-02
+   -75.0        1.25E-02  8.99E-03  6.11E-03  3.02E-03 -6.02E-06 -2.96E-03 -5.86E-03 -8.44E-03 -1.15E-02
+   -60.0        1.01E-02  7.25E-03  4.92E-03  2.43E-03 -4.78E-06 -2.36E-03 -4.66E-03 -6.70E-03 -9.06E-03
+   -45.0        7.70E-03  5.51E-03  3.72E-03  1.83E-03 -3.59E-06 -1.76E-03 -3.46E-03 -4.96E-03 -6.66E-03
+   -30.0        5.31E-03  3.76E-03  2.52E-03  1.23E-03 -2.39E-06 -1.16E-03 -2.26E-03 -3.21E-03 -4.27E-03
+   -25.0        4.51E-03  3.18E-03  2.12E-03  1.03E-03 -2.00E-06 -9.65E-04 -1.87E-03 -2.63E-03 -3.47E-03
+   -20.0        3.71E-03  2.60E-03  1.73E-03  8.30E-04 -1.60E-06 -7.66E-04 -1.47E-03 -2.05E-03 -2.67E-03
+   -15.0        2.91E-03  2.02E-03  1.33E-03  6.31E-04 -1.20E-06 -5.66E-04 -1.07E-03 -1.47E-03 -1.88E-03
+   -10.0        2.11E-03  1.44E-03  9.28E-04  4.31E-04 -7.98E-07 -3.67E-04 -6.68E-04 -8.88E-04 -1.08E-03
+    -8.0        1.79E-03  1.20E-03  7.68E-04  3.52E-04 -6.38E-07 -2.87E-04 -5.09E-04 -6.55E-04 -7.59E-04
+    -6.0        1.48E-03  9.72E-04  6.08E-04  2.72E-04 -4.79E-07 -2.07E-04 -3.49E-04 -4.23E-04 -4.39E-04
+    -4.0        1.16E-03  7.40E-04  4.49E-04  1.92E-04 -3.19E-07 -1.27E-04 -1.90E-04 -1.90E-04 -1.20E-04
+    -2.0        8.37E-04  5.07E-04  2.89E-04  1.12E-04 -1.59E-07 -4.74E-05 -3.01E-05  4.23E-05  1.99E-04
+      .0        5.18E-04  2.75E-04  1.30E-04  3.24E-05  1.30E-10  3.24E-05  1.30E-04  2.75E-04  5.18E-04
+      .0        5.18E-04  2.75E-04  1.30E-04  3.24E-05  1.30E-10  3.24E-05  1.30E-04  2.75E-04  5.18E-04
+     2.0        1.99E-04  4.23E-05 -3.01E-05 -4.74E-05  1.60E-07  1.12E-04  2.89E-04  5.07E-04  8.37E-04
+     4.0       -1.20E-04 -1.90E-04 -1.90E-04 -1.27E-04  3.19E-07  1.92E-04  4.49E-04  7.40E-04  1.16E-03
+     6.0       -4.39E-04 -4.23E-04 -3.49E-04 -2.07E-04  4.79E-07  2.72E-04  6.08E-04  9.72E-04  1.48E-03
+     8.0       -7.59E-04 -6.55E-04 -5.09E-04 -2.87E-04  6.39E-07  3.52E-04  7.68E-04  1.20E-03  1.79E-03
+    10.0       -1.08E-03 -8.88E-04 -6.68E-04 -3.67E-04  7.98E-07  4.31E-04  9.28E-04  1.44E-03  2.11E-03
+    15.0       -1.88E-03 -1.47E-03 -1.07E-03 -5.66E-04  1.20E-06  6.31E-04  1.33E-03  2.02E-03  2.91E-03
+    20.0       -2.67E-03 -2.05E-03 -1.47E-03 -7.66E-04  1.59E-06  8.30E-04  1.73E-03  2.60E-03  3.71E-03
+    25.0       -3.47E-03 -2.63E-03 -1.87E-03 -9.65E-04  1.99E-06  1.03E-03  2.12E-03  3.18E-03  4.51E-03
+    30.0       -4.27E-03 -3.21E-03 -2.26E-03 -1.16E-03  2.39E-06  1.23E-03  2.52E-03  3.76E-03  5.31E-03
+    45.0       -6.66E-03 -4.96E-03 -3.46E-03 -1.76E-03  3.59E-06  1.83E-03  3.72E-03  5.51E-03  7.70E-03
+    60.0       -9.06E-03 -6.70E-03 -4.66E-03 -2.36E-03  4.78E-06  2.43E-03  4.92E-03  7.25E-03  1.01E-02
+    75.0       -1.15E-02 -8.44E-03 -5.86E-03 -2.96E-03  5.96E-06  3.02E-03  6.11E-03  8.99E-03  1.25E-02
+    90.0       -1.38E-02 -1.02E-02 -7.05E-03 -3.56E-03  7.18E-06  3.62E-03  7.31E-03  1.07E-02  1.49E-02
+   105.0       -1.62E-02 -1.19E-02 -8.25E-03 -4.16E-03  8.39E-06  4.22E-03  8.51E-03  1.25E-02  1.73E-02
+   120.0       -1.86E-02 -1.37E-02 -9.45E-03 -4.76E-03  9.55E-06  4.82E-03  9.71E-03  1.42E-02  1.97E-02
+   135.0       -2.10E-02 -1.54E-02 -1.06E-02 -5.35E-03  1.08E-05  5.42E-03  1.09E-02  1.60E-02  2.21E-02
+   150.0       -2.34E-02 -1.72E-02 -1.18E-02 -5.95E-03  1.19E-05  6.02E-03  1.21E-02  1.77E-02  2.45E-02
+   165.0       -2.58E-02 -1.89E-02 -1.30E-02 -6.55E-03  1.32E-05  6.62E-03  1.33E-02  1.95E-02  2.69E-02
+   180.0       -2.80E-02 -2.05E-02 -1.42E-02 -7.11E-03  1.43E-05  7.17E-03  1.44E-02  2.11E-02  2.91E-02
+      </tableData>
+     </table>
+    </product>
+   </function>
+
+   <function name="aero/force/D_vtail_beta">
+    <description>Drag_from_vertical_tail_fin_due_to_beta</description>
+    <!--
+        Standard DATCOM formulation
+
+            CD = D / (q * Sref)
+
+    -->
+    <product>
+     <property>aero/qbar-psf</property>
+     <property>metrics/Sw-sqft</property>
+     <!-- Start CD -->
+     <table>  
+      <independentVar lookup="row">aero/beta-deg</independentVar>
+      <!--  Wing only coefficient computed by DATCOM. -->
+      <tableData>
+ -180.0     .000
+ -165.0     .000
+ -150.0     .002
+ -135.0     .008
+ -120.0     .015
+ -105.0     .008
+  -90.0     .000
+  -75.0     .013
+  -60.0     .037
+  -45.0     .042
+  -30.0     .025
+  -25.0     .018
+  -20.0     .011
+  -15.0     .006
+  -10.0     .002
+   -8.0     .001
+   -6.0     .001
+   -4.0     .000
+   -2.0     .000
+     .0     .000
+    2.0     .000
+    4.0     .000
+    6.0     .001
+    8.0     .001
+   10.0     .002
+   15.0     .006
+   20.0     .011
+   25.0     .018
+   30.0     .025
+   45.0     .240
+   60.0     .691
+   75.0     .479
+   90.0     .000
+  105.0     .450
+  120.0     .579
+  135.0     .141
+  150.0     .012
+  165.0     .107
+  180.0     .002
+      </tableData>
+     </table>
+    </product>
+   </function>
+
+   <function name="aero/force/D_dr">
+    <description>Drag_due_to_rudder_deflection</description>
+    <!--
+        Standard DATCOM formulation
+
+            CD = D / (q * Sref)
+
+    -->
+    <product>
+     <property>aero/qbar-psf</property>
+     <property>metrics/Sw-sqft</property>
+     <!-- Start CD -->
+     <table>  
+      <independentVar lookup="row">aero/beta-deg</independentVar>
+      <independentVar lookup="column">fcs/rudder-pos-deg</independentVar>
+      <!--  Wing only coefficient computed by DATCOM. -->
+      <tableData>
+                -30.0     -15.0     -10.0      -5.0       0.0       5.0      10.0      15.0      30.0
+  -180.0        1.16E-02  8.03E-03  5.45E-03  2.72E-03 -5.42E-06 -2.70E-03 -5.39E-03 -7.89E-03 -1.13E-02
+  -165.0        1.07E-02  7.41E-03  5.03E-03  2.51E-03 -4.99E-06 -2.49E-03 -4.96E-03 -7.27E-03 -1.04E-02
+  -150.0        9.76E-03  6.74E-03  4.57E-03  2.28E-03 -4.53E-06 -2.26E-03 -4.51E-03 -6.60E-03 -9.48E-03
+  -135.0        8.80E-03  6.07E-03  4.12E-03  2.05E-03 -4.13E-06 -2.04E-03 -4.06E-03 -5.94E-03 -8.52E-03
+  -120.0        7.84E-03  5.41E-03  3.67E-03  1.82E-03 -3.57E-06 -1.81E-03 -3.60E-03 -5.27E-03 -7.55E-03
+  -105.0        6.88E-03  4.74E-03  3.21E-03  1.60E-03 -3.17E-06 -1.58E-03 -3.15E-03 -4.60E-03 -6.59E-03
+   -90.0        5.92E-03  4.07E-03  2.76E-03  1.37E-03 -2.73E-06 -1.35E-03 -2.69E-03 -3.93E-03 -5.63E-03
+   -75.0        4.95E-03  3.40E-03  2.30E-03  1.14E-03 -2.26E-06 -1.13E-03 -2.24E-03 -3.27E-03 -4.67E-03
+   -60.0        3.99E-03  2.74E-03  1.85E-03  9.16E-04 -1.79E-06 -9.00E-04 -1.78E-03 -2.60E-03 -3.70E-03
+   -45.0        3.03E-03  2.07E-03  1.39E-03  6.89E-04 -1.36E-06 -6.73E-04 -1.33E-03 -1.93E-03 -2.74E-03
+   -30.0        2.07E-03  1.40E-03  9.40E-04  4.62E-04 -9.04E-07 -4.46E-04 -8.76E-04 -1.27E-03 -1.78E-03
+   -25.0        1.75E-03  1.18E-03  7.89E-04  3.86E-04 -7.56E-07 -3.70E-04 -7.25E-04 -1.04E-03 -1.46E-03
+   -20.0        1.43E-03  9.59E-04  6.38E-04  3.11E-04 -6.06E-07 -2.95E-04 -5.73E-04 -8.20E-04 -1.14E-03
+   -15.0        1.11E-03  7.36E-04  4.86E-04  2.35E-04 -4.54E-07 -2.19E-04 -4.22E-04 -5.98E-04 -8.18E-04
+   -10.0        7.85E-04  5.14E-04  3.35E-04  1.59E-04 -3.03E-07 -1.43E-04 -2.71E-04 -3.76E-04 -4.98E-04
+    -8.0        6.57E-04  4.25E-04  2.74E-04  1.29E-04 -2.42E-07 -1.13E-04 -2.10E-04 -2.87E-04 -3.69E-04
+    -6.0        5.29E-04  3.36E-04  2.14E-04  9.88E-05 -1.82E-07 -8.28E-05 -1.50E-04 -1.98E-04 -2.41E-04
+    -4.0        4.00E-04  2.47E-04  1.53E-04  6.86E-05 -1.21E-07 -5.25E-05 -8.91E-05 -1.09E-04 -1.13E-04
+    -2.0        2.72E-04  1.58E-04  9.26E-05  3.83E-05 -6.05E-08 -2.23E-05 -2.85E-05 -1.98E-05  1.54E-05
+      .0        1.44E-04  6.91E-05  3.20E-05  8.01E-06  3.20E-11  8.01E-06  3.20E-05  6.91E-05  1.44E-04
+     2.0        1.54E-05 -1.98E-05 -2.85E-05 -2.23E-05  6.06E-08  3.83E-05  9.26E-05  1.58E-04  2.72E-04
+     4.0       -1.13E-04 -1.09E-04 -8.91E-05 -5.25E-05  1.21E-07  6.86E-05  1.53E-04  2.47E-04  4.00E-04
+     6.0       -2.41E-04 -1.98E-04 -1.50E-04 -8.28E-05  1.82E-07  9.88E-05  2.14E-04  3.36E-04  5.29E-04
+     8.0       -3.69E-04 -2.87E-04 -2.10E-04 -1.13E-04  2.42E-07  1.29E-04  2.74E-04  4.25E-04  6.57E-04
+    10.0       -4.98E-04 -3.76E-04 -2.71E-04 -1.43E-04  3.03E-07  1.59E-04  3.35E-04  5.14E-04  7.85E-04
+    15.0       -8.18E-04 -5.98E-04 -4.22E-04 -2.19E-04  4.55E-07  2.35E-04  4.86E-04  7.36E-04  1.11E-03
+    20.0       -1.14E-03 -8.20E-04 -5.73E-04 -2.95E-04  6.04E-07  3.11E-04  6.38E-04  9.59E-04  1.43E-03
+    25.0       -1.46E-03 -1.04E-03 -7.25E-04 -3.70E-04  7.56E-07  3.86E-04  7.89E-04  1.18E-03  1.75E-03
+    30.0       -1.78E-03 -1.27E-03 -8.76E-04 -4.46E-04  9.09E-07  4.62E-04  9.40E-04  1.40E-03  2.07E-03
+    45.0       -2.74E-03 -1.93E-03 -1.33E-03 -6.73E-04  1.36E-06  6.89E-04  1.39E-03  2.07E-03  3.03E-03
+    60.0       -3.70E-03 -2.60E-03 -1.78E-03 -9.00E-04  1.82E-06  9.16E-04  1.85E-03  2.74E-03  3.99E-03
+    75.0       -4.67E-03 -3.27E-03 -2.24E-03 -1.13E-03  2.28E-06  1.14E-03  2.30E-03  3.40E-03  4.95E-03
+    90.0       -5.63E-03 -3.93E-03 -2.69E-03 -1.35E-03  2.71E-06  1.37E-03  2.76E-03  4.07E-03  5.92E-03
+   105.0       -6.59E-03 -4.60E-03 -3.15E-03 -1.58E-03  3.16E-06  1.60E-03  3.21E-03  4.74E-03  6.88E-03
+   120.0       -7.55E-03 -5.27E-03 -3.60E-03 -1.81E-03  3.64E-06  1.82E-03  3.67E-03  5.41E-03  7.84E-03
+   135.0       -8.52E-03 -5.94E-03 -4.06E-03 -2.04E-03  4.11E-06  2.05E-03  4.12E-03  6.07E-03  8.80E-03
+   150.0       -9.48E-03 -6.60E-03 -4.51E-03 -2.26E-03  4.59E-06  2.28E-03  4.57E-03  6.74E-03  9.76E-03
+   165.0       -1.04E-02 -7.27E-03 -4.96E-03 -2.49E-03  4.98E-06  2.51E-03  5.03E-03  7.41E-03  1.07E-02
+   180.0       -1.13E-02 -7.89E-03 -5.39E-03 -2.70E-03  5.39E-06  2.72E-03  5.45E-03  8.03E-03  1.16E-02
+      </tableData>
+     </table>
+    </product>
+   </function>
+
+   <function name="aero/force/D_car">
+    <description>Drag_from_car_and_rigging</description>
+    <!--
+        Standard DATCOM formulation
+
+            CD = D / (q * Sref)
+
+    -->
+    <product>
+     <property>aero/qbar-psf</property>
+     <property>metrics/Sw-sqft</property>
+     <!-- Start CD -->
+     <!-- According to [WD:1941:AATM]
+          the hull on a small non-rigid contributes approximately
+          35% to the total air resistance.
+          I think they mean 'at zero alpha and beta'.
+          I assume the hull's fraction would be much larger for the
+          NT07 than a pre-WWII blimp, in particular as the drag from the
+          fins have already been accounted for.
+     -->  
+     <value> 0.100 </value>
+     <value> 0.011 </value>
+    </product>
+   </function>
+
+  </axis>
+
+  <!-- ================================================== -->
+  <axis name="SIDE">
+
+   <function name="aero/force/Y_env_beta">
+    <description>Side_force_from_hull_due_to_beta</description>
+    <product>
+     <value> -1.0 </value>  <!-- Note the sign! -->
+     <property> aero/force/L_env_aoa </property>
+     <quotient>
+      <property> aero/tmp/wy </property>
+      <max>
+       <value> 0.00001 </value>
+       <property> aero/tmp/h_wy_wz </property>
+      </max>
+     </quotient>
+    </product>
+   </function>
+
+   <function name="aero/force/Y_vtail_beta">
+    <description>Side_force_from_vertical_tail_fin_due_to_beta</description>
+    <!--
+        Standard DATCOM formulation
+
+            CL = L / (q * Sref)
+
+    -->
+    <product>
+     <property>aero/qbar-psf</property>
+     <property>metrics/Sw-sqft</property>
+     <!-- Start CY -->
+     <value> -1.0 </value> <!-- Note the sign! -->
+     <table>
+      <independentVar lookup="row">aero/beta-deg</independentVar>
+      <!--  Wing only coefficient computed by DATCOM. -->
+      <tableData>
+ -180.0   -.001
+ -165.0   -.002
+ -150.0    .013
+ -135.0    .031
+ -120.0    .042
+ -105.0    .031
+  -90.0    .000
+  -75.0   -.039
+  -60.0   -.067
+  -45.0   -.071
+  -30.0   -.055
+  -25.0   -.047
+  -20.0   -.037
+  -15.0   -.026
+  -10.0   -.015
+   -8.0   -.011
+   -6.0   -.008
+   -4.0   -.005
+   -2.0   -.002
+     .0    .000
+    2.0    .002
+    4.0    .005
+    6.0    .008
+    8.0    .011
+   10.0    .015
+   15.0    .026
+   20.0    .037
+   25.0    .047
+   30.0    .055
+   45.0    .171
+   60.0    .291
+   75.0    .242
+   90.0    .000
+  105.0   -.234
+  120.0   -.266
+  135.0   -.131
+  150.0    .038
+  165.0    .114
+  180.0    .014
+      </tableData>
+     </table>
+    </product>
+   </function>  
+
+   <function name="aero/force/Y_dr">
+    <description>Side_force_due_to_rudder</description>
+    <!--
+        Standard DATCOM formulation
+
+            CL = L / (q * Sref)
+
+    -->
+    <product>
+     <property>aero/qbar-psf</property>
+     <property>metrics/Sw-sqft</property>
+     <!-- Start CY -->
+     <value> -1.0 </value> <!-- Note the sign! -->
+     <table>
+      <independentVar lookup="row">fcs/rudder-pos-deg</independentVar>
+      <!--  Wing only coefficient computed by DATCOM. -->
+      <tableData>
+      -30.0     -0.005
+      -15.0     -0.003
+      -10.0     -0.002
+       -5.0     -0.001
+        0.0      0.000
+        5.0      0.001
+       10.0      0.002
+       15.0      0.003
+       30.0      0.005
+      </tableData>
+     </table>
+    </product>
+   </function>
+
+  </axis>
+
+  <!-- ================================================== -->
+  <axis name="LIFT">
+
+   <function name="aero/force/L_env_alpha">
+    <description>Lift_from_hull_due_to_alpha</description>
+    <product>
+     <property>aero/force/L_env_aoa</property>
+     <quotient>
+      <property> aero/tmp/wz </property>
+      <max>
+       <value> 0.00001 </value>
+       <property> aero/tmp/h_wy_wz </property>
+      </max>
+     </quotient>
+    </product>
+   </function>
+
+   <function name="aero/force/L_htail_alpha">
+    <description>Lift_from_horizontal_tail_due_to_alpha</description>
+    <!--
+        Standard DATCOM formulation
+
+            CL = L / (q * Sref)
+
+    -->
+    <product>
+     <property>aero/qbar-psf</property>
+     <property>metrics/Sw-sqft</property>
+     <!-- Start CL -->
+     <table>
+      <independentVar lookup="row">aero/alpha-deg</independentVar>
+      <!--  Wing only coefficient computed by DATCOM. -->
+      <tableData>
+ -180.0   -.002
+ -165.0   -.006
+ -150.0    .013
+ -135.0    .040
+ -120.0    .058
+ -105.0    .045
+  -90.0    .000
+  -75.0   -.058
+  -60.0   -.102
+  -45.0   -.111
+  -30.0   -.088
+  -25.0   -.075
+  -20.0   -.060
+  -15.0   -.042
+  -10.0   -.025
+   -8.0   -.019
+   -6.0   -.013
+   -4.0   -.008
+   -2.0   -.004
+     .0    .000
+    2.0    .004
+    4.0    .008
+    6.0    .013
+    8.0    .019
+   10.0    .025
+   15.0    .042
+   20.0    .060
+   25.0    .075
+   30.0    .088
+   45.0    .194
+   60.0    .301
+   75.0    .245
+   90.0    .000
+  105.0   -.232
+  120.0   -.258
+  135.0   -.123
+  150.0    .037
+  165.0    .113
+  180.0    .013
+      </tableData>
+     </table>
+    </product>
+   </function>
+
+   <function name="aero/force/L_dr">
+    <description>Lift_due_to_elevator</description>
+    <!--
+        Standard DATCOM formulation
+
+            CL = L / (q * Sref)
+
+    -->
+    <product>
+     <property>aero/qbar-psf</property>
+     <property>metrics/Sw-sqft</property>
+     <!-- Start CL -->
+     <table>
+      <independentVar lookup="row">fcs/elevator-pos-deg</independentVar>
+      <!--  Wing only coefficient computed by DATCOM. -->
+      <tableData>
+      -30.0     -0.011
+      -15.0     -0.008
+      -10.0     -0.006
+       -5.0     -0.003
+        0.0      0.000
+        5.0      0.003
+       10.0      0.006
+       15.0      0.008
+       30.0      0.011
+      </tableData>
+     </table>
+    </product>
+   </function>
+
+  </axis>
+
+  <!-- Moments =============================================== -->
+
+  <!-- ================================================== -->  
+  <axis name="ROLL">
+
+   <function name="aero/moment/Clp_tail">
+    <description>
+     Roll Moment coefficient due to roll rate (per radian/sec).
+     This is roll moment due to the difference in angle of attack
+     induced by the roll rate.
+    </description>
+    <product>
+     <property>aero/qbar-psf</property>
+     <property>metrics/Sw-sqft</property>
+     <property>metrics/bw-ft</property>
+     <property>aero/bi2vel</property>
+     <property>velocities/p-aero-rad_sec</property>
+     <!-- Clp -->
+     <value> 2.0  </value> <!-- 4 fins. -->
+     <!--  Wing only coefficient computed by DATCOM for alpha = 0. -->
+     <!--  This should be extended to use the full table. -->
+     <value> -1.838E-02 </value>
+    </product>
+   </function>
+
+   <function name="aero/moment/Cl_tail_damp">
+    <description>
+     Damping Roll Moment coefficient due to roll rate (per radian/sec).
+     Guessed and added to retain some damping effect at low airspeed.
+     Assumed to be due to the considerable area of the fins.
+    </description>
+    <product>
+     <value>1.0</value>
+     <property>metrics/Sw-sqft</property>
+     <property>metrics/bw-ft</property>
+     <property>velocities/p-aero-rad_sec</property>
+     <!-- Clp (copied) -->
+     <value> 2.0  </value> <!-- 4 fins. -->
+     <value> -1.838E-02 </value>
+    </product>
+   </function>
+
+  </axis>
+
+  <!-- ================================================== -->
+  <axis name="PITCH">
+
+   <function name="aero/moment/Cmq_hull">
+    <description>
+     Pitch Moment coefficient due to pitch rate (per radian/sec).
+    </description>
+    <product>
+     <property>aero/qbar-psf</property>
+     <property>metrics/Sw-sqft</property>
+     <property>metrics/cbarw-ft</property>
+     <property>aero/ci2vel</property>
+     <property>velocities/q-aero-rad_sec</property>
+     <!-- Cmq -->
+     <!--  Body only coefficient computed by DATCOM for alpha = 0. -->
+      <value> -1.655E-02 </value>
+    </product>
+   </function>
+
+   <function name="aero/moment/Cmq_htail">
+    <description>
+     Pitch Moment coefficient due to pitch rate (per radian/sec).
+    </description>
+    <product>
+     <property>aero/qbar-psf</property>
+     <property>metrics/Sw-sqft</property>
+     <property>metrics/cbarw-ft</property>
+     <property>aero/ci2vel</property>
+     <property>velocities/q-aero-rad_sec</property>
+     <!-- Cmq -->
+     <!--  Wing only coefficient computed by DATCOM for alpha = 0. -->
+     <value> -2.733E-02 </value>
+    </product>
+   </function>
+
+   <function name="aero/moment/M_env_alpha">
+    <description>Pitch_moment_from_hull_due_to_alpha</description>
+    <product>
+     <property>aero/moment/M_env_aoa</property>
+     <quotient>
+      <property> aero/tmp/wz </property>
+      <max>
+       <value> 0.00001 </value>
+       <property> aero/tmp/h_wy_wz </property>
+      </max>
+     </quotient>
+    </product>
+   </function>
+
+   <function name="aero/moment/M_htail_alpha">
+    <description>Pitch_moment_from_horizontal_tail_due_to_alpha</description>
+    <!--
+        Standard DATCOM formulation
+
+            Cm = M / (q * Sref * Cbarr)
+
+    -->
+    <product>
+     <property>aero/qbar-psf</property>
+     <property>metrics/Sw-sqft</property>
+     <property>metrics/cbarw-ft</property>
+     <!-- Start Cm -->
+     <table>
+      <independentVar lookup="row">aero/alpha-deg</independentVar>
+      <!--  Wing only coefficient computed by DATCOM. -->
+      <tableData>
+ -180.0    -.0004
+ -165.0    -.0015
+ -150.0     .0033
+ -135.0     .0126
+ -120.0     .0280
+ -105.0     .0474
+  -90.0    0.0
+  -75.0    -.0136
+  -60.0     .0528
+  -45.0     .0528
+  -30.0     .0382
+  -25.0     .0321
+  -20.0     .0250
+  -15.0     .0176
+  -10.0     .0104
+   -8.0     .0079
+   -6.0     .0056
+   -4.0     .0035
+   -2.0     .0016
+     .0     .0000
+     .0     .0000
+    2.0    -.0016
+    4.0    -.0036
+    6.0    -.0058
+    8.0    -.0083
+   10.0    -.0111
+   15.0    -.0190
+   20.0    -.0277
+   25.0    -.0365
+   30.0    -.0450
+   45.0    -.1226
+   60.0    -.2681
+   75.0    -.4214
+   90.0    -.5361
+  105.0    -.4010
+  120.0    -.2317
+  135.0    -.0784
+  150.0     .0191
+  165.0     .0530
+  180.0     .0061
+      </tableData>
+     </table>
+    </product>
+   </function>
+
+   <function name="aero/moment/M_de">
+    <description>Pitch_moment_due_to_elevator</description>
+    <!--
+        Standard DATCOM formulation
+
+            Cm = M / (q * Sref * Cbarr)
+
+    -->
+    <product>
+     <property>aero/qbar-psf</property>
+     <property>metrics/Sw-sqft</property>
+     <property>metrics/cbarw-ft</property>
+     <!-- Start Cmdr = -->
+     <table>
+      <independentVar lookup="row">fcs/elevator-pos-deg</independentVar>
+      <!--  Wing only coefficient computed by DATCOM. -->
+      <tableData>
+      -30.0      0.0048
+      -15.0      0.0037
+      -10.0      0.0026
+       -5.0      0.0013
+        0.0      0.0000
+        5.0     -0.0013
+       10.0     -0.0026
+       15.0     -0.0037
+       30.0     -0.0053
+      </tableData>
+     </table>
+    </product>
+   </function>
+
+  </axis>
+
+  <!-- ================================================== -->
+  <axis name="YAW">
+
+   <function name="aero/moment/Cnr_hull">
+    <description>
+     Yaw Moment coefficient due to yaw rate (per radian/sec).
+     (Assumed to be equal to Cmq)
+    </description>
+    <product>
+     <property>aero/qbar-psf</property>
+     <property>metrics/Sw-sqft</property>
+     <property>metrics/cbarw-ft</property>
+     <property>aero/ci2vel</property>
+     <property>velocities/r-aero-rad_sec</property>
+     <!-- Cnr -->
+     <!--  Body only coefficient computed by DATCOM for alpha = 0. -->
+     <value> -1.655E-02 </value>
+    </product>
+   </function>
+
+   <function name="aero/moment/Cnr_vtail">
+    <description>
+     Yaw Moment coefficient due to yaw rate (per radian/sec).
+     (Assumed to be equal to Cmq since the fin is modelled as horizontal)
+    </description>
+    <product>
+     <property>aero/qbar-psf</property>
+     <property>metrics/Sw-sqft</property>
+     <property>metrics/cbarw-ft</property>
+     <property>aero/ci2vel</property>
+     <property>velocities/r-aero-rad_sec</property>
+     <!-- Cnr -->
+     <!--  Wing only coefficient computed by DATCOM. -->
+     <value> -1.459E-02 </value>
+    </product>
+   </function>
+
+   <function name="aero/moment/N_env_beta">
+    <description>Yaw_moment_from_hull_due_to_beta</description>
+    <product>
+     <value> -1.0 </value>  <!-- Note the sign! -->
+     <property> aero/moment/M_env_aoa </property>
+     <quotient>
+      <property> aero/tmp/wy </property>
+      <max>
+       <value> 0.00001 </value>
+       <property> aero/tmp/h_wy_wz </property>
+      </max>
+     </quotient>
+    </product>
+   </function>
+
+   <function name="aero/moment/N_vtail_beta">
+    <description>Yaw_moment_from_vertical_tail_fin_due_to_beta</description>
+    <!--
+        Standard DATCOM formulation
+
+            Cm = M / (q * Sref * Cbarr)
+
+    -->
+    <product>
+     <property>aero/qbar-psf</property>
+     <property>metrics/Sw-sqft</property>
+     <property>metrics/cbarw-ft</property>
+     <!-- Start Cn -->
+     <value> -1.0 </value> <!-- Note the sign! -->
+     <property>aero/vtail-moment-tweak-factor</property>
+     <table>
+      <independentVar lookup="row">aero/beta-deg</independentVar>
+      <!--  Wing only coefficient computed by DATCOM. -->
+      <tableData>
+ -180.0    -.0002
+ -165.0    -.0004
+ -150.0     .0036
+ -135.0     .0107
+ -120.0     .0215
+ -105.0     .0343
+  -90.0     .0060
+  -75.0     .0030
+  -60.0     .0361
+  -45.0     .0334
+  -30.0     .0232
+  -25.0     .0193
+  -20.0     .0149
+  -15.0     .0103
+  -10.0     .0060
+   -8.0     .0045
+   -6.0     .0031
+   -4.0     .0019
+   -2.0     .0009
+     .0     .0000
+    2.0    -.0009
+    4.0    -.0020
+    6.0    -.0033
+    8.0    -.0047
+   10.0    -.0064
+   15.0    -.0111
+   20.0    -.0164
+   25.0    -.0219
+   30.0    -.0271
+   45.0    -.1033
+   60.0    -.2472
+   75.0    -.3980
+   90.0    -.5122
+  105.0    -.3874
+  120.0    -.2280
+  135.0    -.0795
+  150.0     .0191
+  165.0     .0510
+  180.0     .0058
+      </tableData>
+     </table>
+    </product>
+   </function>
+
+   <function name="aero/moment/N_dr">
+    <description>Yaw_moment_due_to_rudder</description>
+    <!--
+        Standard DATCOM formulation
+
+            Cm = M / (q * Sref * Cbarr)
+
+    -->
+    <product>
+     <property>aero/qbar-psf</property>
+     <property>metrics/Sw-sqft</property>
+     <property>metrics/cbarw-ft</property>
+     <!-- Start CY -->
+     <property>aero/vtail-moment-tweak-factor</property>
+     <!-- Start Cndr = -->
+     <table>
+      <independentVar lookup="row">fcs/rudder-pos-deg</independentVar>
+      <!--  Wing only coefficient computed by DATCOM. -->
+      <tableData>
+      -30.0         0.0018
+      -15.0         0.0013
+      -10.0         0.0009
+       -5.0         0.0004
+        0.0         0.0000
+        5.0        -0.0004
+       10.0        -0.0009
+       15.0        -0.0013
+       30.0        -0.0019
+      </tableData>
+     </table>
+    </product>
+   </function>
+
+<!-- Should be very small due to no dihedral? Ignore for now. -->
+   <function name="aero/moment/N_htail_beta">
+    <description>
+     Yaw moment coefficient for the horizontal fins due to sideslip (per radian).
+     DATCOM formulation: Cn = M / (q * Sref * BLref)
+    </description>
+    <product>
+     <value> 0.0 </value>
+     <property>aero/qbar-psf</property>
+     <property>metrics/Sw-sqft</property>
+     <property>metrics/bw-ft</property>
+     <property>aero/beta-rad</property>
+     <!-- Start Cnb -->
+     <table>
+      <independentVar lookup="row">aero/alpha-deg</independentVar>
+      <!--  Wing only coefficient computed by DATCOM. -->
+      <tableData>
+ -180.0    6.000E-06
+ -165.0    8.051E-05
+ -150.0    3.557E-04
+ -135.0    3.475E-03
+ -120.0    7.414E-03
+ -105.0    4.521E-03
+  -90.0   -2.165E+00
+  -75.0    7.226E-03
+  -60.0    2.253E-02
+  -45.0    2.673E-02
+  -30.0    1.682E-02
+  -25.0    1.233E-02
+  -20.0    7.712E-03
+  -15.0    3.891E-03
+  -10.0    1.379E-03
+   -8.0    7.885E-04
+   -6.0    3.905E-04
+   -4.0    1.503E-04
+   -2.0    3.195E-05
+     .0    0.000E+00
+    2.0    3.196E-05
+    4.0    1.503E-04
+    6.0    3.906E-04
+    8.0    7.887E-04
+   10.0    1.380E-03
+   15.0    3.893E-03
+   20.0    7.716E-03
+   25.0    1.234E-02
+   30.0    1.684E-02
+   45.0    8.215E-02
+   60.0    1.983E-01
+   75.0    1.320E-01
+   90.0    2.204E-12
+  105.0    1.185E-01
+  120.0    1.455E-01
+  135.0    3.320E-02
+  150.0    2.935E-03
+  165.0    2.800E-02
+  180.0    3.929E-04
+      </tableData>
+     </table>
+    </product>
+   </function>
+
+  </axis>
+
+ </aerodynamics>

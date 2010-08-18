@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<!-- $Id: help.xml,v 1.4 2010-06-05 10:20:37 anders Exp $ -->
+<!--
+  Zeppelin LZ 121 "Nordstern" airship for FlightGear.
+
+  Copyright (C) 2010  Anders Gidenstam  (anders(at)gidenstam.org)
+  This file is licensed under the GPL license version 2 or later.
+-->
+<PropertyList>
+
+ <title>Zeppelin LZ 121 "Nordstern"</title>
+ <!-- Specific keys -->
+ <key>
+  <name>W</name>
+  <desc>Weigh-off to neutral buoyancy. (Takes about 10 seconds and only works on ground.)</desc>
+ </key>
+ <key>
+  <name>w</name>
+  <desc>Show current on-ground weight.</desc>
+ </key>
+ <key>
+  <name>F/f</name>
+  <desc>Open/close fore gas valves.</desc>
+ </key>
+ <key>
+  <name>G/g</name>
+  <desc>Open/close aft gas valves.</desc>
+ </key>
+ <key>
+  <name>e</name>
+  <desc>Shift trim ballast aft.</desc>
+ </key>
+ <key>
+  <name>d</name>
+  <desc>Shift trim ballast fore.</desc>
+ </key>
+ <key>
+  <name>E</name>
+  <desc>Release one quick release ballast bag fore.</desc>
+ </key>
+ <key>
+  <name>D</name>
+  <desc>Release one quick release ballast bag aft.</desc>
+ </key>
+ <key>
+  <name>Ctrl-W</name>
+  <desc>Refill quick release ballast bags.</desc>
+ </key>
+ <key>
+  <name>Y</name>
+  <desc>Release mooring mast connection or wire.</desc>
+ </key>
+ <key>
+  <name>U</name>
+  <desc>Attach mooring wire. Only possible within 100 feet of the mooring mast.</desc>
+ </key>
+ <key>
+  <name>y/u</name>
+  <desc>Play out/winch in mooring wire.</desc>
+ </key>
+ <key>
+  <name>Alt + click</name>
+  <desc>Place mooring mast.</desc>
+ </key>
+
+ <key>
+  <name>w</name>
+  <desc>Walk view: walk forward, +shift to run.</desc>
+ </key>
+ <key>
+  <name>s</name>
+  <desc>Walk view: walk backward.</desc>
+ </key>
+ <key>
+  <name>a</name>
+  <desc>Walk view: side step left, +shift to run.</desc>
+ </key>
+ <key>
+  <name>d</name>
+  <desc>Walk view: side step right, +shift to run.</desc>
+ </key>
+
+ <!-- Handling instructions. -->
+ <text>
+ ________________FlightGear Pilot's Notes_______________
+
+ http://wiki.flightgear.org/index.php/LZ_121_Nordstern
+ </text>
+</PropertyList>

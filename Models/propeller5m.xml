@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<!--
+  Zeppelin LZ 121 "Nordstern" airship for FlightGear.
+
+  Copyright (C) 2010  Anders Gidenstam  (anders(at)gidenstam.org)
+  This file is licensed under the GPL license version 2 or later.
+-->
+<PropertyList>
+
+ <parameters>
+  <engine-rpm>engines/engine[0]/rpm</engine-rpm>
+ </parameters>
+
+ <!--
+  The propeller. Model and animations based on the Vickers Vimy
+  by Emmanuel BARANGER.
+ -->
+ <path>propeller5m.ac</path>
+ <offsets>
+  <!-- x/y/z == back/right/up -->
+  <x-m> 0.0 </x-m>
+  <y-m> 0.0 </y-m>
+  <z-m> 0.0 </z-m>
+ </offsets>
+
+ <animation>
+  <type>spin</type>
+  <object-name>Propeller</object-name>
+  <object-name>Hub</object-name>
+  <object-name>drive_shaft</object-name>
+  <object-name>PropBlur</object-name>
+  <property alias="../../parameters/engine-rpm"/>
+  <factor>0.5</factor>
+  <center>
+   <x-m> 0.0 </x-m>
+   <y-m> 0.0 </y-m>
+   <z-m> 0.0 </z-m>
+  </center>
+  <axis>
+   <x> 1.0 </x>
+   <y> 0.0 </y>
+   <z> 0.0 </z>
+  </axis>
+ </animation>
+ <animation>
+  <type>select</type>
+  <object-name>PropDisc</object-name>
+  <condition>
+   <greater-than>
+    <property alias="../../../../parameters/engine-rpm"/>
+    <value>900</value>
+   </greater-than>
+  </condition>
+ </animation>
+ <animation>
+  <type>select</type>
+  <object-name>PropBlur</object-name>
+  <condition>
+   <and>
+    <greater-than>
+     <property alias="../../../../../parameters/engine-rpm"/>
+     <value>200.000</value>
+    </greater-than>
+    <less-than>
+     <property alias="../../../../../parameters/engine-rpm"/>
+     <value>900.01</value>
+    </less-than>
+   </and>
+  </condition>
+ </animation>
+
+</PropertyList>
