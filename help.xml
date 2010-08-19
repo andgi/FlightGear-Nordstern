@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<!-- $Id: help.xml,v 1.4 2010-06-05 10:20:37 anders Exp $ -->
+<!-- $Id: help.xml,v 1.5 2010-08-19 20:04:56 anders Exp $ -->
 <!--
   Zeppelin LZ 121 "Nordstern" airship for FlightGear.
 
@@ -84,6 +84,6 @@
  <text>
  ________________FlightGear Pilot's Notes_______________
 
- http://wiki.flightgear.org/index.php/LZ_121_Nordstern
+ http://wiki.flightgear.org/index.php/Zeppelin_LZ_121_Nordstern
  </text>
 </PropertyList>
