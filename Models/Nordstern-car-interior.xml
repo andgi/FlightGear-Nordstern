@@ -27,6 +27,17 @@
  </model>
 
  <model>
+  <name>Magnetic compass</name>
+  <path>Aircraft/Nordstern/Instruments/MagneticCompass/compass.xml</path>
+  <offsets>
+   <!-- x/y/z == back/right/up -->
+   <x-m> -0.04 </x-m>
+   <y-m>  0.00 </y-m>
+   <z-m>  1.13 </z-m>
+  </offsets>
+ </model>
+
+ <model>
   <name>Elevator wheel</name>
   <path>Aircraft/Nordstern/Models/control_wheel.ac</path>
   <offsets>
