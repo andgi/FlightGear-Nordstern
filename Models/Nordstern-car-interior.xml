@@ -50,6 +50,30 @@
  </model>
 
  <model>
+  <name>5deg inclinometer</name>
+  <path>Aircraft/Nordstern/Instruments/Inclinometers/inclinometer_5deg.xml</path>
+  <offsets>
+   <!-- x/y/z == back/right/up -->
+   <x-m>  2.232 </x-m>
+   <y-m> -1.035 </y-m>
+   <z-m>  1.800 </z-m>
+   <heading-deg>80.0</heading-deg>
+  </offsets>
+ </model>
+
+ <model>
+  <name>20deg inclinometer</name>
+  <path>Aircraft/Nordstern/Instruments/Inclinometers/inclinometer_20deg.xml</path>
+  <offsets>
+   <!-- x/y/z == back/right/up -->
+   <x-m>  2.232 </x-m>
+   <y-m> -1.035 </y-m>
+   <z-m>  1.765 </z-m>
+   <heading-deg>80.0</heading-deg>
+  </offsets>
+ </model>
+
+ <model>
   <name>Altimeter</name>
   <path>Aircraft/Superwal/Models/Instruments/Hoehenmesser/Hoehenmesser.xml</path>
   <offsets>

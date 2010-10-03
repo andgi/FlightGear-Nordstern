@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<!--
+  Zeppelin LZ 121 "Nordstern" airship for FlightGear.
+
+  Copyright (C) 2010  Anders Gidenstam  (anders(at)gidenstam.org)
+  This file is licensed under the GPL license version 2 or later.
+-->
+<PropertyList>
+
+ <!-- Overlay these to set the controlling properties.
+ -->
+ <params>
+  <indicated-inclination-deg>orientation/pitch-deg</indicated-inclination-deg>
+  <serviceable>instrumentation/inclinometer[0]/serviceable</serviceable>
+ </params>
+
+ <path>inclinometer_5deg.ac</path>
+
+ <offsets>
+  <!-- x/y/z == back/right/up -->
+  <x-m> 0.000 </x-m>
+  <y-m> 0.000 </y-m>
+  <z-m> 0.000 </z-m>
+ </offsets>
+
+ <!-- animation> 
+  <type>material</type>
+  <emission> 
+   <factor-prop>controls/lighting/panel-norm</factor-prop>
+   <red>0.75</red>
+   <green>0.25</green>
+   <blue>0.25</blue>
+  </emission>
+ </animation -->
+
+ <animation>
+  <type>rotate</type>
+  <object-name>bubble_5deg</object-name>
+  <property alias="../../params/indicated-inclination-deg"/>
+  <interpolation> 
+   <entry><ind>-5.0</ind><dep>5.0</dep></entry>
+   <entry><ind>0.0</ind><dep>0.0</dep></entry>
+   <entry><ind>5.0</ind><dep>-5.0</dep></entry>
+  </interpolation>
+  <center>
+   <x-m>  0.00 </x-m>
+   <y-m>  0.00 </y-m>
+   <z-m> -1.15 </z-m>
+  </center>
+  <axis>
+   <x>1.0</x>
+   <y>0.0</y>
+   <z>0.0</z>
+  </axis>
+ </animation>
+
+ <!-- If the bubble is gone the instrument is unserviceable. -->
+ <animation>
+  <type>select</type>
+  <object-name>bubble_5deg</object-name>
+  <condition>
+   <property alias="../../../params/serviceable"/>
+  </condition>
+ </animation>
+
+ <animation>
+  <type>noshadow</type>
+ </animation>
+
+</PropertyList>

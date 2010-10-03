@@ -12,7 +12,7 @@
   <description>Zeppelin LZ 121 "Nordstern" airship</description>
   <author>Anders Gidenstam</author>
   <status>development</status>
-  <aircraft-version>$Id: Nordstern-set.xml,v 1.8 2010-08-18 20:07:37 anders Exp $</aircraft-version>
+  <aircraft-version>$Id: Nordstern-set.xml,v 1.9 2010-10-03 17:16:49 anders Exp $</aircraft-version>
 
   <flight-model>jsb</flight-model>
   <aero>Nordstern</aero>
@@ -244,165 +244,22 @@
   </menubar>
  </sim>
 
+ <instrumentation>
+  <inclinometer n="0">
+   <serviceable type="bool">1</serviceable>
+  </inclinometer>
+  <inclinometer n="1">
+   <serviceable type="bool">1</serviceable>
+  </inclinometer>
+ </instrumentation>
+
  <controls>
   <lighting>
    <nav-lights type="bool">true</nav-lights> <!-- Should be MP enabled. -->
   </lighting>
  </controls>
 
- <payload>
-  <weight>
-   <name type="string">Control car payload</name>
-   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[16]"/>
-   <min-lb type="double">0.0</min-lb>
-   <max-lb type="double">5500.0</max-lb>
-  </weight>
-  <weight>
-   <name type="string">Cargo hold Frame 40L</name>
-   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[17]"/>
-   <min-lb type="double">0.0</min-lb>
-   <max-lb type="double">441.0</max-lb>
-  </weight>
-  <weight>
-   <name type="string">Cargo hold Frame 40R</name>
-   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[18]"/>
-   <min-lb type="double">0.0</min-lb>
-   <max-lb type="double">441.0</max-lb>
-  </weight>
-  <weight>
-   <name type="string">Cargo hold Frame 45L</name>
-   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[19]"/>
-   <min-lb type="double">0.0</min-lb>
-   <max-lb type="double">441.0</max-lb>
-  </weight>
-  <weight>
-   <name type="string">Cargo hold Frame 45R</name>
-   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[20]"/>
-   <min-lb type="double">0.0</min-lb>
-   <max-lb type="double">441.0</max-lb>
-  </weight>
-  <weight>
-   <name type="string">Cargo hold Frame 75R Aft</name>
-   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[21]"/>
-   <min-lb type="double">0.0</min-lb>
-   <max-lb type="double">441.0</max-lb>
-  </weight>
-  <weight>
-   <name type="string">Cargo hold Frame 75L Fore</name>
-   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[22]"/>
-   <min-lb type="double">0.0</min-lb>
-   <max-lb type="double">441.0</max-lb>
-  </weight>
-  <weight>
-   <name type="string">Cargo hold Frame 75R Fore</name>
-   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[23]"/>
-   <min-lb type="double">0.0</min-lb>
-   <max-lb type="double">441.0</max-lb>
-  </weight>
-
-  <weight>
-   <name type="string">Quick-release Ballast Fore</name>
-   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[12]"/>
-   <min-lb type="double">0.0</min-lb>
-   <max-lb type="double">220.5</max-lb>
-  </weight>
-  <weight>
-   <name type="string">Quick-release Ballast Fore</name>
-   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[13]"/>
-   <min-lb type="double">0.0</min-lb>
-   <max-lb type="double">220.5</max-lb>
-  </weight>
-  <weight>
-   <name type="string">Quick-release Ballast Fore</name>
-   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[14]"/>
-   <min-lb type="double">0.0</min-lb>
-   <max-lb type="double">220.5</max-lb>
-  </weight>
-  <weight>
-   <name type="string">Quick-release Ballast Fore</name>
-   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[15]"/>
-   <min-lb type="double">0.0</min-lb>
-   <max-lb type="double">220.5</max-lb>
-  </weight>
-
-  <weight>
-   <name type="string">Quick-release Ballast Aft</name>
-   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[0]"/>
-   <min-lb type="double">0.0</min-lb>
-   <max-lb type="double">220.5</max-lb>
-  </weight>
-  <weight>
-   <name type="string">Quick-release Ballast Aft</name>
-   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[1]"/>
-   <min-lb type="double">0.0</min-lb>
-   <max-lb type="double">220.5</max-lb>
-  </weight>
-  <weight>
-   <name type="string">Quick-release Ballast Aft</name>
-   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[2]"/>
-   <min-lb type="double">0.0</min-lb>
-   <max-lb type="double">220.5</max-lb>
-  </weight>
-  <weight>
-   <name type="string">Quick-release Ballast Aft</name>
-   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[3]"/>
-   <min-lb type="double">0.0</min-lb>
-   <max-lb type="double">220.5</max-lb>
-  </weight>
-
-  <weight>
-   <name type="string">Ballast Frame 20L</name>
-   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[4]"/>
-   <min-lb type="double">0.0</min-lb>
-   <max-lb type="double">1102.3</max-lb>
-  </weight>
-  <weight>
-   <name type="string">Ballast Frame 20R</name>
-   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[5]"/>
-   <min-lb type="double">0.0</min-lb>
-   <max-lb type="double">1102.3</max-lb>
-  </weight>
-
-  <weight>
-   <name type="string">Ballast Frame 50L</name>
-   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[6]"/>
-   <min-lb type="double">0.0</min-lb>
-   <max-lb type="double">1102.3</max-lb>
-  </weight>
-  <weight>
-   <name type="string">Ballast Frame 50R</name>
-   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[7]"/>
-   <min-lb type="double">0.0</min-lb>
-   <max-lb type="double">1102.3</max-lb>
-  </weight>
-
-  <weight>
-   <name type="string">Ballast Frame 70L</name>
-   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[8]"/>
-   <min-lb type="double">0.0</min-lb>
-   <max-lb type="double">1102.3</max-lb>
-  </weight>
-  <weight>
-   <name type="string">Ballast Frame 70R</name>
-   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[9]"/>
-   <min-lb type="double">0.0</min-lb>
-   <max-lb type="double">1102.3</max-lb>
-  </weight>
-
-  <weight>
-   <name type="string">Ballast Frame 105L</name>
-   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[10]"/>
-   <min-lb type="double">0.0</min-lb>
-   <max-lb type="double">1102.3</max-lb>
-  </weight>
-  <weight>
-   <name type="string">Ballast Frame 105R</name>
-   <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[11]"/>
-   <min-lb type="double">0.0</min-lb>
-   <max-lb type="double">1102.3</max-lb>
-  </weight>
-
- </payload>
+ <payload include="Systems/payload.xml"/>
 
  <nasal>
   <walkview>

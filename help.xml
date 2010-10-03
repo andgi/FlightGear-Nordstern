@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<!-- $Id: help.xml,v 1.5 2010-08-19 20:04:56 anders Exp $ -->
+<!-- $Id: help.xml,v 1.6 2010-10-03 17:16:49 anders Exp $ -->
 <!--
   Zeppelin LZ 121 "Nordstern" airship for FlightGear.
 
@@ -8,7 +8,7 @@
 -->
 <PropertyList>
 
- <title>Zeppelin LZ 121 "Nordstern"</title>
+ <title>Zeppelin LZ 121 Nordstern</title>
  <!-- Specific keys -->
  <key>
   <name>W</name>
