@@ -29,40 +29,29 @@ var carConstraint =
          walkview.SlopingYAlignedPlane.new([23.4, -0.05, -10.8], # Doorways
                                            [38.3,  0.62, -11.1]),
         ]);
+
 var keelConstraint =
-    walkview.makeUnionConstraint(
+    walkview.makePolylinePath(
         [
-         walkview.SlopingYAlignedPlane.new([ 10.0, -0.1,  -6.3],
-                                           [ 15.0,  0.1,  -7.2]),
-         walkview.SlopingYAlignedPlane.new([ 15.0, -0.1,  -7.2],
-                                           [ 20.0,  0.1,  -7.8]),
-         walkview.SlopingYAlignedPlane.new([ 20.0, -0.1,  -7.8],
-                                           [ 25.0,  0.1,  -8.2]),
-         walkview.SlopingYAlignedPlane.new([ 25.0, -0.1,  -8.2],
-                                           [ 30.0,  0.1,  -8.6]),
-         walkview.SlopingYAlignedPlane.new([ 30.0, -0.1,  -8.6],
-                                           [ 35.0,  0.1,  -8.8]),
-         walkview.SlopingYAlignedPlane.new([ 35.0, -0.1,  -8.8],
-                                           [ 40.0,  0.1,  -9.0]),
-         walkview.SlopingYAlignedPlane.new([ 40.0, -0.1,  -9.0],
-                                           [ 50.0,  0.1,  -9.1]),
-         walkview.SlopingYAlignedPlane.new([ 50.0, -0.1,  -9.1],
-                                           [ 65.0,  0.1,  -9.1]),
-         walkview.SlopingYAlignedPlane.new([ 65.0, -0.1,  -9.1],
-                                           [ 70.0,  0.1,  -8.8]),
-         walkview.SlopingYAlignedPlane.new([ 70.0, -0.1,  -8.8],
-                                           [ 80.0,  0.1,  -8.5]),
-         walkview.SlopingYAlignedPlane.new([ 80.0, -0.1,  -8.5],
-                                           [ 90.0,  0.1,  -7.9]),
-         walkview.SlopingYAlignedPlane.new([ 90.0, -0.1,  -7.9],
-                                           [ 95.0,  0.1,  -7.4]),
-         walkview.SlopingYAlignedPlane.new([ 95.0, -0.1,  -7.4],
-                                           [100.0,  0.1,  -6.9]),
-         walkview.SlopingYAlignedPlane.new([100.0, -0.1,  -6.9],
-                                           [105.0,  0.1,  -6.2]),
-         walkview.SlopingYAlignedPlane.new([105.0, -0.1,  -6.2],
-                                           [110.0,  0.1,  -5.4]),
-        ]);
+         [ 10.0,  0.0,  -6.3],
+         [ 15.0,  0.0,  -7.2],
+         [ 20.0,  0.0,  -7.8],
+         [ 25.0,  0.0,  -8.2],
+         [ 30.0,  0.0,  -8.6],
+         [ 35.0,  0.0,  -8.8],
+         [ 40.0,  0.0,  -9.0],
+         [ 50.0,  0.0,  -9.1],
+         [ 65.0,  0.0,  -9.1],
+         [ 70.0,  0.0,  -8.8],
+         [ 80.0,  0.0,  -8.5],
+         [ 90.0,  0.0,  -7.9],
+         [ 95.0,  0.0,  -7.4],
+         [100.0,  0.0,  -6.9],
+         [105.0,  0.0,  -6.2],
+         [110.0,  0.0,  -5.4],
+        ],
+        0.20);
+
 var ladderPosition = [22.7, -0.45, 0.0];
 
 var climbLadder = func {
