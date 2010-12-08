@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!--
+  Zeppelin LZ 121 "Nordstern" airship for FlightGear.
+
+  Copyright (C) 2010  Anders Gidenstam  (anders(at)gidenstam.org)
+  This file is licensed under the GPL license version 2 or later.
+-->
+<PropertyList>
+
+ <fuel>
+  <tank n="0">
+   <name>Frame 40L</name>
+  </tank>
+  <tank n="1">
+   <name>Frame 40R</name>
+  </tank>
+  <tank n="2">
+   <name>Frame 40L</name>
+  </tank>
+  <tank n="3">
+   <name>Frame 40R</name>
+  </tank>
+
+  <tank n="4">
+   <name>Frame 50L</name>
+  </tank>
+  <tank n="5">
+   <name>Frame 50R</name>
+  </tank>
+  <tank n="6">
+   <name>Frame 50L</name>
+  </tank>
+  <tank n="7">
+   <name>Frame 50R</name>
+  </tank>
+
+  <tank n="8">
+   <name>Frame 70L</name>
+  </tank>
+  <tank n="9">
+   <name>Frame 70R</name>
+  </tank>
+  <tank n="10">
+   <name>Frame 70L</name>
+  </tank>
+  <tank n="11">
+   <name>Frame 70R</name>
+  </tank>
+
+ </fuel>
+
+</PropertyList>

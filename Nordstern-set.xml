@@ -260,6 +260,7 @@
  </controls>
 
  <payload include="Systems/payload.xml"/>
+ <consumables include="Systems/consumables.xml"/>
 
  <nasal>
   <walkview>
