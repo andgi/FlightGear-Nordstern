@@ -284,13 +284,13 @@
   <!--  Instrument drivers. -->
   <!-- Dual control. -->
   <dual_control_tools>
-   <file>Aircraft/ZLT-NT/DualControl/dual-control-tools.nas</file>
+   <file>Aircraft/Generic/DualControl/dual-control-tools.nas</file>
   </dual_control_tools>
   <!-- aircraft_dual_control>
    <file>Aircraft/ZLT-NT/Systems/ZLT-NT-dual-control.nas</file>
   </aircraft_dual_control>
   <dual_control>
-   <file>Aircraft/ZLT-NT/DualControl/pilot-dual-control.nas</file>
+   <file>Aircraft/Generic/DualControl/pilot-dual-control.nas</file>
   </dual_control -->
  </nasal>
 
