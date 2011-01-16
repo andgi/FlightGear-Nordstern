@@ -85,6 +85,18 @@
   </offsets>
  </model>
 
+ <model>
+  <name>Hase variometer</name>
+  <path>Aircraft/Nordstern/Instruments/Variometer/variometer.xml</path>
+  <offsets>
+   <!-- x/y/z == back/right/up -->
+   <x-m>  1.950 </x-m>
+   <y-m> -0.950 </y-m>
+   <z-m>  1.440 </z-m>
+   <heading-deg>80.0</heading-deg>
+  </offsets>
+ </model>
+
  <animation>
   <type>pick</type>
   <object-name>ladder</object-name>

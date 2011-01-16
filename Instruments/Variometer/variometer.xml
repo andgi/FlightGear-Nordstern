@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<!--
+  Zeppelin LZ 121 "Nordstern" airship for FlightGear.
+
+  Copyright (C) 2011  Anders Gidenstam  (anders(at)gidenstam.org)
+  This file is licensed under the GPL license version 2 or later.
+-->
+<PropertyList>
+
+ <!-- Overlay these to set the controlling properties.
+ -->
+ <params>
+  <indicated-speed-fpm>instrumentation/vertical-speed-indicator/indicated-speed-fpm</indicated-speed-fpm>
+  <serviceable>instrumentation/vertical-speed-indicator/serviceable</serviceable>
+ </params>
+
+ <path>variometer.ac</path>
+
+ <offsets>
+  <!-- x/y/z == back/right/up -->
+  <x-m> 0.000 </x-m>
+  <y-m> 0.000 </y-m>
+  <z-m> 0.000 </z-m>
+ </offsets>
+
+ <!-- animation> 
+  <type>material</type>
+  <emission> 
+   <factor-prop>controls/lighting/panel-norm</factor-prop>
+   <red>0.75</red>
+   <green>0.25</green>
+   <blue>0.25</blue>
+  </emission>
+ </animation -->
+
+ <animation>
+  <type>rotate</type>
+  <object-name>red_liquid</object-name>
+  <property>constants/zero</property>
+  <factor>0.0</factor>
+  <offset-deg>-20.0</offset-deg>
+  <center>
+   <x-m>  0.000 </x-m>
+   <y-m>  0.005 </y-m>
+   <z-m>  0.080 </z-m>
+  </center>
+  <axis>
+   <x>1.0</x>
+   <y>0.0</y>
+   <z>0.0</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>scale</type>
+  <object-name>red_liquid</object-name>
+  <property alias="../../params/indicated-speed-fpm"/>
+  <x-factor>0.0</x-factor>
+  <x-offset>1.0</x-offset>
+  <y-factor>0.00127</y-factor>
+  <y-offset>1.0</y-offset>
+  <z-factor>0.0</z-factor>
+  <z-offset>1.0</z-offset>
+  <y-min>0.01</y-min>
+  <y-max>1.90</y-max>
+  <center>
+   <x-m> 0.000 </x-m>
+   <y-m> 0.045 </y-m>
+   <z-m> 0.000 </z-m>
+  </center>
+ </animation>
+
+ <!-- If the liquid is gone the instrument is unserviceable. -->
+ <animation>
+  <type>select</type>
+  <object-name>red_liquid</object-name>
+  <condition>
+   <property alias="../../../params/serviceable"/>
+  </condition>
+ </animation>
+
+ <animation>
+  <type>noshadow</type>
+ </animation>
+
+</PropertyList>
