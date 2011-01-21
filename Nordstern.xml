@@ -31,7 +31,7 @@
   <email>anders at gidenstam dot org</email>
 
   <filecreationdate>2010-04-20</filecreationdate>
-  <version>$Id: Nordstern.xml,v 1.6 2010-08-18 20:33:42 anders Exp $</version>
+  <version>$Id: Nordstern.xml,v 1.7 2011-01-23 13:07:02 anders Exp $</version>
 
   <description>JSBSim model of the Zeppelin LZ 121 "Nordstern".</description>
 
@@ -561,9 +561,9 @@
   -->
   <contact type="BOGEY" name="CAR_BUMPER_BAG">
    <location unit="M">
-    <x>  21.50 </x>
+    <x>  21.33 </x>
     <y>   0.00 </y>
-    <z> -12.00 </z>
+    <z> -11.80 </z>
    </location>
    <static_friction>  0.8 </static_friction>
    <dynamic_friction> 0.5 </dynamic_friction>
@@ -1670,7 +1670,7 @@
    <pid name="fcs/elevator-pos-cmd-norm">
     <input>fcs/elevator-cmd-norm</input>
     <kp> 0.0 </kp>
-    <ki> 0.2 </ki>
+    <ki> 0.4 </ki>
    </pid>
 
    <summer name="fcs/pitch-trim-sum">
