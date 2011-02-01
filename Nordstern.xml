@@ -3,7 +3,7 @@
 
   Zeppelin LZ 121 "Nordstern" airship flight model for JSBSim.
 
-    Copyright (C) 2010  Anders Gidenstam  (anders(at)gidenstam.org)
+    Copyright (C) 2010 - 2011  Anders Gidenstam  (anders(at)gidenstam.org)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@
   <email>anders at gidenstam dot org</email>
 
   <filecreationdate>2010-04-20</filecreationdate>
-  <version>$Id: Nordstern.xml,v 1.7 2011-01-23 13:07:02 anders Exp $</version>
+  <version>$Id: Nordstern.xml,v 1.8 2011-02-01 21:37:49 anders Exp $</version>
 
   <description>JSBSim model of the Zeppelin LZ 121 "Nordstern".</description>
 
@@ -579,7 +579,7 @@
    <location unit="M">
     <x>  90.00 </x>
     <y>   0.00 </y>
-    <z> -13.00 </z>
+    <z> -12.70 </z>
    </location>
    <static_friction>  0.8 </static_friction>
    <dynamic_friction> 0.5 </dynamic_friction>

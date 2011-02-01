@@ -2,7 +2,7 @@
 <!--
   Zeppelin LZ 121 "Nordstern" airship for FlightGear.
 
-  Copyright (C) 2010  Anders Gidenstam  (anders(at)gidenstam.org)
+  Copyright (C) 2010 - 2011  Anders Gidenstam  (anders(at)gidenstam.org)
   This file is licensed under the GPL license version 2 or later.
 -->
 <PropertyList>
@@ -63,7 +63,7 @@
   <path>Aircraft/Nordstern/Models/propeller5m.xml</path>
   <offsets>
    <!-- x/y/z == back/right/up -->
-   <x-m>  92.00 </x-m>
+   <x-m>  92.50 </x-m>
    <y-m>   0.00 </y-m>
    <z-m> -11.20 </z-m>
   </offsets>
@@ -119,6 +119,7 @@
   <type>range</type>
   <object-name>red_tent</object-name>
   <object-name>red_tent_floor</object-name>
+  <object-name>engine_walk_way</object-name>
   <object-name>fuel_tank</object-name>
   <object-name>fuel_tank.001</object-name>
   <object-name>fuel_tank.002</object-name>
