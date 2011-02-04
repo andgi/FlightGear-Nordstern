@@ -31,7 +31,7 @@
   <email>anders at gidenstam dot org</email>
 
   <filecreationdate>2010-04-20</filecreationdate>
-  <version>$Id: Nordstern.xml,v 1.8 2011-02-01 21:37:49 anders Exp $</version>
+  <version>$Id: Nordstern.xml,v 1.9 2011-02-04 22:06:41 anders Exp $</version>
 
   <description>JSBSim model of the Zeppelin LZ 121 "Nordstern".</description>
 
@@ -1667,14 +1667,14 @@
   -->
   <channel name="Pitch">
 
-   <pid name="fcs/elevator-pos-cmd-norm">
+   <!-- pid name="fcs/elevator-pos-cmd-norm">
     <input>fcs/elevator-cmd-norm</input>
     <kp> 0.0 </kp>
     <ki> 0.4 </ki>
-   </pid>
+   </pid -->
 
-   <summer name="fcs/pitch-trim-sum">
-    <input>fcs/elevator-pos-cmd-norm</input>
+   <summer name="fcs/elevator/pos-cmd-norm">
+    <input>fcs/elevator-cmd-norm</input>
     <input>fcs/pitch-trim-cmd-norm</input>
     <clipto>
      <min>-1</min>
@@ -1682,8 +1682,8 @@
     </clipto>
    </summer>
 
-   <aerosurface_scale name="Elevator Control">
-    <input>fcs/pitch-trim-sum</input>
+   <aerosurface_scale name="fcs/elevator/pos-rad">
+    <input>fcs/elevator/pos-cmd-norm</input>
     <domain>
      <min>-1</min>
      <max>1</max>
@@ -1695,7 +1695,7 @@
     <output>fcs/elevator-pos-rad</output>
    </aerosurface_scale>
 
-   <aerosurface_scale name="Elevator Position Normalized">
+   <aerosurface_scale name="fcs/elevator/pos-norm">
     <input>fcs/elevator-pos-rad</input>
     <domain>
      <min>-0.5236</min>
@@ -1714,13 +1714,13 @@
   -->
   <channel name="Yaw">
 
-   <!-- pid name="fcs/rudder-pos-cmd-norm">
+   <!-- pid name="fcs/rudder/pos-cmd-norm">
     <input>-fcs/aileron-cmd-norm</input>
     <kp> 0.0 </kp>
     <ki> 0.2 </ki>
    </pid -->
 
-   <summer name="Yaw Trim Sum">
+   <summer name="fcs/rudder/pos-cmd-norm">
     <input>-fcs/aileron-cmd-norm</input>
     <input>fcs/rudder-cmd-norm</input>
     <input>fcs/yaw-trim-cmd-norm</input>
@@ -1730,8 +1730,8 @@
     </clipto>
    </summer>
 
-   <aerosurface_scale name="Rudder Control">
-    <input>fcs/yaw-trim-sum</input>
+   <aerosurface_scale name="fcs/rudder/pos-rad">
+    <input>fcs/rudder/pos-cmd-norm</input>
     <domain>
      <min>-1</min>
      <max>1</max>
@@ -1743,7 +1743,7 @@
     <output>fcs/rudder-pos-rad</output>
    </aerosurface_scale>
 
-   <aerosurface_scale name="Rudder Position Normalized">
+   <aerosurface_scale name="fcs/rudder/pos-norm">
     <input>fcs/rudder-pos-rad</input>
     <domain>
      <min>-0.5236</min>
