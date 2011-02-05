@@ -2,7 +2,7 @@
 <!--
   Zeppelin LZ 121 "Nordstern" airship for FlightGear.
 
-  Copyright (C) 2010  Anders Gidenstam  (anders(at)gidenstam.org)
+  Copyright (C) 2010 - 2011  Anders Gidenstam  (anders(at)gidenstam.org)
   This file is licensed under the GPL license version 2 or later.
 -->
 <PropertyList>
@@ -43,7 +43,7 @@
   <offsets>
    <!-- x/y/z == back/right/up -->
    <x-m>  2.22 </x-m>
-   <y-m> -0.95 </y-m>
+   <y-m> -0.93 </y-m>
    <z-m>  1.02 </z-m>
    <heading-deg>78.7</heading-deg>
   </offsets>

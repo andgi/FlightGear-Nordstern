@@ -12,7 +12,7 @@
   <description>Zeppelin LZ 121 "Nordstern" airship</description>
   <author>Anders Gidenstam</author>
   <status>development</status>
-  <aircraft-version>$Id: Nordstern-set.xml,v 1.12 2011-02-04 22:06:41 anders Exp $</aircraft-version>
+  <aircraft-version>$Id: Nordstern-set.xml,v 1.13 2011-02-05 18:25:44 anders Exp $</aircraft-version>
 
   <flight-model>jsb</flight-model>
   <aero>Nordstern</aero>
@@ -23,9 +23,9 @@
    <onground type="bool">true</onground>
    <!-- altitude-agl-ft type="double">6.0</altitude-agl-ft -->
   </presets>
-  <!-- startup>
-   <splash-texture>Aircraft/Nordstern/splash.jpg</splash-texture>
-  </startup -->
+  <startup>
+   <splash-texture>Aircraft/Nordstern/splash.png</splash-texture>
+  </startup>
 
   <!-- 3d model -->
   <model>
