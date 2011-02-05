@@ -19,7 +19,7 @@ var carConstraint =
          
          walkview.SlopingYAlignedPlane.new([23.4, -0.0, -10.8], # Rooms
                                            [24.8,  1.3, -10.9]),
-         walkview.SlopingYAlignedPlane.new([25.1, -1.3, -10.9],
+         walkview.SlopingYAlignedPlane.new([25.2, -1.3, -10.9],
                                            [29.8,  1.3, -10.9]),
          walkview.SlopingYAlignedPlane.new([30.1, -1.3, -10.9],
                                            [34.8,  1.3, -11.0]),
