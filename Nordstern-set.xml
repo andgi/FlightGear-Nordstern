@@ -12,7 +12,7 @@
   <description>Zeppelin LZ 121 "Nordstern" airship</description>
   <author>Anders Gidenstam</author>
   <status>development</status>
-  <aircraft-version>$Id: Nordstern-set.xml,v 1.13 2011-02-05 18:25:44 anders Exp $</aircraft-version>
+  <aircraft-version>$Id: Nordstern-set.xml,v 1.14 2011-02-21 20:45:11 anders Exp $</aircraft-version>
 
   <flight-model>jsb</flight-model>
   <aero>Nordstern</aero>
@@ -474,6 +474,24 @@
      <script>
        gui.popupTip("Aft gas valves closed!");
        Nordstern.setAftGasValves(0.00);
+     </script>
+    </binding>
+   </key>
+
+   <!-- Engine commands ======================================== -->
+   <key n="82">
+    <name>R</name>
+    <desc>Reverse direction of the selected engine(s).</desc>
+    <binding>
+     <command>nasal</command>
+     <script>
+      var sel =
+          props.globals.getNode("/sim/input/selected").getChildren("engine");
+      foreach(var node; sel) {
+          if (node.getValue()) {
+              Nordstern.switchEngineDirection(node.getIndex());
+          }
+      }
      </script>
     </binding>
    </key>

@@ -17,6 +17,7 @@
 # refillQuickReleaseBallast(location)
 # setForwardGasValves()
 # setAftGasValves()
+# switchEngineDirection(engine)
 # about()
 #
 
@@ -118,12 +119,10 @@ var init_all = func(reinit=0) {
     # Timed initialization.
     settimer(func {
         # Add some AI moorings.
-        mooring.add_ai_mooring(props.globals.getNode("/ai/models/carrier[0]"),
-                               160.0);
-        mooring.add_ai_mooring(props.globals.getNode("/ai/models/carrier[1]"),
-                               160.0);
-        mooring.add_ai_mooring(props.globals.getNode("/ai/models/carrier[2]"),
-                               160.0);
+        foreach (var c;
+                 props.globals.getNode("/ai/models").getChildren("carrier")) {
+            mooring.add_ai_mooring(c, 160.0);
+        }
         setlistener(props.globals.getNode("/ai/models/model-added", 1),
                     func (path) {
                         var node = props.globals.getNode(path.getValue());
@@ -250,6 +249,30 @@ var setForwardGasValves = func (v) {
 var setAftGasValves = func (v) {
     setprop(gascell ~ "[1]/valve_open", v);
     setprop(gascell ~ "[0]/valve_open", v);
+}
+
+###############################################################################
+# Engine controls.
+var switchEngineDirection = func (eng) {
+    var engineJSB = "/fdm/jsbsim/propulsion/engine" ~ "[" ~ eng ~ "]";
+    var engineFG  = "/engines/engine" ~ "[" ~ eng ~ "]";
+    var dir       = engineJSB ~ "/yaw-angle-rad";
+
+    # Only engine 0 and 1 can be reversed.
+    if ((eng < 0) or (eng > 1)) return;
+
+    if (!getprop(engineFG ~ "/running")) {
+        setprop(dir, (getprop(dir) == 0) ? 3.14159265 : 0.0);
+        # NOTE: The popup tip should probably be at the callers discretion. 
+        gui.popupTip("Engine " ~ eng ~
+                     " set to " ~
+                     ((getprop(dir) == 0) ? "forward." : "reverse."));
+    } else {
+        # NOTE: The popup tip should probably be at the callers discretion. 
+        gui.popupTip("Cannot change direction for " ~
+                     ((getprop(dir) == 0) ? "forward" : "reverse") ~
+                     " running engine " ~ eng ~ ".");
+    }
 }
 
 ###############################################################################
