@@ -31,7 +31,7 @@
   <email>anders at gidenstam dot org</email>
 
   <filecreationdate>2010-04-20</filecreationdate>
-  <version>$Id: Nordstern.xml,v 1.9 2011-02-04 22:06:41 anders Exp $</version>
+  <version>$Id: Nordstern.xml,v 1.10 2011-02-27 13:36:18 anders Exp $</version>
 
   <description>JSBSim model of the Zeppelin LZ 121 "Nordstern".</description>
 
@@ -69,6 +69,12 @@
    author="Flight"
    title="THE 300 H.P. MAYBACH ENGINE."
    date="29 Aug. 1918"/>
+
+  <reference
+   refID="DR:1979:Bodensee"
+   author="Douglas H. Robinson"
+   title="The Commercial Zeppelins Bodensee and Nordstern"
+   date="1979"/>
 
  </fileheader>
 
@@ -125,20 +131,22 @@
       6 Maschinisten"
   </documentation>
 
-  <wingarea unit="M2"> 2400.0 </wingarea>  <!-- Planfold area (approximated).-->
-  <wingspan unit="M">    18.7 </wingspan>  <!-- Hull diameter. -->
-  <chord unit="M">      130.8 </chord>     <!-- Hull length. -->
+  <!-- Reference quantities. -->
+  <wingarea unit="M2">  797.0 </wingarea>  <!-- V^(2/3).-->
+  <wingspan unit="M">    28.2 </wingspan>  <!-- V^(1/3). -->
+  <chord unit="M">       28.2 </chord>     <!-- V^(1/3). -->
   <htailarea unit="M2"> 119.0 </htailarea> <!-- FIX these... -->
-  <htailarm unit="M">    51.0 </htailarm>  <!-- From CG? -->
-  <vtailarea unit="M2">  55.0 </vtailarea>
-  <vtailarm unit="M">    51.0 </vtailarm>  <!-- From CG? -->
+  <htailarm unit="M">    54.4 </htailarm>  <!-- From CG? -->
+  <vtailarea unit="M2">  58.4 </vtailarea>
+  <vtailarm unit="M">    54.4 </vtailarm>  <!-- From CG? -->
   <!-- Total gas volume vol = 22500 m^3 -->
 
-  <!-- Aerodynamic Reference Point. -->
+  <!-- Aerodynamic Reference Point. Should be colocated with the actual CoG. -->
+  <!-- From balanced state in FG: 56.4, 0, -5.7 -->
   <location name="AERORP" unit="M">
-   <x> 59.8 </x>
+   <x> 56.4 </x>
    <y>  0.0 </y>
-   <z>  0.0 </z>
+   <z> -5.7 </z>
   </location>
 
   <location name="EYEPOINT" unit="M">
@@ -691,6 +699,9 @@
      Compression ratio: 5.94:1
      Clearance volume:  778.9 cm^3
 
+   [DR:1979:Bodensee]
+     The side engines had reversing gear and no reduction gear.
+     The rear engines had a 26:49 ratio reduction gear.
   </documentation>
 
   <!--
@@ -1660,6 +1671,7 @@
  <flight_control name="FCS">
 
   <documentation>
+   According to [DR:1979:Bodensee] the rudder deflections were +/- 20 deg.
   </documentation>
 
   <!--
@@ -1689,8 +1701,8 @@
      <max>1</max>
     </domain>
     <range>
-     <min>-0.5236</min>
-     <max>0.5236</max>
+     <min>-0.3491</min>
+     <max>0.3491</max>
     </range>
     <output>fcs/elevator-pos-rad</output>
    </aerosurface_scale>
@@ -1698,8 +1710,8 @@
    <aerosurface_scale name="fcs/elevator/pos-norm">
     <input>fcs/elevator-pos-rad</input>
     <domain>
-     <min>-0.5236</min>
-     <max>0.5236</max>
+     <min>-0.3491</min>
+     <max>0.3491</max>
     </domain>
     <range>
      <min>-1</min>
@@ -1737,8 +1749,8 @@
      <max>1</max>
     </domain>
     <range>
-     <min>-0.5236</min>
-     <max>0.5236</max>
+     <min>-0.3491</min>
+     <max>0.3491</max>
     </range>
     <output>fcs/rudder-pos-rad</output>
    </aerosurface_scale>
@@ -1746,8 +1758,8 @@
    <aerosurface_scale name="fcs/rudder/pos-norm">
     <input>fcs/rudder-pos-rad</input>
     <domain>
-     <min>-0.5236</min>
-     <max>0.5236</max>
+     <min>-0.3491</min>
+     <max>0.3491</max>
     </domain>
     <range>
      <min>-1</min>
@@ -1805,9 +1817,9 @@
 
   <force name="added-mass-bx" frame="BODY">
    <location unit="M">
-    <x> 59.8 </x>
+    <x> 56.4 </x>
     <y>  0.0 </y>
-    <z>  0.0 </z>
+    <z> -5.7 </z>
    </location>
    <direction>
     <x> 1.0 </x>
@@ -1817,9 +1829,9 @@
   </force>
   <force name="added-mass-by" frame="BODY">
    <location unit="M">
-    <x> 59.8 </x>
+    <x> 56.4 </x>
     <y>  0.0 </y>
-    <z>  0.0 </z>
+    <z> -5.7 </z>
    </location>
    <direction>
     <x> 0.0 </x>
@@ -1829,9 +1841,9 @@
   </force>
   <force name="added-mass-bz" frame="BODY">
    <location unit="M">
-    <x> 59.8 </x>
+    <x> 56.4 </x>
     <y>  0.0 </y>
-    <z>  0.0 </z>
+    <z> -5.7 </z>
    </location>
    <direction>
     <x> 0.0 </x>
@@ -1842,9 +1854,9 @@
 
   <force name="added-mass-pitch[0]" frame="BODY">
    <location unit="M">
-    <x> 59.8 </x>
+    <x> 56.4 </x>
     <y>  0.0 </y>
-    <z> -0.3048 </z>
+    <z> -6.0048 </z>
    </location>
    <direction>
     <x> 1.0 </x>
@@ -1854,9 +1866,9 @@
   </force>
   <force name="added-mass-pitch[1]" frame="BODY">
    <location unit="M">
-    <x> 59.8 </x>
+    <x> 56.4 </x>
     <y>  0.0 </y>
-    <z>  0.3048 </z>
+    <z> -5.3952 </z>
    </location>
    <direction>
     <x> 1.0 </x>
@@ -1867,9 +1879,9 @@
 
   <force name="added-mass-yaw[0]" frame="BODY">
    <location unit="M">
-    <x> 59.8 </x>
+    <x> 56.4 </x>
     <y> -0.3048 </y>
-    <z>  0.0 </z>
+    <z> -5.7 </z>
    </location>
    <direction>
     <x> 1.0 </x>
@@ -1879,9 +1891,9 @@
   </force>
   <force name="added-mass-yaw[1]" frame="BODY">
    <location unit="M">
-    <x> 59.8 </x>
+    <x> 56.4 </x>
     <y>  0.3048 </y>
-    <z>  0.0 </z>
+    <z> -5.7 </z>
    </location>
    <direction>
     <x> 1.0 </x>
@@ -1920,8 +1932,9 @@
   <property value="8591.5"> aero/constants/volume-ft3_2_3 </property>
 
   <!-- Added mass constants. -->
+  <!-- k-axial -0.02; k-traverse -0.94; k-rotational -0.81 -->
   <property value="-0.02"> aero/constants/added-mass/k-axial </property>
-  <property value="-0.94"> aero/constants/added-mass/k-traverse </property>
+  <property value="-0.00"> aero/constants/added-mass/k-traverse </property>
   <property value="-0.81"> aero/constants/added-mass/k-rotational </property>
 
   <channel name="Temporary hack to prevent oscillations.">

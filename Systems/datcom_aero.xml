@@ -3,7 +3,7 @@
 
   Zeppelin LZ 121 "Nordstern" airship flight model for JSBSim.
 
-    Copyright (C) 2010  Anders Gidenstam  (anders(at)gidenstam.org)
+    Copyright (C) 2010 - 2011  Anders Gidenstam  (anders(at)gidenstam.org)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -27,26 +27,30 @@
   The coefficient data computed by DATCOM are based on the following
   configurations:
   - Hull only
-    - aero/force/L_env_aoa
-    - aero/force/D_env_aoa
-    - aero/moment/M_env_aoa
-    - aero/moment/Cmq_hull
-    - aero/moment/Cnr_hull
+    - aero/force/L_hull_aoa
+    - aero/force/D_hull_aoa
+    - aero/moment/M_hull_aoa
+    - aero/moment/Mq_hull
+    - aero/moment/Nr_hull
   - The two horizontal fins only
+    * Scale SREF by 0.1.
     - aero/force/L_htail_alpha
     - aero/force/D_htail_alpha
     - aero/moment/M_htail_alpha
     - aero/moment/N_htail_beta
-    - aero/moment/Cmq_htail
-    - aero/force/L_dr
+    - aero/moment/Mq_htail
+    - aero/moment/Lp_htail
+    - aero/force/L_de
     - aero/force/D_de
     - aero/moment/M_de
   - The two vertical fins only (modelled as horizontal fins in DATCOM)
+    * Scale SREF by 0.1.
     - aero/force/D_vtail_beta
     - aero/force/Y_vtail_beta
     - aero/moment/N_vtail_beta
-    - aero/moment/Cnr_vtail
-    - aero/moment/Clp_tail
+    - aero/moment/M_vtail_alpha
+    - aero/moment/Nr_vtail
+    - aero/moment/Lp_vtail
     - aero/force/D_dr
     - aero/force/Y_dr
     - aero/moment/N_dr
@@ -59,11 +63,15 @@
   </function>
   <!-- Tuning parameter for CM and CN due to alpha and beta. -->
   <function name="aero/hull-moment-tweak-factor">
-   <value> 0.75 </value>
+   <value> 1.0 </value>
   </function>
-  <!-- Tuning parameter for CN for the vertical fins and rudder. -->
+  <!-- Tuning parameter for CN for the vertical fins.
+       Reduced to model the destabilizing contribution from the car. -->
   <function name="aero/vtail-moment-tweak-factor">
-   <value> 1.5 </value>
+   <value> 0.80 </value>
+  </function>
+  <function name="aero/rudder-moment-tweak-factor">
+   <value> 4.00 </value>
   </function>
 
   <!-- Relation between wind and body coordinate systems. -->
@@ -128,10 +136,10 @@
   === Hull Lift Force ====================================
   -->
   <limitation>
-   The current method of splitting L_env_aoa into LIFT and SIDE forces
+   The current method of splitting L_hull_aoa into LIFT and SIDE forces
    seems to have the wrong sign when alpha GT 90 and beta LT 0?
   </limitation>
-  <function name="aero/force/L_env_aoa">
+  <function name="aero/force/L_hull_aoa">
    <description>Total_lift_force_from_hull_due_to_aoa</description>
    <!--
         Standard DATCOM formulation
@@ -142,32 +150,32 @@
    <product>
     <property>aero/qbar-psf</property>
     <property>metrics/Sw-sqft</property>
-    <!-- Start CL_env -->
+    <!-- Start CL_hull -->
     <property>aero/hull-lift-force-tweak-factor</property>
     <table>
      <independentVar lookup="row">aero/hull-aoa-mag-deg</independentVar>
      <!--  Body only coefficient computed by DATCOM. -->
      <tableData>
-     .0    .000
-    2.0    .003
-    4.0    .008
-    6.0    .014
-    8.0    .021
-   10.0    .030
-   15.0    .056
-   20.0    .088
-   25.0    .123
-   30.0    .157
-   45.0    .238
-   60.0    .241
-   75.0    .150
-   90.0    .000
-  105.0   -.144
-  120.0   -.221
-  135.0   -.207
-  150.0   -.127
-  165.0   -.039
-  180.0    .000
+       0	0
+       2	0.01
+       4	0.024
+       6	0.042
+       8	0.064
+       10	0.091
+       15	0.17
+       20	0.265
+       25	0.369
+       30	0.474
+       45	0.716
+       60	0.725
+       75	0.452
+       90	0
+       105	-0.433
+       120	-0.665
+       135	-0.622
+       150	-0.381
+       165	-0.116
+       180	0
      </tableData>
     </table>
    </product>
@@ -177,9 +185,9 @@
   === Hull Moment ========================================
   -->
   <limitation>
-   Same as for L_env_aoa.
+   Same as for L_hull_aoa.
   </limitation>
-  <function name="aero/moment/M_env_aoa">
+  <function name="aero/moment/M_hull_aoa">
    <description>Total_moment_from_hull_due_to_aoa</description>
    <!--
        Standard DATCOM formulation
@@ -197,26 +205,26 @@
      <independentVar lookup="row">aero/hull-aoa-mag-deg</independentVar>
      <!--  Body only coefficient computed by DATCOM. -->
      <tableData> 
-    .0     .0000
-    2.0     .0035
-    4.0     .0069
-    6.0     .0103
-    8.0     .0137
-   10.0     .0169
-   15.0     .0246
-   20.0     .0314
-   25.0     .0370
-   30.0     .0413
-   45.0     .0454
-   60.0     .0365
-   75.0     .0187
-   90.0    -.0011
-  105.0    -.0161
-  120.0    -.0223
-  135.0    -.0196
-  150.0    -.0114
-  165.0    -.0033
-  180.0     .0000
+       0	0
+       2	0.0471
+       4	0.0935
+       6	0.1386
+       8	0.1824
+       10	0.2246
+       15	0.3214
+       20	0.403
+       25	0.4666
+       30	0.51
+       45	0.5106
+       60	0.3335
+       75	0.05
+       90	-0.2355
+       105	-0.4268
+       120	-0.4711
+       135	-0.378
+       150	-0.2113
+       165	-0.0602
+       180	0
      </tableData>
     </table>
    </product>
@@ -228,7 +236,7 @@
   -->
   <axis name="DRAG">
 
-   <function name="aero/force/D_env_aoa">
+   <function name="aero/force/D_hull_aoa">
     <description>Drag_from_hull_due_to_angle_of_attack</description>
     <!--
         Standard DATCOM formulation
@@ -246,26 +254,26 @@
       <independentVar lookup="row">aero/hull-aoa-mag-deg</independentVar>
       <!--  Body only coefficient computed by DATCOM. -->
       <tableData>
-     .0     .008
-    2.0     .008
-    4.0     .008
-    6.0     .009
-    8.0     .011
-   10.0     .013
-   15.0     .023
-   20.0     .040
-   25.0     .064
-   30.0     .098
-   45.0     .243
-   60.0     .421
-   75.0     .562
-   90.0     .607
-  105.0     .535
-  120.0     .378
-  135.0     .201
-  150.0     .066
-  165.0     .003
-  180.0     .008
+        0	0.024
+        2	0.024
+        4	0.026
+        6	0.028
+        8	0.033
+        10	0.04
+        15	0.069
+        20	0.119
+        25	0.194
+        30	0.294
+        45	0.733
+        60	1.268
+        75	1.694
+        90	1.828
+        105	1.611
+        120	1.139
+        135	0.605
+        150	0.199
+        165	0.008
+        180	0.024
       </tableData>
      </table>
     </product>
@@ -283,49 +291,50 @@
      <property>aero/qbar-psf</property>
      <property>metrics/Sw-sqft</property>
      <!-- Start CD -->
+     <value>0.1</value> <!-- SREF scaling. -->
      <table>  
       <independentVar lookup="row">aero/alpha-deg</independentVar>
       <!--  Wing only coefficient computed by DATCOM. -->
       <tableData>
- -180.0     .000
- -165.0     .001
- -150.0     .001
- -135.0     .008
- -120.0     .016
- -105.0     .009
-  -90.0     .000
-  -75.0     .015
-  -60.0     .047
-  -45.0     .055
-  -30.0     .035
-  -25.0     .026
-  -20.0     .016
-  -15.0     .008
-  -10.0     .003
-   -8.0     .002
-   -6.0     .001
-   -4.0     .001
-   -2.0     .000
-     .0     .000
-    2.0     .000
-    4.0     .001
-    6.0     .001
-    8.0     .002
-   10.0     .003
-   15.0     .008
-   20.0     .016
-   25.0     .026
-   30.0     .035
-   45.0     .170
-   60.0     .408
-   75.0     .269
-   90.0     .000
-  105.0     .241
-  120.0     .299
-  135.0     .069
-  150.0     .006
-  165.0     .058
-  180.0     .001
+        -180	0.011
+        -165	0.016
+        -150	0.033
+        -135	0.226
+        -120	0.469
+        -105	0.284
+        -90	0.011
+        -75	0.464
+        -60	1.406
+        -45	1.669
+        -30	1.055
+        -25	0.776
+        -20	0.489
+        -15	0.252
+        -10	0.096
+        -8	0.06
+        -6	0.035
+        -4	0.02
+        -2	0.013
+        0	0.011
+        2	0.013
+        4	0.02
+        6	0.035
+        8	0.06
+        10	0.096
+        15	0.252
+        20	0.489
+        25	0.776
+        30	1.055
+        45	0.69
+        60	0.25
+        75	0.05
+        90	0.011
+        105	0.013
+        120	0.011
+        135	0.011
+        150	0.048
+        165	0.019
+        180	0.011
       </tableData>
      </table>
     </product>
@@ -343,53 +352,56 @@
      <property>aero/qbar-psf</property>
      <property>metrics/Sw-sqft</property>
      <!-- Start CD -->
+     <value>0.1</value> <!-- SREF scaling. -->
+     <abs>
      <table>
       <independentVar lookup="row">aero/alpha-deg</independentVar>
       <independentVar lookup="column">fcs/elevator-pos-deg</independentVar>
       <!--  Wing only coefficient computed by DATCOM. -->
       <tableData>
-                -30.0     -15.0     -10.0      -5.0       0.0       5.0      10.0      15.0      30.0
-  -180.0        2.91E-02  2.11E-02  1.44E-02  7.17E-03  1.43E-05  7.11E-03  1.42E-02  2.05E-02  2.80E-02
-  -165.0        2.69E-02  1.95E-02  1.33E-02  6.62E-03  1.30E-05  6.55E-03  1.30E-02  1.89E-02  2.58E-02
-  -150.0        2.45E-02  1.77E-02  1.21E-02  6.02E-03  1.21E-05  5.95E-03  1.18E-02  1.72E-02  2.34E-02
-  -135.0        2.21E-02  1.60E-02  1.09E-02  5.42E-03  1.07E-05  5.35E-03  1.06E-02  1.54E-02  2.10E-02
-  -120.0        1.97E-02  1.42E-02  9.71E-03  4.82E-03  9.60E-06  4.76E-03  9.45E-03  1.37E-02  1.86E-02
-  -105.0        1.73E-02  1.25E-02  8.51E-03  4.22E-03  8.36E-06  4.16E-03  8.25E-03  1.19E-02  1.62E-02
-   -90.0        1.49E-02  1.07E-02  7.31E-03  3.62E-03  7.21E-06  3.56E-03  7.05E-03  1.02E-02  1.38E-02
-   -75.0        1.25E-02  8.99E-03  6.11E-03  3.02E-03  6.02E-06  2.96E-03  5.86E-03  8.44E-03  1.15E-02
-   -60.0        1.01E-02  7.25E-03  4.92E-03  2.43E-03  4.78E-06  2.36E-03  4.66E-03  6.70E-03  9.06E-03
-   -45.0        7.70E-03  5.51E-03  3.72E-03  1.83E-03  3.59E-06  1.76E-03  3.46E-03  4.96E-03  6.66E-03
-   -30.0        5.31E-03  3.76E-03  2.52E-03  1.23E-03  2.39E-06  1.16E-03  2.26E-03  3.21E-03  4.27E-03
-   -25.0        4.51E-03  3.18E-03  2.12E-03  1.03E-03  2.00E-06  9.65E-04  1.87E-03  2.63E-03  3.47E-03
-   -20.0        3.71E-03  2.60E-03  1.73E-03  8.30E-04  1.60E-06  7.66E-04  1.47E-03  2.05E-03  2.67E-03
-   -15.0        2.91E-03  2.02E-03  1.33E-03  6.31E-04  1.20E-06  5.66E-04  1.07E-03  1.47E-03  1.88E-03
-   -10.0        2.11E-03  1.44E-03  9.28E-04  4.31E-04  7.98E-07  3.67E-04  6.68E-04  8.88E-04  1.08E-03
-    -8.0        1.79E-03  1.20E-03  7.68E-04  3.52E-04  6.38E-07  2.87E-04  5.09E-04  6.55E-04  7.59E-04
-    -6.0        1.48E-03  9.72E-04  6.08E-04  2.72E-04  4.79E-07  2.07E-04  3.49E-04  4.23E-04  4.39E-04
-    -4.0        1.16E-03  7.40E-04  4.49E-04  1.92E-04  3.19E-07  1.27E-04  1.90E-04  1.90E-04  1.20E-04
-    -2.0        8.37E-04  5.07E-04  2.89E-04  1.12E-04  1.59E-07  4.74E-05  3.01E-05  4.23E-05  1.99E-04
-      .0        5.18E-04  2.75E-04  1.30E-04  3.24E-05  1.30E-10  3.24E-05  1.30E-04  2.75E-04  5.18E-04
-     2.0        1.99E-04  4.23E-05  3.01E-05  4.74E-05  1.60E-07  1.12E-04  2.89E-04  5.07E-04  8.37E-04
-     4.0        1.20E-04  1.90E-04  1.90E-04  1.27E-04  3.19E-07  1.92E-04  4.49E-04  7.40E-04  1.16E-03
-     6.0        4.39E-04  4.23E-04  3.49E-04  2.07E-04  4.79E-07  2.72E-04  6.08E-04  9.72E-04  1.48E-03
-     8.0        7.59E-04  6.55E-04  5.09E-04  2.87E-04  6.39E-07  3.52E-04  7.68E-04  1.20E-03  1.79E-03
-    10.0        1.08E-03  8.88E-04  6.68E-04  3.67E-04  7.98E-07  4.31E-04  9.28E-04  1.44E-03  2.11E-03
-    15.0        1.88E-03  1.47E-03  1.07E-03  5.66E-04  1.20E-06  6.31E-04  1.33E-03  2.02E-03  2.91E-03
-    20.0        2.67E-03  2.05E-03  1.47E-03  7.66E-04  1.59E-06  8.30E-04  1.73E-03  2.60E-03  3.71E-03
-    25.0        3.47E-03  2.63E-03  1.87E-03  9.65E-04  1.99E-06  1.03E-03  2.12E-03  3.18E-03  4.51E-03
-    30.0        4.27E-03  3.21E-03  2.26E-03  1.16E-03  2.39E-06  1.23E-03  2.52E-03  3.76E-03  5.31E-03
-    45.0        6.66E-03  4.96E-03  3.46E-03  1.76E-03  3.59E-06  1.83E-03  3.72E-03  5.51E-03  7.70E-03
-    60.0        9.06E-03  6.70E-03  4.66E-03  2.36E-03  4.78E-06  2.43E-03  4.92E-03  7.25E-03  1.01E-02
-    75.0        1.15E-02  8.44E-03  5.86E-03  2.96E-03  5.96E-06  3.02E-03  6.11E-03  8.99E-03  1.25E-02
-    90.0        1.38E-02  1.02E-02  7.05E-03  3.56E-03  7.18E-06  3.62E-03  7.31E-03  1.07E-02  1.49E-02
-   105.0        1.62E-02  1.19E-02  8.25E-03  4.16E-03  8.39E-06  4.22E-03  8.51E-03  1.25E-02  1.73E-02
-   120.0        1.86E-02  1.37E-02  9.45E-03  4.76E-03  9.55E-06  4.82E-03  9.71E-03  1.42E-02  1.97E-02
-   135.0        2.10E-02  1.54E-02  1.06E-02  5.35E-03  1.08E-05  5.42E-03  1.09E-02  1.60E-02  2.21E-02
-   150.0        2.34E-02  1.72E-02  1.18E-02  5.95E-03  1.19E-05  6.02E-03  1.21E-02  1.77E-02  2.45E-02
-   165.0        2.58E-02  1.89E-02  1.30E-02  6.55E-03  1.32E-05  6.62E-03  1.33E-02  1.95E-02  2.69E-02
-   180.0        2.80E-02  2.05E-02  1.42E-02  7.11E-03  1.43E-05  7.17E-03  1.44E-02  2.11E-02  2.91E-02
+                -20.0           -15.0           -10.0           -5.0            0.0             5.0             10.0            15.0            20.0
+-180		7.46E-01	6.35E-01	4.34E-01	2.16E-01	-4.31E-04	-2.14E-01	-4.26E-01	-6.18E-01	-7.23E-01
+-165		6.88E-01	5.86E-01	4.00E-01	1.99E-01	-3.91E-04	-1.97E-01	-3.93E-01	-5.69E-01	-6.65E-01
+-150		6.27E-01	5.33E-01	3.64E-01	1.81E-01	-3.62E-04	-1.79E-01	-3.57E-01	-5.17E-01	-6.04E-01
+-135		5.65E-01	4.81E-01	3.28E-01	1.63E-01	-3.22E-04	-1.61E-01	-3.20E-01	-4.64E-01	-5.42E-01
+-120		5.04E-01	4.28E-01	2.92E-01	1.45E-01	-2.89E-04	-1.43E-01	-2.84E-01	-4.12E-01	-4.81E-01
+-105		4.42E-01	3.76E-01	2.56E-01	1.27E-01	-2.52E-04	-1.25E-01	-2.48E-01	-3.59E-01	-4.19E-01
+-90		3.81E-01	3.23E-01	2.20E-01	1.09E-01	-2.17E-04	-1.07E-01	-2.12E-01	-3.07E-01	-3.58E-01
+-75		3.19E-01	2.71E-01	1.84E-01	9.11E-02	-1.81E-04	-8.91E-02	-1.76E-01	-2.54E-01	-2.96E-01
+-60		2.57E-01	2.18E-01	1.48E-01	7.31E-02	-1.44E-04	-7.11E-02	-1.40E-01	-2.02E-01	-2.35E-01
+-45		1.96E-01	1.66E-01	1.12E-01	5.50E-02	-1.08E-04	-5.31E-02	-1.04E-01	-1.49E-01	-1.73E-01
+-30		1.34E-01	1.13E-01	7.60E-02	3.70E-02	-7.20E-05	-3.51E-02	-6.82E-02	-9.67E-02	-1.12E-01
+-25		1.14E-01	9.58E-02	6.40E-02	3.10E-02	-6.01E-05	-2.91E-02	-5.62E-02	-7.92E-02	-9.12E-02
+-20		9.34E-02	7.83E-02	5.20E-02	2.50E-02	-4.81E-05	-2.31E-02	-4.42E-02	-6.17E-02	-7.07E-02
+-15		7.29E-02	6.08E-02	3.99E-02	1.90E-02	-3.61E-05	-1.70E-02	-3.21E-02	-4.42E-02	-5.02E-02
+-10		5.24E-02	4.33E-02	2.79E-02	1.30E-02	-2.40E-05	-1.10E-02	-2.01E-02	-2.67E-02	-2.97E-02
+-8		4.42E-02	3.63E-02	2.31E-02	1.06E-02	-1.92E-05	-8.64E-03	-1.53E-02	-1.97E-02	-2.14E-02
+-6		3.60E-02	2.93E-02	1.83E-02	8.18E-03	-1.44E-05	-6.23E-03	-1.05E-02	-1.27E-02	-1.32E-02
+-4		2.78E-02	2.23E-02	1.35E-02	5.78E-03	-9.60E-06	-3.83E-03	-5.71E-03	-5.73E-03	-5.04E-03
+-2		1.96E-02	1.53E-02	8.71E-03	3.38E-03	-4.80E-06	-1.43E-03	-9.06E-04	1.27E-03	3.16E-03
+0		1.14E-02	8.28E-03	3.90E-03	9.75E-04	3.90E-09	9.75E-04	3.90E-03	8.28E-03	1.14E-02
+2		3.16E-03	1.27E-03	-9.06E-04	-1.43E-03	4.81E-06	3.38E-03	8.71E-03	1.53E-02	1.96E-02
+4		-5.04E-03	-5.73E-03	-5.71E-03	-3.83E-03	9.62E-06	5.78E-03	1.35E-02	2.23E-02	2.78E-02
+6		-1.32E-02	-1.27E-02	-1.05E-02	-6.23E-03	1.44E-05	8.18E-03	1.83E-02	2.93E-02	3.60E-02
+8		-2.14E-02	-1.97E-02	-1.53E-02	-8.64E-03	1.92E-05	1.06E-02	2.31E-02	3.63E-02	4.42E-02
+10		-2.97E-02	-2.67E-02	-2.01E-02	-1.10E-02	2.40E-05	1.30E-02	2.79E-02	4.33E-02	5.24E-02
+15		-5.02E-02	-4.42E-02	-3.21E-02	-1.70E-02	3.61E-05	1.90E-02	3.99E-02	6.08E-02	7.29E-02
+20		-7.07E-02	-6.17E-02	-4.42E-02	-2.31E-02	4.80E-05	2.50E-02	5.20E-02	7.83E-02	9.34E-02
+25		-9.12E-02	-7.92E-02	-5.62E-02	-2.91E-02	6.00E-05	3.10E-02	6.40E-02	9.58E-02	1.14E-01
+30		-1.12E-01	-9.67E-02	-6.82E-02	-3.51E-02	7.21E-05	3.70E-02	7.60E-02	1.13E-01	1.34E-01
+45		-1.73E-01	-1.49E-01	-1.04E-01	-5.31E-02	1.08E-04	5.50E-02	1.12E-01	1.66E-01	1.96E-01
+60		-2.35E-01	-2.02E-01	-1.40E-01	-7.11E-02	1.44E-04	7.31E-02	1.48E-01	2.18E-01	2.57E-01
+75		-2.96E-01	-2.54E-01	-1.76E-01	-8.91E-02	1.80E-04	9.11E-02	1.84E-01	2.71E-01	3.19E-01
+90		-3.58E-01	-3.07E-01	-2.12E-01	-1.07E-01	2.16E-04	1.09E-01	2.20E-01	3.23E-01	3.81E-01
+105		-4.19E-01	-3.59E-01	-2.48E-01	-1.25E-01	2.52E-04	1.27E-01	2.56E-01	3.76E-01	4.42E-01
+120		-4.81E-01	-4.12E-01	-2.84E-01	-1.43E-01	2.88E-04	1.45E-01	2.92E-01	4.28E-01	5.04E-01
+135		-5.42E-01	-4.64E-01	-3.20E-01	-1.61E-01	3.25E-04	1.63E-01	3.28E-01	4.81E-01	5.65E-01
+150		-6.04E-01	-5.17E-01	-3.57E-01	-1.79E-01	3.59E-04	1.81E-01	3.64E-01	5.33E-01	6.27E-01
+165		-6.65E-01	-5.69E-01	-3.93E-01	-1.97E-01	3.96E-04	1.99E-01	4.00E-01	5.86E-01	6.88E-01
+180		-7.23E-01	-6.18E-01	-4.26E-01	-2.14E-01	4.31E-04	2.16E-01	4.34E-01	6.35E-01	7.46E-01
       </tableData>
      </table>
+     </abs>
     </product>
    </function>
 
@@ -405,49 +417,50 @@
      <property>aero/qbar-psf</property>
      <property>metrics/Sw-sqft</property>
      <!-- Start CD -->
+     <value>0.1</value> <!-- SREF scaling. -->
      <table>  
       <independentVar lookup="row">aero/beta-deg</independentVar>
       <!--  Wing only coefficient computed by DATCOM. -->
       <tableData>
- -180.0     .000
- -165.0     .000
- -150.0     .002
- -135.0     .008
- -120.0     .015
- -105.0     .008
-  -90.0     .000
-  -75.0     .013
-  -60.0     .037
-  -45.0     .042
-  -30.0     .025
-  -25.0     .018
-  -20.0     .011
-  -15.0     .006
-  -10.0     .002
-   -8.0     .001
-   -6.0     .001
-   -4.0     .000
-   -2.0     .000
-     .0     .000
-    2.0     .000
-    4.0     .000
-    6.0     .001
-    8.0     .001
-   10.0     .002
-   15.0     .006
-   20.0     .011
-   25.0     .018
-   30.0     .025
-   45.0     .240
-   60.0     .691
-   75.0     .479
-   90.0     .000
-  105.0     .450
-  120.0     .579
-  135.0     .141
-  150.0     .012
-  165.0     .107
-  180.0     .002
+        -180	0.007
+        -165	0.008
+        -150	0.048
+        -135	0.247
+        -120	0.444
+        -105	0.249
+        -90	0.007
+        -75	0.376
+        -60	1.104
+        -45	1.263
+        -30	0.765
+        -25	0.554
+        -20	0.343
+        -15	0.172
+        -10	0.064
+        -8	0.039
+        -6	0.023
+        -4	0.013
+        -2	0.008
+        0	0.007
+        2	0.008
+        4	0.013
+        6	0.023
+        8	0.039
+        10	0.064
+        15	0.172
+        20	0.343
+        25	0.554
+        30	0.765
+        45	0.576
+        60	0.25
+        75	0.057
+        90	0.007
+        105	0.019
+        120	0.018
+        135	0.022
+        150	0.062
+        165	0.018
+        180	0.007
       </tableData>
      </table>
     </product>
@@ -465,53 +478,56 @@
      <property>aero/qbar-psf</property>
      <property>metrics/Sw-sqft</property>
      <!-- Start CD -->
+     <value>0.1</value> <!-- SREF scaling. -->
+     <abs>
      <table>  
       <independentVar lookup="row">aero/beta-deg</independentVar>
       <independentVar lookup="column">fcs/rudder-pos-deg</independentVar>
       <!--  Wing only coefficient computed by DATCOM. -->
       <tableData>
-                -30.0     -15.0     -10.0      -5.0       0.0       5.0      10.0      15.0      30.0
-  -180.0        1.16E-02  8.03E-03  5.45E-03  2.72E-03  5.42E-06  2.70E-03  5.39E-03  7.89E-03  1.13E-02
-  -165.0        1.07E-02  7.41E-03  5.03E-03  2.51E-03  4.99E-06  2.49E-03  4.96E-03  7.27E-03  1.04E-02
-  -150.0        9.76E-03  6.74E-03  4.57E-03  2.28E-03  4.53E-06  2.26E-03  4.51E-03  6.60E-03  9.48E-03
-  -135.0        8.80E-03  6.07E-03  4.12E-03  2.05E-03  4.13E-06  2.04E-03  4.06E-03  5.94E-03  8.52E-03
-  -120.0        7.84E-03  5.41E-03  3.67E-03  1.82E-03  3.57E-06  1.81E-03  3.60E-03  5.27E-03  7.55E-03
-  -105.0        6.88E-03  4.74E-03  3.21E-03  1.60E-03  3.17E-06  1.58E-03  3.15E-03  4.60E-03  6.59E-03
-   -90.0        5.92E-03  4.07E-03  2.76E-03  1.37E-03  2.73E-06  1.35E-03  2.69E-03  3.93E-03  5.63E-03
-   -75.0        4.95E-03  3.40E-03  2.30E-03  1.14E-03  2.26E-06  1.13E-03  2.24E-03  3.27E-03  4.67E-03
-   -60.0        3.99E-03  2.74E-03  1.85E-03  9.16E-04  1.79E-06  9.00E-04  1.78E-03  2.60E-03  3.70E-03
-   -45.0        3.03E-03  2.07E-03  1.39E-03  6.89E-04  1.36E-06  6.73E-04  1.33E-03  1.93E-03  2.74E-03
-   -30.0        2.07E-03  1.40E-03  9.40E-04  4.62E-04  9.04E-07  4.46E-04  8.76E-04  1.27E-03  1.78E-03
-   -25.0        1.75E-03  1.18E-03  7.89E-04  3.86E-04  7.56E-07  3.70E-04  7.25E-04  1.04E-03  1.46E-03
-   -20.0        1.43E-03  9.59E-04  6.38E-04  3.11E-04  6.06E-07  2.95E-04  5.73E-04  8.20E-04  1.14E-03
-   -15.0        1.11E-03  7.36E-04  4.86E-04  2.35E-04  4.54E-07  2.19E-04  4.22E-04  5.98E-04  8.18E-04
-   -10.0        7.85E-04  5.14E-04  3.35E-04  1.59E-04  3.03E-07  1.43E-04  2.71E-04  3.76E-04  4.98E-04
-    -8.0        6.57E-04  4.25E-04  2.74E-04  1.29E-04  2.42E-07  1.13E-04  2.10E-04  2.87E-04  3.69E-04
-    -6.0        5.29E-04  3.36E-04  2.14E-04  9.88E-05  1.82E-07  8.28E-05  1.50E-04  1.98E-04  2.41E-04
-    -4.0        4.00E-04  2.47E-04  1.53E-04  6.86E-05  1.21E-07  5.25E-05  8.91E-05  1.09E-04  1.13E-04
-    -2.0        2.72E-04  1.58E-04  9.26E-05  3.83E-05  6.05E-08  2.23E-05  2.85E-05  1.98E-05  1.54E-05
-      .0        1.44E-04  6.91E-05  3.20E-05  8.01E-06  3.20E-11  8.01E-06  3.20E-05  6.91E-05  1.44E-04
-     2.0        1.54E-05  1.98E-05  2.85E-05  2.23E-05  6.06E-08  3.83E-05  9.26E-05  1.58E-04  2.72E-04
-     4.0        1.13E-04  1.09E-04  8.91E-05  5.25E-05  1.21E-07  6.86E-05  1.53E-04  2.47E-04  4.00E-04
-     6.0        2.41E-04  1.98E-04  1.50E-04  8.28E-05  1.82E-07  9.88E-05  2.14E-04  3.36E-04  5.29E-04
-     8.0        3.69E-04  2.87E-04  2.10E-04  1.13E-04  2.42E-07  1.29E-04  2.74E-04  4.25E-04  6.57E-04
-    10.0        4.98E-04  3.76E-04  2.71E-04  1.43E-04  3.03E-07  1.59E-04  3.35E-04  5.14E-04  7.85E-04
-    15.0        8.18E-04  5.98E-04  4.22E-04  2.19E-04  4.55E-07  2.35E-04  4.86E-04  7.36E-04  1.11E-03
-    20.0        1.14E-03  8.20E-04  5.73E-04  2.95E-04  6.04E-07  3.11E-04  6.38E-04  9.59E-04  1.43E-03
-    25.0        1.46E-03  1.04E-03  7.25E-04  3.70E-04  7.56E-07  3.86E-04  7.89E-04  1.18E-03  1.75E-03
-    30.0        1.78E-03  1.27E-03  8.76E-04  4.46E-04  9.09E-07  4.62E-04  9.40E-04  1.40E-03  2.07E-03
-    45.0        2.74E-03  1.93E-03  1.33E-03  6.73E-04  1.36E-06  6.89E-04  1.39E-03  2.07E-03  3.03E-03
-    60.0        3.70E-03  2.60E-03  1.78E-03  9.00E-04  1.82E-06  9.16E-04  1.85E-03  2.74E-03  3.99E-03
-    75.0        4.67E-03  3.27E-03  2.24E-03  1.13E-03  2.28E-06  1.14E-03  2.30E-03  3.40E-03  4.95E-03
-    90.0        5.63E-03  3.93E-03  2.69E-03  1.35E-03  2.71E-06  1.37E-03  2.76E-03  4.07E-03  5.92E-03
-   105.0        6.59E-03  4.60E-03  3.15E-03  1.58E-03  3.16E-06  1.60E-03  3.21E-03  4.74E-03  6.88E-03
-   120.0        7.55E-03  5.27E-03  3.60E-03  1.81E-03  3.64E-06  1.82E-03  3.67E-03  5.41E-03  7.84E-03
-   135.0        8.52E-03  5.94E-03  4.06E-03  2.04E-03  4.11E-06  2.05E-03  4.12E-03  6.07E-03  8.80E-03
-   150.0        9.48E-03  6.60E-03  4.51E-03  2.26E-03  4.59E-06  2.28E-03  4.57E-03  6.74E-03  9.76E-03
-   165.0        1.04E-02  7.27E-03  4.96E-03  2.49E-03  4.98E-06  2.51E-03  5.03E-03  7.41E-03  1.07E-02
-   180.0        1.13E-02  7.89E-03  5.39E-03  2.70E-03  5.39E-06  2.72E-03  5.45E-03  8.03E-03  1.16E-02
+                -20.0           -15.0           -10.0           -5.0            0.0             5.0             10.0            15.0            20.0
+-180		2.94E-01	2.42E-01	1.64E-01	8.18E-02	-1.64E-04	-8.14E-02	-1.62E-01	-2.38E-01	-2.88E-01
+-165		2.72E-01	2.23E-01	1.51E-01	7.55E-02	-1.50E-04	-7.50E-02	-1.49E-01	-2.19E-01	-2.65E-01
+-150		2.47E-01	2.03E-01	1.38E-01	6.86E-02	-1.36E-04	-6.81E-02	-1.36E-01	-1.99E-01	-2.41E-01
+-135		2.23E-01	1.83E-01	1.24E-01	6.18E-02	-1.24E-04	-6.13E-02	-1.22E-01	-1.79E-01	-2.17E-01
+-120		1.98E-01	1.63E-01	1.10E-01	5.49E-02	-1.08E-04	-5.45E-02	-1.08E-01	-1.59E-01	-1.92E-01
+-105		1.74E-01	1.43E-01	9.67E-02	4.81E-02	-9.51E-05	-4.76E-02	-9.48E-02	-1.39E-01	-1.68E-01
+-90		1.49E-01	1.23E-01	8.30E-02	4.13E-02	-8.25E-05	-4.08E-02	-8.11E-02	-1.18E-01	-1.43E-01
+-75		1.25E-01	1.03E-01	6.93E-02	3.44E-02	-6.81E-05	-3.39E-02	-6.74E-02	-9.84E-02	-1.19E-01
+-60		1.01E-01	8.24E-02	5.57E-02	2.76E-02	-5.39E-05	-2.71E-02	-5.37E-02	-7.83E-02	-9.45E-02
+-45		7.63E-02	6.24E-02	4.20E-02	2.08E-02	-4.10E-05	-2.03E-02	-4.01E-02	-5.82E-02	-7.01E-02
+-30		5.19E-02	4.23E-02	2.83E-02	1.39E-02	-2.73E-05	-1.34E-02	-2.64E-02	-3.81E-02	-4.57E-02
+-25		4.37E-02	3.56E-02	2.38E-02	1.16E-02	-2.28E-05	-1.12E-02	-2.18E-02	-3.14E-02	-3.76E-02
+-20		3.56E-02	2.89E-02	1.92E-02	9.36E-03	-1.83E-05	-8.88E-03	-1.73E-02	-2.47E-02	-2.95E-02
+-15		2.75E-02	2.22E-02	1.46E-02	7.08E-03	-1.37E-05	-6.60E-03	-1.27E-02	-1.80E-02	-2.13E-02
+-10		1.93E-02	1.55E-02	1.01E-02	4.80E-03	-9.12E-06	-4.32E-03	-8.15E-03	-1.13E-02	-1.32E-02
+-8		1.61E-02	1.28E-02	8.26E-03	3.89E-03	-7.29E-06	-3.41E-03	-6.33E-03	-8.63E-03	-9.94E-03
+-6		1.28E-02	1.01E-02	6.43E-03	2.98E-03	-5.47E-06	-2.49E-03	-4.51E-03	-5.96E-03	-6.69E-03
+-4		9.58E-03	7.44E-03	4.61E-03	2.06E-03	-3.64E-06	-1.58E-03	-2.68E-03	-3.28E-03	-3.44E-03
+-2		6.32E-03	4.76E-03	2.79E-03	1.15E-03	-1.82E-06	-6.71E-04	-8.59E-04	-5.98E-04	-1.83E-04
+0		3.07E-03	2.08E-03	9.64E-04	2.41E-04	9.64E-10	2.41E-04	9.64E-04	2.08E-03	3.07E-03
+2		-1.83E-04	-5.98E-04	-8.59E-04	-6.71E-04	1.82E-06	1.15E-03	2.79E-03	4.76E-03	6.32E-03
+4		-3.44E-03	-3.28E-03	-2.68E-03	-1.58E-03	3.65E-06	2.06E-03	4.61E-03	7.44E-03	9.58E-03
+6		-6.69E-03	-5.96E-03	-4.51E-03	-2.49E-03	5.47E-06	2.98E-03	6.43E-03	1.01E-02	1.28E-02
+8		-9.94E-03	-8.63E-03	-6.33E-03	-3.41E-03	7.30E-06	3.89E-03	8.26E-03	1.28E-02	1.61E-02
+10		-1.32E-02	-1.13E-02	-8.15E-03	-4.32E-03	9.11E-06	4.80E-03	1.01E-02	1.55E-02	1.93E-02
+15		-2.13E-02	-1.80E-02	-1.27E-02	-6.60E-03	1.37E-05	7.08E-03	1.46E-02	2.22E-02	2.75E-02
+20		-2.95E-02	-2.47E-02	-1.73E-02	-8.88E-03	1.82E-05	9.36E-03	1.92E-02	2.89E-02	3.56E-02
+25		-3.76E-02	-3.14E-02	-2.18E-02	-1.12E-02	2.28E-05	1.16E-02	2.38E-02	3.56E-02	4.37E-02
+30		-4.57E-02	-3.81E-02	-2.64E-02	-1.34E-02	2.73E-05	1.39E-02	2.83E-02	4.23E-02	5.19E-02
+45		-7.01E-02	-5.82E-02	-4.01E-02	-2.03E-02	4.11E-05	2.08E-02	4.20E-02	6.24E-02	7.63E-02
+60		-9.45E-02	-7.83E-02	-5.37E-02	-2.71E-02	5.47E-05	2.76E-02	5.57E-02	8.24E-02	1.01E-01
+75		-1.19E-01	-9.84E-02	-6.74E-02	-3.39E-02	6.85E-05	3.44E-02	6.93E-02	1.03E-01	1.25E-01
+90		-1.43E-01	-1.18E-01	-8.11E-02	-4.08E-02	8.17E-05	4.13E-02	8.30E-02	1.23E-01	1.49E-01
+105		-1.68E-01	-1.39E-01	-9.48E-02	-4.76E-02	9.51E-05	4.81E-02	9.67E-02	1.43E-01	1.74E-01
+120		-1.92E-01	-1.59E-01	-1.08E-01	-5.45E-02	1.09E-04	5.49E-02	1.10E-01	1.63E-01	1.98E-01
+135		-2.17E-01	-1.79E-01	-1.22E-01	-6.13E-02	1.24E-04	6.18E-02	1.24E-01	1.83E-01	2.23E-01
+150		-2.41E-01	-1.99E-01	-1.36E-01	-6.81E-02	1.38E-04	6.86E-02	1.38E-01	2.03E-01	2.47E-01
+165		-2.65E-01	-2.19E-01	-1.49E-01	-7.50E-02	1.50E-04	7.55E-02	1.51E-01	2.23E-01	2.72E-01
+180		-2.88E-01	-2.38E-01	-1.62E-01	-8.14E-02	1.62E-04	8.18E-02	1.64E-01	2.42E-01	2.94E-01
       </tableData>
      </table>
+     </abs>
     </product>
    </function>
 
@@ -528,12 +544,12 @@
      <property>metrics/Sw-sqft</property>
      <!-- Start CD -->
      <!-- According to [WD:1941:AATM]
-          the envelope on a large rigid contributes approximately
+          the hull of a large rigid contributes approximately
           60% to the total air resistance.
           I think they mean 'at zero alpha and beta'.
      -->  
-     <value> 0.678 </value>
-     <value> 0.008 </value>
+     <value> 0.667 </value>
+     <value> 0.024 </value>
     </product>
    </function>
 
@@ -542,11 +558,11 @@
   <!-- ================================================== -->
   <axis name="SIDE">
 
-   <function name="aero/force/Y_env_beta">
+   <function name="aero/force/Y_hull_beta">
     <description>Side_force_from_hull_due_to_beta</description>
     <product>
      <value> -1.0 </value>  <!-- Note the sign! -->
-     <property> aero/force/L_env_aoa </property>
+     <property> aero/force/L_hull_aoa </property>
      <quotient>
       <property> aero/tmp/wy </property>
       <max>
@@ -570,49 +586,50 @@
      <property>metrics/Sw-sqft</property>
      <!-- Start CY -->
      <value> -1.0 </value> <!-- Note the sign! -->
+     <value>0.1</value> <!-- SREF scaling. -->
      <table>
       <independentVar lookup="row">aero/beta-deg</independentVar>
       <!--  Wing only coefficient computed by DATCOM. -->
       <tableData>
- -180.0   -.001
- -165.0   -.002
- -150.0    .013
- -135.0    .031
- -120.0    .042
- -105.0    .031
-  -90.0    .000
-  -75.0   -.039
-  -60.0   -.067
-  -45.0   -.071
-  -30.0   -.055
-  -25.0   -.047
-  -20.0   -.037
-  -15.0   -.026
-  -10.0   -.015
-   -8.0   -.011
-   -6.0   -.008
-   -4.0   -.005
-   -2.0   -.002
-     .0    .000
-    2.0    .002
-    4.0    .005
-    6.0    .008
-    8.0    .011
-   10.0    .015
-   15.0    .026
-   20.0    .037
-   25.0    .047
-   30.0    .055
-   45.0    .171
-   60.0    .291
-   75.0    .242
-   90.0    .000
-  105.0   -.234
-  120.0   -.266
-  135.0   -.131
-  150.0    .038
-  165.0    .114
-  180.0    .014
+        -180	0.0
+        -165	0.046
+        -150	0.386
+        -135	0.94
+        -120	1.268
+        -105	0.944
+        -90	0
+        -75	-1.166
+        -60	-2.009
+        -45	-2.15
+        -30	-1.67
+        -25	-1.418
+        -20	-1.111
+        -15	-0.78
+        -10	-0.457
+        -8	-0.342
+        -6	-0.239
+        -4	-0.146
+        -2	-0.067
+        0	0
+        2	0.067
+        4	0.146
+        6	0.239
+        8	0.342
+        10	0.457
+        15	0.78
+        20	1.111
+        25	1.418
+        30	1.67
+        45	1.447
+        60	0.946
+        75	0.427
+        90	0
+        105	-0.205
+        120	-0.205
+        135	-0.237
+        150	-0.45
+        165	-0.2
+        180	0.0
       </tableData>
      </table>
     </product>
@@ -631,19 +648,21 @@
      <property>metrics/Sw-sqft</property>
      <!-- Start CY -->
      <value> -1.0 </value> <!-- Note the sign! -->
+     <value>0.1</value> <!-- SREF scaling. -->
+     <cos><property>aero/beta-rad</property></cos>
      <table>
       <independentVar lookup="row">fcs/rudder-pos-deg</independentVar>
       <!--  Wing only coefficient computed by DATCOM. -->
       <tableData>
-      -30.0     -0.005
-      -15.0     -0.003
-      -10.0     -0.002
-       -5.0     -0.001
-        0.0      0.000
-        5.0      0.001
-       10.0      0.002
-       15.0      0.003
-       30.0      0.005
+        -20	-0.123
+        -15	-0.101
+        -10	-0.069
+        -5	-0.034
+        0	0
+        5	0.034
+        10	0.069
+        15	0.101
+        20	0.123
       </tableData>
      </table>
     </product>
@@ -654,10 +673,10 @@
   <!-- ================================================== -->
   <axis name="LIFT">
 
-   <function name="aero/force/L_env_alpha">
+   <function name="aero/force/L_hull_alpha">
     <description>Lift_from_hull_due_to_alpha</description>
     <product>
-     <property>aero/force/L_env_aoa</property>
+     <property>aero/force/L_hull_aoa</property>
      <quotient>
       <property> aero/tmp/wz </property>
       <max>
@@ -680,55 +699,56 @@
      <property>aero/qbar-psf</property>
      <property>metrics/Sw-sqft</property>
      <!-- Start CL -->
+     <value>0.1</value> <!-- SREF scaling. -->
      <table>
       <independentVar lookup="row">aero/alpha-deg</independentVar>
       <!--  Wing only coefficient computed by DATCOM. -->
       <tableData>
- -180.0   -.002
- -165.0   -.006
- -150.0    .013
- -135.0    .040
- -120.0    .058
- -105.0    .045
-  -90.0    .000
-  -75.0   -.058
-  -60.0   -.102
-  -45.0   -.111
-  -30.0   -.088
-  -25.0   -.075
-  -20.0   -.060
-  -15.0   -.042
-  -10.0   -.025
-   -8.0   -.019
-   -6.0   -.013
-   -4.0   -.008
-   -2.0   -.004
-     .0    .000
-    2.0    .004
-    4.0    .008
-    6.0    .013
-    8.0    .019
-   10.0    .025
-   15.0    .042
-   20.0    .060
-   25.0    .075
-   30.0    .088
-   45.0    .194
-   60.0    .301
-   75.0    .245
-   90.0    .000
-  105.0   -.232
-  120.0   -.258
-  135.0   -.123
-  150.0    .037
-  165.0    .113
-  180.0    .013
+        -180	-0.05
+        -165	-0.183
+        -150	0.385
+        -135	1.203
+        -120	1.754
+        -105	1.355
+        -90	0
+        -75	-1.745
+        -60	-3.059
+        -45	-3.335
+        -30	-2.646
+        -25	-2.265
+        -20	-1.792
+        -15	-1.273
+        -10	-0.758
+        -8	-0.573
+        -6	-0.403
+        -4	-0.25
+        -2	-0.115
+        0	0
+        2	0.115
+        4	0.25
+        6	0.403
+        8	0.573
+        10	0.758
+        15	1.273
+        20	1.792
+        25	2.265
+        30	2.646
+        45	2.135
+        60	1.268
+        75	0.514
+        90	0
+        105	-0.124
+        120	0.037
+        135	-0.003
+        150	-0.498
+        165	-0.231
+        180	-0.011
       </tableData>
      </table>
     </product>
    </function>
 
-   <function name="aero/force/L_dr">
+   <function name="aero/force/L_de">
     <description>Lift_due_to_elevator</description>
     <!--
         Standard DATCOM formulation
@@ -740,19 +760,21 @@
      <property>aero/qbar-psf</property>
      <property>metrics/Sw-sqft</property>
      <!-- Start CL -->
+     <value>0.1</value> <!-- SREF scaling. -->
+     <cos><property>aero/alpha-rad</property></cos>
      <table>
       <independentVar lookup="row">fcs/elevator-pos-deg</independentVar>
       <!--  Wing only coefficient computed by DATCOM. -->
       <tableData>
-      -30.0     -0.011
-      -15.0     -0.008
-      -10.0     -0.006
-       -5.0     -0.003
-        0.0      0.000
-        5.0      0.003
-       10.0      0.006
-       15.0      0.008
-       30.0      0.011
+        -20	-0.291
+        -15	-0.243
+        -10	-0.166
+        -5	-0.083
+        0	0
+        5	0.083
+        10	0.166
+        15	0.243
+        20	0.291
       </tableData>
      </table>
     </product>
@@ -765,9 +787,9 @@
   <!-- ================================================== -->  
   <axis name="ROLL">
 
-   <function name="aero/moment/Clp_tail">
+   <function name="aero/moment/Lp_htail">
     <description>
-     Roll Moment coefficient due to roll rate (per radian/sec).
+     Roll Moment due to roll rate (per radian/sec).
      This is roll moment due to the difference in angle of attack
      induced by the roll rate.
     </description>
@@ -778,16 +800,120 @@
      <property>aero/bi2vel</property>
      <property>velocities/p-aero-rad_sec</property>
      <!-- Clp -->
-     <value> 2.0  </value> <!-- 4 fins. -->
-     <!--  Wing only coefficient computed by DATCOM for alpha = 0. -->
-     <!--  This should be extended to use the full table. -->
-     <value> -1.838E-02 </value>
+     <value>0.1</value> <!-- SREF scaling. -->
+     <table>
+      <independentVar lookup="row">aero/alpha-deg</independentVar>
+      <!--  Wing only coefficient computed by DATCOM. -->
+      <tableData>
+        -180	1.482E-01
+        -165	-6.328E-02
+        -150	-2.182E-01
+        -135	-2.600E-01
+        -120	-1.294E-01
+        -105	2.051E-01
+        -90	4.742E-01
+        -75	3.637E-01
+        -60	-7.799E-02
+        -45	-4.453E-01
+        -30	-5.561E-01
+        -25	-5.694E-01
+        -20	-5.671E-01
+        -15	-5.315E-01
+        -10	-4.590E-01
+        -8	-4.194E-01
+        -6	-3.772E-01
+        -4	-3.336E-01
+        -2	-2.886E-01
+        0	-8.928E-01
+        2	-1.058E+00
+        4	-1.219E+00
+        6	-1.370E+00
+        8	-1.510E+00
+        10	-1.633E+00
+        15	-1.804E+00
+        20	-1.788E+00
+        25	-1.620E+00
+        30	-1.062E+00
+        45	6.192E-01
+        60	8.569E-01
+        75	7.046E-01
+        90	3.590E-01
+        105	-2.219E-02
+        120	-6.901E-02
+        135	3.009E-01
+        150	1.193E-01
+        165	-2.848E-01
+        180	-2.485E-01
+      </tableData>
+     </table>
     </product>
    </function>
 
-   <function name="aero/moment/Cl_tail_damp">
+   <function name="aero/moment/Lp_vtail">
     <description>
-     Damping Roll Moment coefficient due to roll rate (per radian/sec).
+     Roll Moment due to roll rate (per radian/sec).
+     This is roll moment due to the difference in angle of attack
+     induced by the roll rate.
+    </description>
+    <product>
+     <property>aero/qbar-psf</property>
+     <property>metrics/Sw-sqft</property>
+     <property>metrics/bw-ft</property>
+     <property>aero/bi2vel</property>
+     <property>velocities/p-aero-rad_sec</property>
+     <!-- Clp -->
+     <value>0.1</value> <!-- SREF scaling. -->
+     <table>
+      <independentVar lookup="row">aero/beta-deg</independentVar>
+      <!--  Wing only coefficient computed by DATCOM. -->
+      <tableData>
+        -180	6.122E-02
+        -165	-5.174E-02
+        -150	-1.328E-01
+        -135	-1.443E-01
+        -120	-5.564E-02
+        -105	1.332E-01
+        -90	2.724E-01
+        -75	2.130E-01
+        -60	-1.061E-02
+        -45	-2.015E-01
+        -30	-2.725E-01
+        -25	-2.853E-01
+        -20	-2.898E-01
+        -15	-2.748E-01
+        -10	-2.372E-01
+        -8	-2.155E-01
+        -6	-1.921E-01
+        -4	-1.677E-01
+        -2	-1.422E-01
+        0	-2.838E-01
+        2	-3.464E-01
+        4	-4.077E-01
+        6	-4.657E-01
+        8	-5.198E-01
+        10	-5.682E-01
+        15	-6.404E-01
+        20	-6.462E-01
+        25	-5.971E-01
+        30	-4.170E-01
+        45	1.566E-01
+        60	2.910E-01
+        75	2.918E-01
+        90	1.990E-01
+        105	6.291E-02
+        120	8.308E-03
+        135	7.504E-02
+        150	-1.883E-02
+        165	-1.444E-01
+        180	-1.155E-01
+      </tableData>
+     </table>
+    </product>
+   </function>
+
+   <function name="aero/moment/L_tail_damp">
+    <description>
+     Damping Roll Moment due to roll rate (per radian/sec).
      Guessed and added to retain some damping effect at low airspeed.
      Assumed to be due to the considerable area of the fins.
     </description>
@@ -807,9 +933,9 @@
   <!-- ================================================== -->
   <axis name="PITCH">
 
-   <function name="aero/moment/Cmq_hull">
+   <function name="aero/moment/Mq_hull">
     <description>
-     Pitch Moment coefficient due to pitch rate (per radian/sec).
+     Pitch Moment due to pitch rate (per radian/sec).
     </description>
     <product>
      <property>aero/qbar-psf</property>
@@ -819,13 +945,13 @@
      <property>velocities/q-aero-rad_sec</property>
      <!-- Cmq -->
      <!--  Body only coefficient computed by DATCOM for alpha = 0. -->
-      <value> -1.655E-02 </value>
+      <value> -1.927E+01 </value>
     </product>
    </function>
 
-   <function name="aero/moment/Cmq_htail">
+   <function name="aero/moment/Mq_htail">
     <description>
-     Pitch Moment coefficient due to pitch rate (per radian/sec).
+     Pitch Moment due to pitch rate (per radian/sec).
     </description>
     <product>
      <property>aero/qbar-psf</property>
@@ -835,14 +961,15 @@
      <property>velocities/q-aero-rad_sec</property>
      <!-- Cmq -->
      <!--  Wing only coefficient computed by DATCOM for alpha = 0. -->
-     <value> -2.733E-02 </value>
+     <value>0.1</value> <!-- SREF scaling. -->
+     <value> -1.743E+01 </value>
     </product>
    </function>
 
-   <function name="aero/moment/M_env_alpha">
+   <function name="aero/moment/M_hull_alpha">
     <description>Pitch_moment_from_hull_due_to_alpha</description>
     <product>
-     <property>aero/moment/M_env_aoa</property>
+     <property>aero/moment/M_hull_aoa</property>
      <quotient>
       <property> aero/tmp/wz </property>
       <max>
@@ -866,49 +993,50 @@
      <property>metrics/Sw-sqft</property>
      <property>metrics/cbarw-ft</property>
      <!-- Start Cm -->
+     <value>0.1</value> <!-- SREF scaling. -->
      <table>
       <independentVar lookup="row">aero/alpha-deg</independentVar>
       <!--  Wing only coefficient computed by DATCOM. -->
       <tableData>
- -180.0    -.0004
- -165.0    -.0015
- -150.0     .0033
- -135.0     .0126
- -120.0     .0280
- -105.0     .0474
-  -90.0    0.0
-  -75.0    -.0136
-  -60.0     .0528
-  -45.0     .0528
-  -30.0     .0382
-  -25.0     .0321
-  -20.0     .0250
-  -15.0     .0176
-  -10.0     .0104
-   -8.0     .0079
-   -6.0     .0056
-   -4.0     .0035
-   -2.0     .0016
-     .0     .0000
-    2.0    -.0016
-    4.0    -.0036
-    6.0    -.0058
-    8.0    -.0083
-   10.0    -.0111
-   15.0    -.0190
-   20.0    -.0277
-   25.0    -.0365
-   30.0    -.0450
-   45.0    -.1226
-   60.0    -.2681
-   75.0    -.4214
-   90.0    -.5361
-  105.0    -.4010
-  120.0    -.2317
-  135.0    -.0784
-  150.0     .0191
-  165.0     .0530
-  180.0     .0061
+        -180	-0.0565
+        -165	-0.2041
+        -150	0.4605
+        -135	1.7351
+        -120	3.8526
+        -105	6.5422
+        -90	2.4673
+        -75	-2.0089
+        -60	7.2756
+        -45	7.2985
+        -30	5.2908
+        -25	4.4421
+        -20	3.4666
+        -15	2.44
+        -10	1.4403
+        -8	1.0898
+        -6	0.7691
+        -4	0.4793
+        -2	0.2222
+        0	0
+        2	-0.2253
+        4	-0.4928
+        6	-0.8015
+        8	-1.1497
+        10	-1.5345
+        15	-2.6344
+        20	-3.8365
+        25	-5.0647
+        30	-6.2313
+        45	-6.2041
+        60	-5.1905
+        75	-4.0767
+        90	-2.4673
+        105	-0.9892
+        120	0.154
+        135	-0.0087
+        150	-1.1935
+        165	-0.4976
+        180	-0.0239
       </tableData>
      </table>
     </product>
@@ -926,20 +1054,84 @@
      <property>aero/qbar-psf</property>
      <property>metrics/Sw-sqft</property>
      <property>metrics/cbarw-ft</property>
-     <!-- Start Cmdr = -->
+     <!-- Start Cmde = -->
+     <value>0.1</value> <!-- SREF scaling. -->
+     <cos><property>aero/alpha-rad</property></cos>
      <table>
       <independentVar lookup="row">fcs/elevator-pos-deg</independentVar>
       <!--  Wing only coefficient computed by DATCOM. -->
       <tableData>
-      -30.0      0.0048
-      -15.0      0.0037
-      -10.0      0.0026
-       -5.0      0.0013
-        0.0      0.0000
-        5.0     -0.0013
-       10.0     -0.0026
-       15.0     -0.0037
-       30.0     -0.0053
+        -20	0.5671
+        -15	0.5193
+        -10	0.3537
+        -5	0.1765
+        0	0
+        5	-0.1765
+        10	-0.3537
+        15	-0.5193
+        20	-0.6161
+      </tableData>
+     </table>
+    </product>
+   </function>
+
+<!-- Should be very small due to no dihedral? Ignore for now. -->
+   <function name="aero/moment/M_vtail_alpha">
+    <description>
+     Pitch moment for the vertical fins due to alpha (per radian).
+     DATCOM formulation: Cn = M / (q * Sref * BLref)
+    </description>
+    <product>
+     <value> 0.0 </value>
+     <property>aero/qbar-psf</property>
+     <property>metrics/Sw-sqft</property>
+     <property>metrics/bw-ft</property>
+     <sin><property>aero/beta-rad</property></sin>
+     <!-- Start Cnb -->
+     <value>0.1</value> <!-- SREF scaling. -->
+     <table>
+      <independentVar lookup="row">aero/beta-deg</independentVar>
+      <!--  Wing only coefficient computed by DATCOM. -->
+      <tableData>
+        -180	0.028
+        -165	-0.190
+        -150	-0.421
+        -135	-0.183
+        -120	-0.119
+        -105	-0.071
+        -90	-0.007
+        -75	-0.165
+        -60	-0.69
+        -45	-1.413
+        -30	-1.829
+        -25	-1.52
+        -20	-1.162
+        -15	-0.798
+        -10	-0.461
+        -8	-0.344
+        -6	-0.24
+        -4	-0.147
+        -2	-0.067
+        0	0
+        2	0.067
+        4	0.147
+        6	0.24
+        8	0.344
+        10	0.461
+        15	0.798
+        20	1.162
+        25	1.52
+        30	1.829
+        45	1.431
+        60	0.69
+        75	0.165
+        90	0.007
+        105	0.071
+        120	0.119
+        135	0.183
+        150	0.421
+        165	0.198
+        180	0.009
       </tableData>
      </table>
     </product>
@@ -950,45 +1142,47 @@
   <!-- ================================================== -->
   <axis name="YAW">
 
-   <function name="aero/moment/Cnr_hull">
+   <function name="aero/moment/Nr_hull">
     <description>
-     Yaw Moment coefficient due to yaw rate (per radian/sec).
+     Yaw Moment due to yaw rate (per radian/sec).
      (Assumed to be equal to Cmq)
     </description>
     <product>
      <property>aero/qbar-psf</property>
      <property>metrics/Sw-sqft</property>
-     <property>metrics/cbarw-ft</property>
-     <property>aero/ci2vel</property>
+     <property>metrics/bw-ft</property>
+     <property>aero/bi2vel</property>
      <property>velocities/r-aero-rad_sec</property>
      <!-- Cnr -->
      <!--  Body only coefficient computed by DATCOM for alpha = 0. -->
-     <value> -1.655E-02 </value>
+     <value>0.2</value>
+     <value> -1.927E+01 </value>
     </product>
    </function>
 
-   <function name="aero/moment/Cnr_vtail">
+   <function name="aero/moment/Nr_vtail">
     <description>
-     Yaw Moment coefficient due to yaw rate (per radian/sec).
+     Yaw Moment due to yaw rate (per radian/sec).
      (Assumed to be equal to Cmq since the fin is modelled as horizontal)
     </description>
     <product>
      <property>aero/qbar-psf</property>
      <property>metrics/Sw-sqft</property>
-     <property>metrics/cbarw-ft</property>
-     <property>aero/ci2vel</property>
+     <property>metrics/bw-ft</property>
+     <property>aero/bi2vel</property>
      <property>velocities/r-aero-rad_sec</property>
      <!-- Cnr -->
      <!--  Wing only coefficient computed by DATCOM. -->
-     <value> -1.459E-02 </value>
+     <value>0.1</value> <!-- SREF scaling. -->
+     <value>-1.066E+01</value>
     </product>
    </function>
 
-   <function name="aero/moment/N_env_beta">
+   <function name="aero/moment/N_hull_beta">
     <description>Yaw_moment_from_hull_due_to_beta</description>
     <product>
      <value> -1.0 </value>  <!-- Note the sign! -->
-     <property> aero/moment/M_env_aoa </property>
+     <property> aero/moment/M_hull_aoa </property>
      <quotient>
       <property> aero/tmp/wy </property>
       <max>
@@ -1013,50 +1207,51 @@
      <property>metrics/cbarw-ft</property>
      <!-- Start Cn -->
      <value> -1.0 </value> <!-- Note the sign! -->
+     <value>0.1</value> <!-- SREF scaling. -->
      <property>aero/vtail-moment-tweak-factor</property>
      <table>
       <independentVar lookup="row">aero/beta-deg</independentVar>
       <!--  Wing only coefficient computed by DATCOM. -->
       <tableData>
- -180.0    -.0002
- -165.0    -.0004
- -150.0     .0036
- -135.0     .0107
- -120.0     .0215
- -105.0     .0343
-  -90.0     .0060
-  -75.0     .0030
-  -60.0     .0361
-  -45.0     .0334
-  -30.0     .0232
-  -25.0     .0193
-  -20.0     .0149
-  -15.0     .0103
-  -10.0     .0060
-   -8.0     .0045
-   -6.0     .0031
-   -4.0     .0019
-   -2.0     .0009
-     .0     .0000
-    2.0    -.0009
-    4.0    -.0020
-    6.0    -.0033
-    8.0    -.0047
-   10.0    -.0064
-   15.0    -.0111
-   20.0    -.0164
-   25.0    -.0219
-   30.0    -.0271
-   45.0    -.1033
-   60.0    -.2472
-   75.0    -.3980
-   90.0    -.5122
-  105.0    -.3874
-  120.0    -.2280
-  135.0    -.0795
-  150.0     .0191
-  165.0     .0510
-  180.0     .0058
+        -180	0
+        -165	0.4392
+        -150	1.0995
+        -135	0.708
+        -120	0.8644
+        -105	1.6686
+        -90	2.5205
+        -75	3.4565
+        -60	3.9597
+        -45	4.2976
+        -30	4.0208
+        -25	3.2436
+        -20	2.435
+        -15	1.6522
+        -10	0.9449
+        -8	0.7019
+        -6	0.4847
+        -4	0.2948
+        -2	0.1331
+        0	0
+        2	-0.1331
+        4	-0.2948
+        6	-0.4847
+        8	-0.7019
+        10	-0.9449
+        15	-1.6522
+        20	-2.435
+        25	-3.2436
+        30	-4.0208
+        45	-4.2976
+        60	-3.9597
+        75	-3.4565
+        90	-2.5205
+        105	-1.6686
+        120	-0.8644
+        135	-0.708
+        150	-1.0995
+        165	-0.4392
+        180	0
       </tableData>
      </table>
     </product>
@@ -1075,21 +1270,22 @@
      <property>metrics/Sw-sqft</property>
      <property>metrics/cbarw-ft</property>
      <!-- Start CY -->
-     <property>aero/vtail-moment-tweak-factor</property>
-     <!-- Start Cndr = -->
+     <value>0.1</value> <!-- SREF scaling. -->
+     <property>aero/rudder-moment-tweak-factor</property> 
+     <cos><property>aero/beta-rad</property></cos>
      <table>
       <independentVar lookup="row">fcs/rudder-pos-deg</independentVar>
       <!--  Wing only coefficient computed by DATCOM. -->
       <tableData>
-      -30.0         0.0018
-      -15.0         0.0013
-      -10.0         0.0009
-       -5.0         0.0004
-        0.0         0.0000
-        5.0        -0.0004
-       10.0        -0.0009
-       15.0        -0.0013
-       30.0        -0.0019
+        -20	0.2285
+        -15	0.1887
+        -10	0.1286
+        -5	0.0645
+        0	0
+        5	-0.0645
+        10	-0.1286
+        15	-0.1887
+        20	-0.2285
       </tableData>
      </table>
     </product>
@@ -1098,7 +1294,7 @@
 <!-- Should be very small due to no dihedral? Ignore for now. -->
    <function name="aero/moment/N_htail_beta">
     <description>
-     Yaw moment coefficient for the horizontal fins due to sideslip (per radian).
+     Yaw moment for the horizontal fins due to sideslip (per radian).
      DATCOM formulation: Cn = M / (q * Sref * BLref)
     </description>
     <product>
@@ -1106,51 +1302,51 @@
      <property>aero/qbar-psf</property>
      <property>metrics/Sw-sqft</property>
      <property>metrics/bw-ft</property>
-     <property>aero/beta-rad</property>
+     <sin><property>aero/beta-rad</property></sin>
      <!-- Start Cnb -->
      <table>
       <independentVar lookup="row">aero/alpha-deg</independentVar>
       <!--  Wing only coefficient computed by DATCOM. -->
       <tableData>
- -180.0    6.000E-06
- -165.0    8.051E-05
- -150.0    3.557E-04
- -135.0    3.475E-03
- -120.0    7.414E-03
- -105.0    4.521E-03
-  -90.0   -2.165E+00
-  -75.0    7.226E-03
-  -60.0    2.253E-02
-  -45.0    2.673E-02
-  -30.0    1.682E-02
-  -25.0    1.233E-02
-  -20.0    7.712E-03
-  -15.0    3.891E-03
-  -10.0    1.379E-03
-   -8.0    7.885E-04
-   -6.0    3.905E-04
-   -4.0    1.503E-04
-   -2.0    3.195E-05
-     .0    0.000E+00
-    2.0    3.196E-05
-    4.0    1.503E-04
-    6.0    3.906E-04
-    8.0    7.887E-04
-   10.0    1.380E-03
-   15.0    3.893E-03
-   20.0    7.716E-03
-   25.0    1.234E-02
-   30.0    1.684E-02
-   45.0    8.215E-02
-   60.0    1.983E-01
-   75.0    1.320E-01
-   90.0    2.204E-12
-  105.0    1.185E-01
-  120.0    1.455E-01
-  135.0    3.320E-02
-  150.0    2.935E-03
-  165.0    2.800E-02
-  180.0    3.929E-04
+        -180	0.05
+        -165	0.173
+        -150	-0.35
+        -135	-1.011
+        -120	-1.283
+        -105	-0.625
+        -90	-0.011
+        -75	-0.9
+        -60	-2.747
+        -45	-3.538
+        -30	-2.819
+        -25	-2.381
+        -20	-1.851
+        -15	-1.295
+        -10	-0.763
+        -8	-0.576
+        -6	-0.405
+        -4	-0.251
+        -2	-0.116
+        0	0
+        2	0.116
+        4	0.251
+        6	0.405
+        8	0.576
+        10	0.763
+        15	1.295
+        20	1.851
+        25	2.381
+        30	2.819
+        45	1.997
+        60	0.851
+        75	0.182
+        90	0.011
+        105	0.045
+        120	-0.009
+        135	0.01
+        150	0.455
+        165	0.228
+        180	0.012
       </tableData>
      </table>
     </product>

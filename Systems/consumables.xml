@@ -2,7 +2,7 @@
 <!--
   Zeppelin LZ 121 "Nordstern" airship for FlightGear.
 
-  Copyright (C) 2010  Anders Gidenstam  (anders(at)gidenstam.org)
+  Copyright (C) 2010 - 2011  Anders Gidenstam  (anders(at)gidenstam.org)
   This file is licensed under the GPL license version 2 or later.
 -->
 <PropertyList>
@@ -48,5 +48,22 @@
   </tank>
 
  </fuel>
+
+ <oil>
+
+  <tank n="0">
+   <name>Left side engine</name>
+  </tank>
+  <tank n="1">
+   <name>Right side engine</name>
+  </tank>
+  <tank n="2">
+   <name>Aft engine 1</name>
+  </tank>
+  <tank n="3">
+   <name>Aft engine 2</name>
+  </tank>
+
+ </oil>
 
 </PropertyList>

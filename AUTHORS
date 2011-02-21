@@ -28,12 +28,13 @@ to FlightGear:
 Emmanuel BARANGER
   - Propellers. (From FlightGear/Aircraft/Vickers-Vimy)
 
+Oliver Predelli
+  - Aircraft/Superwal/Models/Instruments/Hoehenmesser/Hoehenmesser.xml
 
 Dependencies:
 
 Aircraft/ZLT-NT         Systems/ground_handling.nas
                         Systems/mp-network.nas
-                        DualControl/dual-control-tools.nas
                         Models/GroundCrew/scania-mast-truck.xml
 
 Aircraft/Superwal       Models/Instruments/Hoehenmesser/Hoehenmesser.xml

@@ -79,7 +79,7 @@
   <type>rotate</type>
   <object-name>rudders</object-name>
   <property>surface-positions/rudder-pos-norm</property>
-  <factor>30</factor>
+  <factor>20</factor>
   <axis>
    <x1-m> 120.653 </x1-m>
    <y1-m>   0.000 </y1-m>
@@ -94,7 +94,7 @@
   <type>rotate</type>
   <object-name>elevators</object-name>
   <property>surface-positions/elevator-pos-norm</property>
-  <factor>30</factor>
+  <factor>20</factor>
   <axis>
    <x1-m> 119.90 </x1-m>
    <y1-m>  -3.65 </y1-m>
