@@ -1,11 +1,26 @@
 *
 *  Zeppelin LZ 121 Nordstern configuration for the Digital Datcom program
 *
-*  Copyright (C) 2010  Anders Gidenstam
+*  Copyright (C) 2010 - 2011  Anders Gidenstam
 *
+*    This program is free software; you can redistribute it and/or modify
+*    it under the terms of the GNU General Public License as published by
+*    the Free Software Foundation; either version 2 of the License, or
+*    (at your option) any later version.
+*  
+*    This program is distributed in the hope that it will be useful,
+*    but WITHOUT ANY WARRANTY; without even the implied warranty of
+*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*    GNU General Public License for more details.
+*  
 *  Model-Specific notes:
 *   o The origin is at the center of the bow of the aircraft.
-*
+*   o The file is prepared to be run in 3 different setups by un/commenting
+*     relevant name lists.
+*     - Body only
+*     - Horizontal stabilizer and elevators only
+*     - Vertical stabilizer and rudders only
+*     The different parts are manually assembled into a JSBSim configuration.
 *
 *-------------------------------------------------------------------------------
 * Command cards
@@ -28,26 +43,28 @@ DAMP
                     45.0, 60.0, 75.0, 90.0,
                     105.0, 120.0, 135.0, 150.0, 165.0, 179.0,
 *         ALSCHD(1)= -179.0, -165.0, -150.0, -135.0, -120.0, -105.0,
-*                    -90.0, -75.0, -60.0, -45.0,
-*                    -30.0, -25.0, -20.0, -15.0, -10.0, -8.0, -6.0, -4.0, -2.0, 0.0,
+*                    -90.0, -75.0, -60.0, -45.0, -30.0,
+*                    -25.0, -20.0, -15.0, -10.0, -8.0, -6.0, -4.0, -2.0, 0.0,
 *         WT=0.0,
          STMACH=0.6, TSMACH=1.4,
          TR=0.0,
          LOOP=1.0$
 
 *-------------------------------------------------------------------------------
-* Reference Parameters
+* Reference Parameters.
+* Airship standard: ref surface = (volume)^(2/3)
+*                   ref length  = (volume)^(1/3)
 
- $OPTINS SREF=2400.0, CBARR=130.8, BLREF=18.7,
+ $OPTINS SREF=797.0, CBARR=28.2, BLREF=28.2,
          ROUGFC=0.635E-3$
 
 *-------------------------------------------------------------------------------
 * Synthesis Parameters
 
- $SYNTHS XCG=59.8,              ! Note this is AeroRP in JSBSim.
-         ZCG=0.0,
-*         XW=91.15,              ! Horizontal tail
-         XW=95.00,              ! Vertical tail
+ $SYNTHS XCG=56.4,              ! Note this is AeroRP and aprox. cg in JSBSim.
+         ZCG=-5.7,
+         XW=91.15,              ! Horizontal tail
+*         XW=95.00,              ! Vertical tail
          ZW=0.0,
          SCALE=1.0,
          VERTUP=.TRUE.$
@@ -67,36 +84,36 @@ SAVE     ! We'll do the body and fins separately.
                8.80,   9.20,   9.30,   9.30,   9.10,   8.70,   8.10,   7.00,
                5.40,   3.20,   1.30,   0.10$
 
-
 CASEID BODY: Nordstern
 *-------------------------------------------------------------------------------
-NEXT CASE
+*NEXT CASE
+
 
 *-------------------------------------------------------------------------------
 * Wing a.k.a horizontal stabilizers
 
- $WGPLNF TYPE=1.0,
-         CHRDR=31.00,
-         CHRDTP=5.00,
-         SSPN=10.00,
-         SSPNE=6.69,   ! Guesstimate (exposes the elevator)
-         SAVSI=0.0,
-         CHSTAT=1.0,
-         DHDADI=0.0$
+* $WGPLNF TYPE=1.0,
+*         CHRDR=31.00,
+*         CHRDTP=5.00,
+*         SSPN=10.00,
+*         SSPNE=6.69,   ! Guesstimate (exposes the elevator)
+*         SAVSI=0.0,
+*         CHSTAT=1.0,
+*         DHDADI=0.0$
 
 * Elevators
- $SYMFLP FTYPE=1.0,
-         NTYPE=1.0,
-         NDELTA=9.0,
-         DELTA(1)= -30.0, -15.0, -10.0, -5.0, 0.0, 5.0, 10.0, 15.0, 30.0,
-         CHRDFI=2.10,
-         SPANFI=3.31,
-         CHRDFO=2.10,
-         SPANFO=10.00,
-         CB=0.0,
-         TC=0.42,
-         PHETE=0.089,
-         PHETEP=0.089$
+* $SYMFLP FTYPE=1.0,
+*         NTYPE=1.0,
+*         NDELTA=9.0,
+*         DELTA(1)= -20.0, -15.0, -10.0, -5.0, 0.0, 5.0, 10.0, 15.0, 20.0,
+*         CHRDFI=2.10,
+*         SPANFI=3.31,
+*         CHRDFO=2.10,
+*         SPANFO=10.00,
+*         CB=0.0,
+*         TC=0.42,
+*         PHETE=0.089,
+*         PHETEP=0.089$
 
 * Wing a.k.a vertical stabilizers
 * Modelled as horizontal tail
@@ -114,7 +131,7 @@ NEXT CASE
 * $SYMFLP FTYPE=1.0,
 *         NTYPE=1.0,
 *         NDELTA=9.0,
-*         DELTA(1)= -30.0, -15.0, -10.0, -5.0, 0.0, 5.0, 10.0, 15.0, 30.0,
+*         DELTA(1)= -20.0, -15.0, -10.0, -5.0, 0.0, 5.0, 10.0, 15.0, 20.0,
 *         CHRDFI=1.68,
 *         SPANFI=3.16,
 *         CHRDFO=1.68,
@@ -124,10 +141,9 @@ NEXT CASE
 *         PHETE=0.089,
 *         PHETEP=0.089$
 
-NACA W 4 0009          ! From SenecaII. No idea what the real one is.
+*NACA W 4 0009          ! From SenecaII. No idea what the real one is.
 
-SAVE
-CASEID HTAIL: Nordstern
+*CASEID HTAIL: Nordstern
 *-------------------------------------------------------------------------------
 *NEXT CASE
 
