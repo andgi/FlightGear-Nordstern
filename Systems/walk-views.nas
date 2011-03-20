@@ -84,9 +84,9 @@ var climbLadder = func {
 # Create the view managers.
 var steward_walker = walkview.Walker.new("Steward View",
                                          carConstraint,
-                                         [walkview.JSBSimPointmass.new(27)]);
+                                         [walkview.JSBSimPointmass.new(29)]);
 var rigger_walker = walkview.Walker.new("Rigger View",
                                         keelConstraint,
-                                        [walkview.JSBSimPointmass.new(28)]);
+                                        [walkview.JSBSimPointmass.new(30)]);
 
 

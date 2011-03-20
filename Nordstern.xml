@@ -31,7 +31,7 @@
   <email>anders at gidenstam dot org</email>
 
   <filecreationdate>2010-04-20</filecreationdate>
-  <version>$Id: Nordstern.xml,v 1.10 2011-02-27 13:36:18 anders Exp $</version>
+  <version>$Id: Nordstern.xml,v 1.11 2011-03-20 20:05:51 anders Exp $</version>
 
   <description>JSBSim model of the Zeppelin LZ 121 "Nordstern".</description>
 
@@ -235,17 +235,17 @@
   <documentation>
    Ballast according to [Vissering:1922:ZS]:
      Frame 10
-       4x 100 l "Ballasthose"
+       4x 100 l "Ballasthose" (Emergency ballast)
      Frame 20
-       2x 500 l "Ballastsack"
+       2x 500 l "Ballastsack" (Trim ballast)
      Frame 50
-       2x 500 l "Ballastsack"
+       2x 500 l "Ballastsack" (Trim ballast)
      Frame 70
-       2x 500 l "Ballastsack"
+       2x 500 l "Ballastsack" (Trim ballast)
      Frame 105
-       2x 500 l "Ballastsack"
+       2x 500 l "Ballastsack" (Trim ballast)
      Frame 110
-       4x 100 l "Ballasthose"
+       6x 100 l "Ballasthose" (Emergency ballast)
   </documentation>
 
   <!-- Real ballast setup. -->
@@ -361,12 +361,20 @@
   <pointmass name="Ballasthose 2L Frame 110"> <!-- n=13 -->
    <location unit="M">
     <x>  10.8 </x>
+    <y>  -0.75 </y>
+    <z>  -5.5 </z>
+   </location>
+   <weight unit="KG"> 100 </weight>
+  </pointmass>
+  <pointmass name="Ballasthose 3L Frame 110"> <!-- n=14 -->
+   <location unit="M">
+    <x>  10.8 </x>
     <y>  -0.5 </y>
     <z>  -5.5 </z>
    </location>
    <weight unit="KG"> 100 </weight>
   </pointmass>
-  <pointmass name="Ballasthose 1R Frame 110"> <!-- n=14 -->
+  <pointmass name="Ballasthose 1R Frame 110"> <!-- n=15 -->
    <location unit="M">
     <x>  10.8 </x>
     <y>   0.5 </y>
@@ -374,7 +382,15 @@
    </location>
    <weight unit="KG"> 100 </weight>
   </pointmass>
-  <pointmass name="Ballasthose 2R Frame 110"> <!-- n=15 -->
+  <pointmass name="Ballasthose 2R Frame 110"> <!-- n=16 -->
+   <location unit="M">
+    <x>  10.8 </x>
+    <y>   0.75 </y>
+    <z>  -5.5 </z>
+   </location>
+   <weight unit="KG"> 100 </weight>
+  </pointmass>
+  <pointmass name="Ballasthose 3R Frame 110"> <!-- n=17 -->
    <location unit="M">
     <x>  10.8 </x>
     <y>   1.0 </y>
@@ -394,7 +410,7 @@
        3x Gepäcknetz für 200 kg
   </documentation>
 
-  <pointmass name="Control car payload"> <!-- n=16 -->
+  <pointmass name="Control car payload"> <!-- n=18 -->
    <weight unit="KG"> 1500.0 </weight>
    <location name="POINTMASS" unit="M">
     <x> 21.0 </x>
@@ -403,7 +419,7 @@
    </location>
   </pointmass>
 
-  <pointmass name="Frame 40L Cargo"> <!-- n=17 -->
+  <pointmass name="Frame 40L Cargo"> <!-- n=19 -->
    <weight unit="KG"> 80.0 </weight>
    <location name="POINTMASS" unit="M">
     <x> 78.5 </x>
@@ -411,7 +427,7 @@
     <z> -8.0 </z>
    </location>
   </pointmass>
-  <pointmass name="Frame 40R Cargo"> <!-- n=18 -->
+  <pointmass name="Frame 40R Cargo"> <!-- n=20 -->
    <weight unit="KG"> 80.0 </weight>
    <location name="POINTMASS" unit="M">
     <x> 78.5 </x>
@@ -419,7 +435,7 @@
     <z> -8.0 </z>
    </location>
   </pointmass>
-  <pointmass name="Frame 45L Cargo"> <!-- n=19 -->
+  <pointmass name="Frame 45L Cargo"> <!-- n=21 -->
    <weight unit="KG"> 100.0 </weight>
    <location name="POINTMASS" unit="M">
     <x> 76.5 </x>
@@ -427,7 +443,7 @@
     <z> -8.2 </z>
    </location>
   </pointmass>
-  <pointmass name="Frame 45R Cargo"> <!-- n=20 -->
+  <pointmass name="Frame 45R Cargo"> <!-- n=22 -->
    <weight unit="KG"> 100.0 </weight>
    <location name="POINTMASS" unit="M">
     <x> 76.5 </x>
@@ -436,7 +452,7 @@
    </location>
   </pointmass>
 
-  <pointmass name="Frame 75R Aft Cargo"> <!-- n=21 -->
+  <pointmass name="Frame 75R Aft Cargo"> <!-- n=23 -->
    <weight unit="KG"> 100.0 </weight>
    <location name="POINTMASS" unit="M">
     <x> 46.5 </x>
@@ -444,7 +460,7 @@
     <z> -8.7 </z>
    </location>
   </pointmass>
-  <pointmass name="Frame 75L Fore Cargo"> <!-- n=22 -->
+  <pointmass name="Frame 75L Fore Cargo"> <!-- n=24 -->
    <weight unit="KG"> 100.0 </weight>
    <location name="POINTMASS" unit="M">
     <x> 43.5 </x>
@@ -452,7 +468,7 @@
     <z> -8.7 </z>
    </location>
   </pointmass>
-  <pointmass name="Frame 75R Fore Cargo"> <!-- n=23 -->
+  <pointmass name="Frame 75R Fore Cargo"> <!-- n=25 -->
    <weight unit="KG"> 100.0 </weight>
    <location name="POINTMASS" unit="M">
     <x> 43.5 </x>
@@ -464,7 +480,7 @@
   <!-- 
   === Crew ===================================================
   -->
-  <pointmass name="Watch Officer"> <!-- n=24 -->
+  <pointmass name="Watch Officer"> <!-- n=26 -->
    <weight unit="KG"> 85 </weight>
    <location unit="M">
     <x> 22.0 </x>
@@ -472,7 +488,7 @@
     <z> -9.9 </z>
    </location>
   </pointmass>
-  <pointmass name="Rudder Man"> <!-- n=25 -->
+  <pointmass name="Rudder Man"> <!-- n=27 -->
    <weight unit="KG"> 85 </weight>
    <location unit="M">
     <x> 20.5 </x>
@@ -480,7 +496,7 @@
     <z> -9.9 </z>
    </location>
   </pointmass>
-  <pointmass name="Elevator Man"> <!-- n=26 -->
+  <pointmass name="Elevator Man"> <!-- n=28 -->
    <weight unit="KG"> 85 </weight>
    <location unit="M">
     <x> 22.2 </x>
@@ -488,7 +504,7 @@
     <z> -9.9 </z>
    </location>
   </pointmass>
-  <pointmass name="Steward">  <!-- n=27 -->
+  <pointmass name="Steward">  <!-- n=29 -->
    <weight unit="KG"> 85 </weight>
    <location unit="M">
     <x> 33.0 </x>
@@ -496,7 +512,7 @@
     <z> -9.9 </z>
    </location>
   </pointmass>
-  <pointmass name="Rigger"> <!-- n=28 -->
+  <pointmass name="Rigger"> <!-- n=30 -->
    <weight unit="KG"> 85 </weight>
    <location unit="M">
     <x> 51.0 </x>
@@ -1578,6 +1594,11 @@
   </gas_cell>
 
  </buoyant_forces>
+
+ <!--
+ ==== Ballast controls ======================================================
+ -->
+ <!-- system file="ballast-jsbsim"/ -->
 
  <!--
  ==== Initial static condition weigh-off ====================================

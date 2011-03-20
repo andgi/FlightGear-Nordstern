@@ -49,7 +49,18 @@ var fore_ballast_p =
      "/fdm/jsbsim/inertia/pointmass-weight-lbs[12]",
      "/fdm/jsbsim/inertia/pointmass-weight-lbs[13]",
      "/fdm/jsbsim/inertia/pointmass-weight-lbs[14]",
-     "/fdm/jsbsim/inertia/pointmass-weight-lbs[15]"
+     "/fdm/jsbsim/inertia/pointmass-weight-lbs[15]",
+     "/fdm/jsbsim/inertia/pointmass-weight-lbs[16]",
+     "/fdm/jsbsim/inertia/pointmass-weight-lbs[17]"
+    ];
+var fore_ballast_toggles_p =
+    [
+     "/controls/ballast/release[0]",
+     "/controls/ballast/release[1]",
+     "/controls/ballast/release[2]",
+     "/controls/ballast/release[3]",
+     "/controls/ballast/release[4]",
+     "/controls/ballast/release[5]",
     ];
 var aft_ballast_p =
     [
@@ -57,6 +68,13 @@ var aft_ballast_p =
      "/fdm/jsbsim/inertia/pointmass-weight-lbs[1]",
      "/fdm/jsbsim/inertia/pointmass-weight-lbs[2]",
      "/fdm/jsbsim/inertia/pointmass-weight-lbs[3]"
+    ];
+var aft_ballast_toggles_p =
+    [
+     "/controls/ballast/release[6]",
+     "/controls/ballast/release[7]",
+     "/controls/ballast/release[8]",
+     "/controls/ballast/release[9]"
     ];
 
 var printWOW = func {
@@ -190,21 +208,25 @@ var shiftTrimBallast = func(direction, amount) {
 
 # Release one or more quick-release ballast units.
 var releaseBallast = func(location, amount) {
-    var units = nil;
+    var units   = nil;
+    var toggles = nil;
     if (location == FORE_BALLAST) {
-        units = fore_ballast_p;
+        units   = fore_ballast_p;
+        toggles = fore_ballast_toggles_p;
     } elsif (location == AFT_BALLAST) {
-        units = aft_ballast_p;
+        units   = aft_ballast_p;
+        toggles = aft_ballast_toggles_p;
     } else {
         printlog("warn",
                  "Nordstern.releaseBallast(" ~ location ~ ", " ~ amount ~
                  "): Invalid ballast location.");
         return;
     }
-    foreach (var p; units) {
+    forindex (var i; units) {
         if (!amount) return;
-        if (getprop(p) > 0.0) {
-            interpolate(p, 0.0, 1.0);
+        if (getprop(units[i]) > 0.0) {
+            #interpolate(units[i], 0.0, 1.0);
+            setprop(toggles[i], 1.0);
             amount -= 1;
         }
     }
@@ -212,11 +234,14 @@ var releaseBallast = func(location, amount) {
 
 # Refills empty "ballasthosen" from the trim ballast bags.
 var refillQuickReleaseBallast = func(location) {
-    var units = nil;
+    var units   = nil;
+    var toggles = nil;
     if (location == FORE_BALLAST) {
-        units = fore_ballast_p;
+        units   = fore_ballast_p;
+        toggles = fore_ballast_toggles_p;
     } elsif (location == AFT_BALLAST) {
-        units = aft_ballast_p;
+        units   = aft_ballast_p;
+        toggles = aft_ballast_toggles_p;
     } else {
         printlog("warn",
                  "Nordstern.refillQuickReleaseBallast(" ~ location ~
@@ -225,11 +250,12 @@ var refillQuickReleaseBallast = func(location) {
         return;
     }
     var n = size(trim_ballast_p);
-    foreach (var qb; units) {
-        var v = getprop(qb);
+    forindex (var qb; units) {
+        var v = getprop(units[qb]);
         if (v < QUICK_RELEASE_BAG_CAPACITY) {
+            setprop(toggles[qb], 0.0);
             foreach(var tb; trim_ballast_p) {
-                SmoothTransfer.new(tb, qb,
+                SmoothTransfer.new(tb, units[qb],
                                    2.0,
                                    (QUICK_RELEASE_BAG_CAPACITY - v)/n);
             }
@@ -237,19 +263,47 @@ var refillQuickReleaseBallast = func(location) {
     }
 }
 
+# Listen to the /controls/ballast/release[x] controls.
+forindex(var i; fore_ballast_toggles_p) {
+    setlistener(fore_ballast_toggles_p[i], func (n) {
+        interpolate(fore_ballast_p[n.getIndex()], 0.0, 1.0);
+    }, 0, 0);
+}
+forindex(var i; aft_ballast_toggles_p) {
+    setlistener(aft_ballast_toggles_p[i], func (n) {
+        interpolate(aft_ballast_p[n.getIndex() - size(fore_ballast_toggles_p)],
+                    0.0, 1.0);
+    }, 0, 0);
+}
+
+
 ###############################################################################
 # Gas valve controls
-var gascell        = "/fdm/jsbsim/buoyant_forces/gas-cell";
+var gascell = "controls/gas/valve-cmd-norm";
 
 var setForwardGasValves = func (v) {
-    setprop(gascell ~ "[12]/valve_open", v);
-    setprop(gascell ~ "[11]/valve_open", v);
+    setprop(gascell ~ "[0]", v);
+    setprop(gascell ~ "[1]", v);
 }
 
 var setAftGasValves = func (v) {
-    setprop(gascell ~ "[1]/valve_open", v);
-    setprop(gascell ~ "[0]/valve_open", v);
+    setprop(gascell ~ "[2]", v);
+    setprop(gascell ~ "[3]", v);
 }
+
+# Create FG /controls/gas/ aliases for FDM owned controls.
+setlistener("/sim/signals/fdm-initialized", func {
+    var fdm = "fdm/jsbsim/buoyant_forces/gas-cell";
+    props.globals.getNode(gascell ~ "[0]", 1).
+        alias(props.globals.getNode(fdm ~ "[11]/valve_open"));
+    props.globals.getNode(gascell ~ "[1]", 1).
+        alias(props.globals.getNode(fdm ~ "[10]/valve_open"));
+    props.globals.getNode(gascell ~ "[2]", 1).
+        alias(props.globals.getNode(fdm ~ "[1]/valve_open"));
+    props.globals.getNode(gascell ~ "[3]", 1).
+        alias(props.globals.getNode(fdm ~ "[0]/valve_open"));
+});
+
 
 ###############################################################################
 # Engine controls.

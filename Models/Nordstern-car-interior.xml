@@ -97,6 +97,18 @@
   </offsets>
  </model>
 
+ <model>
+  <name>Gas and ballast board</name>
+  <path>Aircraft/Nordstern/Instruments/GasAndBallastBoard/gas_and_ballast_board.xml</path>
+  <offsets>
+   <!-- x/y/z == back/right/up -->
+   <x-m>  2.280 </x-m>
+   <y-m> -0.910 </y-m>
+   <z-m>  2.100 </z-m>
+   <heading-deg>170.0</heading-deg>
+  </offsets>
+ </model>
+
  <animation>
   <type>pick</type>
   <object-name>ladder</object-name>
