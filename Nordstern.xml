@@ -141,12 +141,12 @@
   <vtailarm unit="M">    54.4 </vtailarm>  <!-- From CG? -->
   <!-- Total gas volume vol = 22500 m^3 -->
 
-  <!-- Aerodynamic Reference Point. Should be colocated with the actual CoG. -->
-  <!-- From balanced state in FG: 56.4, 0, -5.7 -->
+  <!-- Aerodynamic Reference Point.
+       Must be on the axis of symmetry of the hull. -->
   <location name="AERORP" unit="M">
    <x> 56.4 </x>
    <y>  0.0 </y>
-   <z> -5.7 </z>
+   <z>  0.0 </z>
   </location>
 
   <location name="EYEPOINT" unit="M">
