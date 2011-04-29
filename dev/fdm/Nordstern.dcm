@@ -61,8 +61,8 @@ DAMP
 *-------------------------------------------------------------------------------
 * Synthesis Parameters
 
- $SYNTHS XCG=56.4,              ! Note this is AeroRP and aprox. cg in JSBSim.
-         ZCG=-5.7,
+ $SYNTHS XCG=56.4,              ! Note this is AeroRP in JSBSim.
+         ZCG=0.0,
          XW=91.15,              ! Horizontal tail
 *         XW=95.00,              ! Vertical tail
          ZW=0.0,
