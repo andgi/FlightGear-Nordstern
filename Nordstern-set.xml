@@ -11,8 +11,15 @@
 
   <description>Zeppelin LZ 121 "Nordstern" airship</description>
   <author>Anders Gidenstam</author>
-  <status>development</status>
-  <aircraft-version>$Id: Nordstern-set.xml,v 1.15 2011-02-27 13:36:18 anders Exp $</aircraft-version>
+  <aircraft-version>$Id: Nordstern-set.xml,v 1.16 2011-05-26 19:25:11 anders Exp $</aircraft-version>
+
+  <status type="string">beta</status>
+  <rating>
+   <FDM type="int">2</FDM>
+   <systems type="int">2</systems>
+   <cockpit type="int">3</cockpit>
+   <model type="int">3</model>
+  </rating>
 
   <flight-model>jsb</flight-model>
   <aero>Nordstern</aero>
