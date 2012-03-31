@@ -2,7 +2,7 @@
 ##
 ## Zeppelin LZ 121 "Nordstern" airship for FlightGear.
 ##
-##  Copyright (C) 2010 - 2011  Anders Gidenstam  (anders(at)gidenstam.org)
+##  Copyright (C) 2010 - 2012  Anders Gidenstam  (anders(at)gidenstam.org)
 ##  This file is licensed under the GPL license v2 or later.
 ##
 ###############################################################################
@@ -114,9 +114,6 @@ var initial_weighoff = func {
 #    }, 0.8);
 }
 
-var mp_mast_carriers =
-    ["Aircraft/ZLT-NT/Models/GroundCrew/scania-mast-truck.xml"];
-
 var init_all = func(reinit=0) {
     setprop(static_trim_p, 0.5);
     initial_weighoff();
@@ -132,49 +129,38 @@ var init_all = func(reinit=0) {
 #        aircraft.timer.new("/sim/time/hobbs/engine[0]", 73).start();
         # Livery support.
 #        aircraft.livery.init("Aircraft/ZLT-NT/Models/Liveries")
+
+        # Create FG /controls/gas/ aliases for FDM owned controls.
+        var fdm = "fdm/jsbsim/buoyant_forces/gas-cell";
+        props.globals.getNode(gascell ~ "[0]", 1).
+            alias(props.globals.getNode(fdm ~ "[11]/valve_open"));
+        props.globals.getNode(gascell ~ "[1]", 1).
+            alias(props.globals.getNode(fdm ~ "[10]/valve_open"));
+        props.globals.getNode(gascell ~ "[2]", 1).
+            alias(props.globals.getNode(fdm ~ "[1]/valve_open"));
+        props.globals.getNode(gascell ~ "[3]", 1).
+            alias(props.globals.getNode(fdm ~ "[0]/valve_open"));
     }
 
-    # Timed initialization.
-    settimer(func {
-        # Add some AI moorings.
-        foreach (var c;
-                 props.globals.getNode("/ai/models").getChildren("carrier")) {
-            mooring.add_ai_mooring(c, 160.0);
-        }
-        setlistener(props.globals.getNode("/ai/models/model-added", 1),
-                    func (path) {
-                        var node = props.globals.getNode(path.getValue());
-                        if (nil == node.getNode("sim/model/path")) return;
-                        var model = node.getNode("sim/model/path").getValue();
-                        foreach (var c; mp_mast_carriers) {
-                            if (model == c) {
-                                settimer(func {
-                                  mooring.add_ai_mooring
-                                    (node,
-                                     "sim/model/mast-truck/mast-head-height-m");
-                                  print("Added: " ~ path.getValue());
-                                }, 0.0);
-                                return;
-                            }
-                        }
-                    });
-        setlistener(props.globals.getNode("/ai/models/model-removed"),
-                    func (path) {
-                        var node = props.globals.getNode(path.getValue());
-                        mooring.remove_ai_mooring(node);
-                        #print("Removed: " ~ path.getValue());
-                    });
-    }, 1.0);
+    # Add some AI moorings.
+    if (!reinit) {
+        # Timed initialization.
+        settimer(func {
+            # Add some AI moorings.
+            foreach (var c;
+                     props.globals.getNode("/ai/models").
+                         getChildren("carrier")) {
+                mooring.add_ai_mooring(c, 160.0);
+            }
+        }, 0.0);
+    }
     print("Nordstern Systems ... Check");
 }
 
+var _nordstern_initialized = 0;
 setlistener("/sim/signals/fdm-initialized", func {
-    init_all();
-    setlistener("/sim/signals/reinit", func(reinit) {
-        if (!reinit.getValue()) {
-            init_all(reinit=1);
-        }
-    });
+    init_all(_nordstern_initialized);
+    _nordstern_initialized = 1;
 });
 
 ###############################################################################
@@ -291,19 +277,6 @@ var setAftGasValves = func (v) {
     setprop(gascell ~ "[3]", v);
 }
 
-# Create FG /controls/gas/ aliases for FDM owned controls.
-setlistener("/sim/signals/fdm-initialized", func {
-    var fdm = "fdm/jsbsim/buoyant_forces/gas-cell";
-    props.globals.getNode(gascell ~ "[0]", 1).
-        alias(props.globals.getNode(fdm ~ "[11]/valve_open"));
-    props.globals.getNode(gascell ~ "[1]", 1).
-        alias(props.globals.getNode(fdm ~ "[10]/valve_open"));
-    props.globals.getNode(gascell ~ "[2]", 1).
-        alias(props.globals.getNode(fdm ~ "[1]/valve_open"));
-    props.globals.getNode(gascell ~ "[3]", 1).
-        alias(props.globals.getNode(fdm ~ "[0]/valve_open"));
-});
-
 
 ###############################################################################
 # Engine controls.
@@ -400,7 +373,6 @@ var debug_display_view_handler = {
         me.right.add("orientation/pitch-deg");
         me.right.add("surface-positions/elevator-pos-norm");
         me.right.add("surface-positions/rudder-pos-norm");
-        me.right.add("instrumentation/altimeter/indicated-altitude-ft");
         me.right.add("instrumentation/altimeter/indicated-altitude-ft");
         me.right.add("instrumentation/airspeed-indicator/indicated-speed-kt");
         # Engines
@@ -528,9 +500,9 @@ var dialog = {
         content.set("default-padding", 5);
         props.globals.initNode("sim/about/text",
              "Zeppelin LZ 121 \"Nordstern\" airship for FlightGear\n" ~
-             "Copyright (C) 2010 - 2011  Anders Gidenstam\n\n" ~
+             "Copyright (C) 2010 - 2012  Anders Gidenstam\n\n" ~
              "FlightGear flight simulator\n" ~
-             "Copyright (C) 1996 - 2011  http://www.flightgear.org\n\n" ~
+             "Copyright (C) 1996 - 2012  http://www.flightgear.org\n\n" ~
              "This is free software, and you are welcome to\n" ~
              "redistribute it under certain conditions.\n" ~
              "See the GNU GENERAL PUBLIC LICENSE Version 2 for the details.",
