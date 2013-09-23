@@ -2,7 +2,7 @@
 <!--
   Zeppelin LZ 121 "Nordstern" airship for FlightGear.
 
-  Copyright (C) 2010 - 2012  Anders Gidenstam  (anders(at)gidenstam.org)
+  Copyright (C) 2010 - 2013  Anders Gidenstam  (anders(at)gidenstam.org)
   This file is licensed under the GPL license version 2 or later.
 -->
 <PropertyList>
@@ -197,5 +197,49 @@
   <min-m>0</min-m>
   <max-m>15000</max-m>
  </animation>
+
+ <nasal>
+  <load>
+##############################################################################
+# The on-load Nasal is not executed when this file is loaded as the user
+# aircraft.
+##############################################################################
+var rplayer = cmdarg();
+print("LOAD Nordstern ", rplayer.getPath());
+
+############################################################
+# Load the needed modules if it hasn't been done yet.
+# The mooring system is provided by ZLT-NT.
+if (!contains(globals, "ZLTNT")) {
+  var base = "/ZLT-NT/Systems/mp-network.nas";
+  var file = props.globals.getNode("/sim/fg-root").getValue() ~
+             "/Aircraft" ~ base;
+  if (io.stat(file) != nil) {
+      io.load_nasal(file, "ZLTNT");
+  } else {
+    foreach (var d; props.globals.getNode("/sim").getChildren("fg-aircraft")) {
+      var file = d.getValue() ~ base;
+      if (io.stat(file) != nil) {
+        io.load_nasal(file, "ZLTNT");
+        break;
+      }
+    }
+  }
+  # Use the minimal remote_mooring instead of mooring.
+  ZLTNT.mooring = ZLTNT.remote_mooring;
+  # Initialize scenario network as observer.
+  ZLTNT.mp_network_init(0);
+}
+##############################################################################
+  </load>
+  <unload>
+##############################################################################
+var rplayer = cmdarg();
+print("UNLOAD Nordstern ", rplayer.getPath());
+
+# The mast truck is removed automatically. However, the the ZLTNT module
+# itself should be shut down if this was its last user.
+  </unload>
+ </nasal>
 
 </PropertyList>
