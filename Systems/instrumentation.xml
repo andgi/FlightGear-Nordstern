@@ -2,7 +2,7 @@
 <!--
   Zeppelin LZ 121 "Nordstern" airship for FlightGear.
 
-  Copyright (C) 2010  Anders Gidenstam  (anders(at)gidenstam.org)
+  Copyright (C) 2010 - 2014  Anders Gidenstam  (anders(at)gidenstam.org)
   This file is licensed under the GPL license version 2 or later.
 -->
 <PropertyList>
@@ -38,11 +38,15 @@
   <number>0</number>
  </magnetic-compass>
 
+ <!-- Radio set. Not entirely historic. -->
  <adf>
   <name>adf</name>
   <number>0</number>
  </adf>
-
+ <comm-radio>
+  <name>comm</name>
+  <number>0</number>
+ </comm-radio>
  <nav-radio>
   <name>nav</name>
   <number>0</number>
