@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<!--
+  Zeppelin LZ 121 "Nordstern" airship for FlightGear.
+
+  Copyright (C) 2015  Anders Gidenstam  (anders(at)gidenstam.org)
+  This file is licensed under the GPL license version 2 or later.
+-->
+<system name="shadow">
+
+ <channel name="shadow">
+
+  <fcs_function name="tmp/shadow/height-agl-m">
+   <documentation>
+    Distance between the visual reference point and the ground surface.
+    Not completely correctly computed yet.
+   </documentation>
+   <function>
+    <product>
+     <value>0.3048</value>
+     <sum>
+      <property>position/h-agl-ft</property>
+      <product>
+       <value>-0.083333333</value>
+       <difference>
+        <property>metrics/visualrefpoint-x-in</property>
+        <property>inertia/cg-x-in</property>
+       </difference>
+       <sin>
+        <property>attitude/pitch-rad</property>
+       </sin>
+      </product>
+      <product>
+       <value>0.083333333</value>
+       <difference>
+        <property>metrics/visualrefpoint-z-in</property>
+        <property>inertia/cg-z-in</property>
+       </difference>
+       <cos>
+        <property>attitude/pitch-rad</property>
+       </cos>
+      </product>
+     </sum>
+    </product>
+   </function>
+   <output>/position/altitude-agl-m</output>
+  </fcs_function>
+
+ </channel>
+
+</system>

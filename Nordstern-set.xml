@@ -2,7 +2,7 @@
 <!--
   Zeppelin LZ 121 "Nordstern" airship for FlightGear.
 
-  Copyright (C) 2010 - 2011  Anders Gidenstam  (anders(at)gidenstam.org)
+  Copyright (C) 2010 - 2015  Anders Gidenstam  (anders(at)gidenstam.org)
   This file is licensed under the GPL license version 2 or later.
 -->
 <PropertyList>
@@ -11,7 +11,7 @@
 
   <description>Zeppelin LZ 121 "Nordstern" airship</description>
   <author>Anders Gidenstam</author>
-  <aircraft-version>$Id: Nordstern-set.xml,v 1.16 2011-05-26 19:25:11 anders Exp $</aircraft-version>
+  <aircraft-version>$Id: Nordstern-set.xml,v 1.18 2015/05/15 21:39:23 anders Exp $</aircraft-version>
 
   <status type="string">beta</status>
   <rating>

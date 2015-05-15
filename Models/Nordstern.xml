@@ -2,7 +2,7 @@
 <!--
   Zeppelin LZ 121 "Nordstern" airship for FlightGear.
 
-  Copyright (C) 2010 - 2013  Anders Gidenstam  (anders(at)gidenstam.org)
+  Copyright (C) 2010 - 2015  Anders Gidenstam  (anders(at)gidenstam.org)
   This file is licensed under the GPL license version 2 or later.
 -->
 <PropertyList>
@@ -38,6 +38,18 @@
   <object-name>cell.12</object-name>
   <object-name>cell.13</object-name>
  </effect>
+
+ <!-- Volumetric shadow object =============================================-->
+ <model>
+  <name>shadow</name>
+  <path>Aircraft/Nordstern/Models/shadow.xml</path>
+  <offsets>
+   <!-- x/y/z == back/right/up -->
+   <x-m> 0.00 </x-m>
+   <y-m> 0.00 </y-m>
+   <z-m> 0.00 </z-m>
+  </offsets>
+ </model>
 
  <model>
   <name>Control car interior</name>

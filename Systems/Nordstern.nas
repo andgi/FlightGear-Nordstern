@@ -2,7 +2,7 @@
 ##
 ## Zeppelin LZ 121 "Nordstern" airship for FlightGear.
 ##
-##  Copyright (C) 2010 - 2012  Anders Gidenstam  (anders(at)gidenstam.org)
+##  Copyright (C) 2010 - 2015  Anders Gidenstam  (anders(at)gidenstam.org)
 ##  This file is licensed under the GPL license v2 or later.
 ##
 ###############################################################################
@@ -30,7 +30,6 @@ var QUICK_RELEASE_BAG_CAPACITY = 220.5; # lb
 var TRIM_BAG_CAPACITY = 1102.3; # lb
 
 ###############################################################################
-var static_trim_p = "/fdm/jsbsim/fcs/static-trim-cmd-norm";
 var weight_on_gear_p = "/fdm/jsbsim/forces/fbz-gear-lbs";
 
 var trim_ballast_p =
@@ -115,7 +114,6 @@ var initial_weighoff = func {
 }
 
 var init_all = func(reinit=0) {
-    setprop(static_trim_p, 0.5);
     initial_weighoff();
 
 #    fake_electrical();
@@ -362,7 +360,6 @@ var debug_display_view_handler = {
                     "/fdm/jsbsim/buoyant_forces/gas-cell[10]/temp-R");
         # C.G.
         me.left.add("/fdm/jsbsim/inertia/cg-x-in");
-        me.left.add(static_trim_p);
         me.left.add("/fdm/jsbsim/mooring/total-distance-ft");
         # Pitch moments
         me.left.add("/fdm/jsbsim/moments/m-buoyancy-lbsft",
@@ -500,9 +497,9 @@ var dialog = {
         content.set("default-padding", 5);
         props.globals.initNode("sim/about/text",
              "Zeppelin LZ 121 \"Nordstern\" airship for FlightGear\n" ~
-             "Copyright (C) 2010 - 2012  Anders Gidenstam\n\n" ~
+             "Copyright (C) 2010 - 2015  Anders Gidenstam\n\n" ~
              "FlightGear flight simulator\n" ~
-             "Copyright (C) 1996 - 2012  http://www.flightgear.org\n\n" ~
+             "Copyright (C) 1996 - 2015  http://www.flightgear.org\n\n" ~
              "This is free software, and you are welcome to\n" ~
              "redistribute it under certain conditions.\n" ~
              "See the GNU GENERAL PUBLIC LICENSE Version 2 for the details.",

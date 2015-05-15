@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<!--
+  Zeppelin LZ 121 "Nordstern" airship for FlightGear.
+
+  Copyright (C) 2015  Anders Gidenstam  (anders(at)gidenstam.org)
+  This file is licensed under the GPL license v2 or later.
+-->
+<PropertyList>
+
+ <path>shadow.ac</path>
+ <offsets>
+  <!-- x/y/z == back/right/up -->
+  <x-m> 0.0 </x-m>
+  <y-m> 0.0 </y-m>
+  <z-m> 0.0 </z-m>
+ </offsets>
+
+ <effect>
+  <inherits-from>Effects/shadow-vol</inherits-from>
+  <object-name>shadow.object</object-name>
+ </effect>
+
+ <!-- roll -->
+ <animation>
+  <type>rotate</type>
+  <property>orientation/roll-deg</property>
+  <factor>1.0</factor>
+  <center>
+   <x-m>0</x-m>
+   <y-m>0</y-m>
+   <z-m>0</z-m>
+  </center>
+  <axis>
+   <x>1</x>
+   <y>0</y>
+   <z>0</z>
+  </axis>
+ </animation>
+
+ <!-- pitch -->
+ <animation>
+  <type>rotate</type>
+  <property>orientation/pitch-deg</property>
+  <factor>-1.0</factor>
+  <center>
+   <x-m>0</x-m>
+   <y-m>0</y-m>
+   <z-m>0</z-m>
+  </center>
+  <axis>
+   <x>0</x>
+   <y>1</y>
+   <z>0</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <type>select</type>
+  <condition>
+   <and>
+    <property>/sim/rendering/shaders/skydome</property>
+    <property>position/altitude-agl-m</property>
+    <not>
+     <property>/sim/rendering/rembrandt/enabled</property>
+    </not>
+   </and>
+  </condition>
+ </animation>
+
+</PropertyList>
