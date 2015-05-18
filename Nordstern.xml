@@ -31,7 +31,7 @@
   <email>anders at gidenstam dot org</email>
 
   <filecreationdate>2010-04-20</filecreationdate>
-  <version>$Id: Nordstern.xml,v 1.13 2015/05/15 21:39:23 anders Exp $</version>
+  <version>$Id: Nordstern.xml,v 1.14 2015/05/18 20:48:14 anders Exp $</version>
 
   <description>JSBSim model of the Zeppelin LZ 121 "Nordstern".</description>
 
@@ -1867,13 +1867,13 @@
 
  </external_reactions>
 
- <!-- system file="fgfs4jsbsim"/ -->
- <system file="mooring-jsbsim">     <!-- Mooring setup for FlightGear. -->
+ <system file="visual-reference-point-extensions"/>
+ <system file="mooring-jsbsim">
 
   <!-- Configuration -->
   <!--  Mooring -->
-  <property value="4000.0"> mooring/mooring-spring-coeff-lbs_ft </property>
-  <property value="-1000.0"> mooring/mooring-damping-coeff-lbs_fps </property>
+  <property value="10000.0"> mooring/mooring-spring-coeff-lbs_ft </property>
+  <property value="-3000.0"> mooring/mooring-damping-coeff-lbs_fps </property>
   <property value="100000.0"> mooring/max-mooring-force-lbs </property>
   <!--  Wire -->
   <property value="250.0"> mooring/wire-spring-coeff-lbs_ft </property>
@@ -1895,9 +1895,10 @@
   <property value="8591.5"> aero/constants/volume-ft3_2_3 </property>
 
   <!-- Added mass constants. -->
-  <!-- k-axial -0.02; k-traverse -0.94; k-rotational -0.81 -->
+  <!-- k-axial -0.02; k-transverse -0.94; k-rotational -0.81 -->
   <property value="-0.02"> aero/constants/added-mass/k-axial </property>
   <property value="-0.00"> aero/constants/added-mass/k-traverse </property>
+  <property value="-0.00"> aero/constants/added-mass/k-transverse </property>
   <property value="-0.81"> aero/constants/added-mass/k-rotational </property>
 
   <channel name="Temporary hack to prevent oscillations.">

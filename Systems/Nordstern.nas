@@ -360,12 +360,22 @@ var debug_display_view_handler = {
                     "/fdm/jsbsim/buoyant_forces/gas-cell[10]/temp-R");
         # C.G.
         me.left.add("/fdm/jsbsim/inertia/cg-x-in");
-        me.left.add("/fdm/jsbsim/mooring/total-distance-ft");
         # Pitch moments
         me.left.add("/fdm/jsbsim/moments/m-buoyancy-lbsft",
                     "/fdm/jsbsim/moments/m-aero-lbsft",
                     "/fdm/jsbsim/moments/m-total-lbsft");
-       
+        # Mooring related
+        me.left.add("/fdm/jsbsim/mooring/total-distance-ft",
+                    "/fdm/jsbsim/mooring/latitude-diff-ft",
+                    "/fdm/jsbsim/mooring/longitude-diff-ft",
+                    "/fdm/jsbsim/mooring/altitude-diff-ft");
+        me.left.add("/fdm/jsbsim/velocities/vrp-v-north-fps",
+                    "/velocities/speed-north-fps");
+        me.left.add("/fdm/jsbsim/velocities/vrp-v-east-fps",
+                    "/velocities/speed-east-fps");
+        me.left.add("/fdm/jsbsim/velocities/vrp-v-down-fps",
+                    "/velocities/speed-down-fps");
+
         # Flight information
         me.right.add("orientation/pitch-deg");
         me.right.add("surface-positions/elevator-pos-norm");
