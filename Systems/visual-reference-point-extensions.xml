@@ -24,14 +24,13 @@
 
  <channel name="position">
 
-  <fcs_function name="position/vrp-altitude-ft">
+  <fcs_function name="position/vrp-cg-altitude-offset-ft">
    <documentation>
-    Altitude of the visual reference point.
-    FIXME: Add roll dependence.
+    Altitude offset of the visual reference point w.r.t. the centre of gravity.
+    FIXME: Verify the roll dependence.
    </documentation>
    <function>
     <sum>
-     <property>position/h-sl-ft</property>
      <product>
       <value>-0.083333333</value>
       <difference>
@@ -52,6 +51,38 @@
        <property>attitude/pitch-rad</property>
       </cos>
      </product>
+     <product>
+      <value>-0.083333333</value>
+      <difference>
+       <property>metrics/visualrefpoint-y-in</property>
+       <property>inertia/cg-y-in</property>
+      </difference>
+      <sin>
+       <property>attitude/roll-rad</property>
+      </sin>
+     </product>
+     <!-- product>
+      <value>0.083333333</value>
+      <difference>
+       <property>metrics/visualrefpoint-z-in</property>
+       <property>inertia/cg-z-in</property>
+      </difference>
+      <cos>
+       <property>attitude/roll-rad</property>
+      </cos>
+     </product -->
+    </sum>
+   </function>
+  </fcs_function>
+
+  <fcs_function name="position/vrp-altitude-ft">
+   <documentation>
+    Altitude of the visual reference point.
+   </documentation>
+   <function>
+    <sum>
+     <property>position/h-sl-ft</property>
+     <property>position/vrp-cg-altitude-offset-ft</property>
     </sum>
    </function>
   </fcs_function>
@@ -59,31 +90,11 @@
   <fcs_function name="position/vrp-altitude-agl-ft">
    <documentation>
     Distance between the visual reference point and the ground surface.
-    FIXME: Add roll dependence.
    </documentation>
    <function>
     <sum>
      <property>position/h-agl-ft</property>
-     <product>
-      <value>-0.083333333</value>
-      <difference>
-       <property>metrics/visualrefpoint-x-in</property>
-       <property>inertia/cg-x-in</property>
-      </difference>
-      <sin>
-       <property>attitude/pitch-rad</property>
-      </sin>
-     </product>
-     <product>
-      <value>0.083333333</value>
-      <difference>
-       <property>metrics/visualrefpoint-z-in</property>
-       <property>inertia/cg-z-in</property>
-      </difference>
-      <cos>
-       <property>attitude/pitch-rad</property>
-      </cos>
-     </product>
+     <property>position/vrp-cg-altitude-offset-ft</property>
     </sum>
    </function>
   </fcs_function>
@@ -123,6 +134,72 @@
    </function>
   </fcs_function>
 
+  <fcs_function name="position/latitude-unit-distance-ft_deg">
+   <documentation>
+    Feet per degree of latitude at the present position.
+
+    The conversion is based on
+    http://gis.stackexchange.com/questions/75528/length-of-a-degree-where-do-the-terms-in-this-formula-come-from
+    but further truncated.
+   </documentation>
+   <function>
+    <product>
+     <value>3.2808399</value>
+     <!-- Approximate WGS 84 meters per latitude deg. -->
+     <sum>
+      <value>111132.92</value>
+      <product>
+       <value>-559.82</value>
+       <cos>
+        <product>
+         <value>2.0</value>
+         <value>0.017453293</value>
+         <property>position/vrp-latitude-deg</property>
+        </product>
+       </cos>
+      </product>
+     </sum>
+    </product>
+   </function>
+  </fcs_function>
+
+  <fcs_function name="position/longitude-unit-distance-ft_deg">
+   <documentation>
+    Feet per degree of longitude at the present position.
+
+    The conversion is based on
+    http://gis.stackexchange.com/questions/75528/length-of-a-degree-where-do-the-terms-in-this-formula-come-from
+    but further truncated.
+   </documentation>
+   <function>
+    <product>
+     <value>3.2808399</value>
+     <!-- Approximate WGS 84 meters per longitude deg. -->
+     <sum>
+      <product>
+       <value>111412.84</value>
+       <cos>
+        <product>
+         <value>0.017453293</value>
+         <property>position/vrp-latitude-deg</property>
+        </product>
+       </cos>
+      </product>
+      <product>
+       <value>-93.5</value>
+       <cos>
+        <product>
+         <value>3.0</value>
+         <value>0.017453293</value>
+         <property>position/vrp-latitude-deg</property>
+        </product>
+       </cos>
+      </product>
+     </sum>
+    </product>
+   </function>
+  </fcs_function>
+
  </channel>
 
  <channel name="velocities">
@@ -142,11 +219,13 @@
 
   <fcs_function name="velocities/vrp-v-north-fps">
    <documentation>
-    FIXME: The conversion to ft/sec is bogus!
+    The conversion from degrees of latitude per second to ft/sec is based on
+    http://gis.stackexchange.com/questions/75528/length-of-a-degree-where-do-the-terms-in-this-formula-come-from
+    but further truncated.
    </documentation>
    <function>
     <product>
-     <value>364560.0</value>
+     <property>position/latitude-unit-distance-ft_deg</property>
      <property>velocities/vrp-v-north-deg_sec</property>
     </product>
    </function>
@@ -163,11 +242,13 @@
 
   <fcs_function name="velocities/vrp-v-east-fps">
    <documentation>
-    FIXME: The conversion to ft/sec is bogus!
+    The conversion from degrees of longitude per second to ft/sec is based on
+    http://gis.stackexchange.com/questions/75528/length-of-a-degree-where-do-the-terms-in-this-formula-come-from
+    but further truncated.
    </documentation>
    <function>
     <product>
-     <value>364560.0</value>
+     <property>position/longitude-unit-distance-ft_deg</property>
      <property>velocities/vrp-v-east-deg_sec</property>
     </product>
    </function>
