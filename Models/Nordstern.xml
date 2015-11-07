@@ -17,13 +17,17 @@
 
  <!-- Rembrandt transparency markup. -->
  <effect>
-  <inherits-from>Effects/model-transparent</inherits-from>
+  <inherits-from>Models/Effects/transparent-glass-outside</inherits-from>
   <object-name>ccar_windows.F</object-name>
   <object-name>ccar_windows.L</object-name>
   <object-name>ccar_windows.R</object-name>
   <object-name>cabin_windows.L</object-name>
   <object-name>cabin_windows.R</object-name>
-  <!-- object-name>hull_cover</object-name --> <!-- Keep opaque for now. -->
+ </effect>
+ <!-- Keep opaque in Rembrandt for now. -->
+ <!-- effect>
+  <inherits-from>Effects/model-transparent</inherits-from>
+  <object-name>hull_cover</object-name>
   <object-name>cell.1</object-name>
   <object-name>cell.2</object-name>
   <object-name>cell.3</object-name>
@@ -37,6 +41,15 @@
   <object-name>cell.11</object-name>
   <object-name>cell.12</object-name>
   <object-name>cell.13</object-name>
+ </effect -->
+
+ <!-- Alpha-test for opaque alpha textured objects. -->
+ <effect>
+  <inherits-from>Models/Effects/opaque-alpha-test</inherits-from>
+  <object-name>longitudal_girder.0</object-name>
+  <object-name>longitudal_girder.001</object-name>
+  <object-name>ring_girders</object-name>
+  <object-name>keel_walkway</object-name>
  </effect>
 
  <!-- Volumetric shadow object =============================================-->

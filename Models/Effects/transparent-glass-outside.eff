@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PropertyList>
+ <name>transparent-glass-outside</name>
+ <inherits-from>Effects/model-combined-transparent</inherits-from>
+ <parameters>
+  <!--WARNING: Do not edit below this line -->
+  <!-- ############################
+       ### TRANSPARENCY INCLUDE ###
+       ############################ -->
+  <rendering-hint>transparent</rendering-hint>
+  <transparent>true</transparent>
+  <render-bin>
+   <bin-number>10</bin-number>
+   <bin-name>DepthSortedBin</bin-name>
+  </render-bin>
+  <!-- ################################
+       ### END TRANSPARENCY INCLUDE ###
+       ################################ -->
+  <!--WARNING: Do not edit above this line -->
+ </parameters>
+</PropertyList>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Zeppelin LZ 121 "Nordstern" airship for FlightGear.
+
+  Copyright (C) 2015  Anders Gidenstam  (anders(at)gidenstam.org)
+  This file is licensed under the GPL license version 2 or later.
+-->
+<PropertyList>
+ <name>opaque-alpha-test</name>
+ <inherits-from>Effects/model-default</inherits-from>
+ <technique n="5">
+  <pass n="0">
+   <alpha-test n="0">
+    <active n="0">true</active>
+    <comparison n="0">greater</comparison>
+    <reference n="0" type="float">0.25</reference>
+   </alpha-test>
+   <blend n="0">
+    <active n="0">false</active>
+   </blend>
+   <render-bin>
+    <bin-number>1</bin-number>
+    <bin-name>RenderBin</bin-name>
+   </render-bin>
+  </pass>
+ </technique>
+ <technique n="10">
+  <pass n="0">
+   <alpha-test n="0">
+    <active n="0">true</active>
+    <comparison n="0">greater</comparison>
+    <reference n="0" type="float">0.25</reference>
+   </alpha-test>
+   <blend n="0">
+    <active n="0">false</active>
+   </blend>
+   <render-bin>
+    <bin-number>1</bin-number>
+    <bin-name>RenderBin</bin-name>
+   </render-bin>
+  </pass>
+ </technique>
+ <technique n="11">
+  <pass n="0">
+   <alpha-test n="0">
+    <active n="0">true</active>
+    <comparison n="0">greater</comparison>
+    <reference n="0" type="float">0.25</reference>
+   </alpha-test>
+   <blend n="0">
+    <active n="0">false</active>
+   </blend>
+   <render-bin>
+    <bin-number>1</bin-number>
+    <bin-name>RenderBin</bin-name>
+   </render-bin>
+  </pass>
+ </technique>
+</PropertyList>
