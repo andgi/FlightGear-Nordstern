@@ -3,7 +3,7 @@
 
   Zeppelin LZ 121 "Nordstern" airship flight model for JSBSim.
 
-    Copyright (C) 2010 - 2015  Anders Gidenstam  (anders(at)gidenstam.org)
+    Copyright (C) 2010 - 2016  Anders Gidenstam  (anders(at)gidenstam.org)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@
   <email>anders at gidenstam dot org</email>
 
   <filecreationdate>2010-04-20</filecreationdate>
-  <version>$Id: Nordstern.xml,v 1.14 2015/05/18 20:48:14 anders Exp $</version>
+  <version>$Id: Nordstern.xml,v 1.15 2016/06/11 22:06:07 anders Exp $</version>
 
   <description>JSBSim model of the Zeppelin LZ 121 "Nordstern".</description>
 
@@ -75,6 +75,12 @@
    author="Douglas H. Robinson"
    title="The Commercial Zeppelins Bodensee and Nordstern"
    date="1979"/>
+
+  <reference
+   refID="LD:1924:25YOAC"
+   author="Dr. Ludwig Dürr"
+   title="25 Years Of Airship Construction"
+   date="1924/"/>
 
  </fileheader>
 
@@ -718,6 +724,16 @@
    [DR:1979:Bodensee]
      The side engines had reversing gear and no reduction gear.
      The rear engines had a 26:49 ratio reduction gear.
+
+   [LD:1924:25YOAC, pages 78 - 79]
+     Bore:              165 mm
+     Stroke:            180 mm
+     Compression ratio: 6.08:1
+     "The performance of the engine on the ground was limited to 245 hp as at
+      this level the carburettor was not yet fully open; full flow was not
+      achieved until an altitude of 1800 m had been reached. Performance up to
+      this height was consequently maintained at 245 hp. Fuel consumption was
+      200 gm/hp hour. When dry the engine weighed 400 kg (1916), later 390 kg."
   </documentation>
 
   <!--
@@ -1059,10 +1075,11 @@
     <!-- Heat transfer due to temperature difference. -->
     <function name="buoyant_forces/gas-cell[0]/dU_conduction">
      <product>
+      <property> buoyant_forces/heat-coeffs/conductivity </property>
       <property> buoyant_forces/gas-cell[0]/external-area-ft2 </property>
       <difference>
        <property> atmosphere/T-R </property>
-       <property> buoyant_forces/gas-cell/temp-R </property>
+       <property> buoyant_forces/gas-cell[0]/temp-R </property>
       </difference>
      </product>
     </function>
@@ -1078,7 +1095,7 @@
         <value> 4.0 </value>
        </pow>
        <pow>
-        <property> buoyant_forces/gas-cell/temp-R </property>
+        <property> buoyant_forces/gas-cell[0]/temp-R </property>
         <value> 4.0 </value>
        </pow>
       </difference>
@@ -1105,10 +1122,11 @@
     <!-- Heat transfer due to temperature difference. -->
     <function name="buoyant_forces/gas-cell[1]/dU_conduction">
      <product>
+      <property> buoyant_forces/heat-coeffs/conductivity </property>
       <property> buoyant_forces/gas-cell[1]/external-area-ft2 </property>
       <difference>
        <property> atmosphere/T-R </property>
-       <property> buoyant_forces/gas-cell/temp-R </property>
+       <property> buoyant_forces/gas-cell[1]/temp-R </property>
       </difference>
      </product>
     </function>
@@ -1124,7 +1142,7 @@
         <value> 4.0 </value>
        </pow>
        <pow>
-        <property> buoyant_forces/gas-cell/temp-R </property>
+        <property> buoyant_forces/gas-cell[1]/temp-R </property>
         <value> 4.0 </value>
        </pow>
       </difference>
@@ -1151,10 +1169,11 @@
     <!-- Heat transfer due to temperature difference. -->
     <function name="buoyant_forces/gas-cell[2]/dU_conduction">
      <product>
+      <property> buoyant_forces/heat-coeffs/conductivity </property>
       <property> buoyant_forces/gas-cell[2]/external-area-ft2 </property>
       <difference>
        <property> atmosphere/T-R </property>
-       <property> buoyant_forces/gas-cell/temp-R </property>
+       <property> buoyant_forces/gas-cell[2]/temp-R </property>
       </difference>
      </product>
     </function>
@@ -1170,7 +1189,7 @@
         <value> 4.0 </value>
        </pow>
        <pow>
-        <property> buoyant_forces/gas-cell/temp-R </property>
+        <property> buoyant_forces/gas-cell[2]/temp-R </property>
         <value> 4.0 </value>
        </pow>
       </difference>
@@ -1197,10 +1216,11 @@
     <!-- Heat transfer due to temperature difference. -->
     <function name="buoyant_forces/gas-cell[3]/dU_conduction">
      <product>
+      <property> buoyant_forces/heat-coeffs/conductivity </property>
       <property> buoyant_forces/gas-cell[3]/external-area-ft2 </property>
       <difference>
        <property> atmosphere/T-R </property>
-       <property> buoyant_forces/gas-cell/temp-R </property>
+       <property> buoyant_forces/gas-cell[3]/temp-R </property>
       </difference>
      </product>
     </function>
@@ -1216,7 +1236,7 @@
         <value> 4.0 </value>
        </pow>
        <pow>
-        <property> buoyant_forces/gas-cell/temp-R </property>
+        <property> buoyant_forces/gas-cell[3]/temp-R </property>
         <value> 4.0 </value>
        </pow>
       </difference>
@@ -1243,10 +1263,11 @@
     <!-- Heat transfer due to temperature difference. -->
     <function name="buoyant_forces/gas-cell[4]/dU_conduction">
      <product>
+      <property> buoyant_forces/heat-coeffs/conductivity </property>
       <property> buoyant_forces/gas-cell[4]/external-area-ft2 </property>
       <difference>
        <property> atmosphere/T-R </property>
-       <property> buoyant_forces/gas-cell/temp-R </property>
+       <property> buoyant_forces/gas-cell[4]/temp-R </property>
       </difference>
      </product>
     </function>
@@ -1262,7 +1283,7 @@
         <value> 4.0 </value>
        </pow>
        <pow>
-        <property> buoyant_forces/gas-cell/temp-R </property>
+        <property> buoyant_forces/gas-cell[4]/temp-R </property>
         <value> 4.0 </value>
        </pow>
       </difference>
@@ -1289,10 +1310,11 @@
     <!-- Heat transfer due to temperature difference. -->
     <function name="buoyant_forces/gas-cell[5]/dU_conduction">
      <product>
+      <property> buoyant_forces/heat-coeffs/conductivity </property>
       <property> buoyant_forces/gas-cell[5]/external-area-ft2 </property>
       <difference>
        <property> atmosphere/T-R </property>
-       <property> buoyant_forces/gas-cell/temp-R </property>
+       <property> buoyant_forces/gas-cell[5]/temp-R </property>
       </difference>
      </product>
     </function>
@@ -1308,7 +1330,7 @@
         <value> 4.0 </value>
        </pow>
        <pow>
-        <property> buoyant_forces/gas-cell/temp-R </property>
+        <property> buoyant_forces/gas-cell[5]/temp-R </property>
         <value> 4.0 </value>
        </pow>
       </difference>
@@ -1335,10 +1357,11 @@
     <!-- Heat transfer due to temperature difference. -->
     <function name="buoyant_forces/gas-cell[6]/dU_conduction">
      <product>
+      <property> buoyant_forces/heat-coeffs/conductivity </property>
       <property> buoyant_forces/gas-cell[6]/external-area-ft2 </property>
       <difference>
        <property> atmosphere/T-R </property>
-       <property> buoyant_forces/gas-cell/temp-R </property>
+       <property> buoyant_forces/gas-cell[6]/temp-R </property>
       </difference>
      </product>
     </function>
@@ -1354,7 +1377,7 @@
         <value> 4.0 </value>
        </pow>
        <pow>
-        <property> buoyant_forces/gas-cell/temp-R </property>
+        <property> buoyant_forces/gas-cell[6]/temp-R </property>
         <value> 4.0 </value>
        </pow>
       </difference>
@@ -1381,10 +1404,11 @@
     <!-- Heat transfer due to temperature difference. -->
     <function name="buoyant_forces/gas-cell[7]/dU_conduction">
      <product>
+      <property> buoyant_forces/heat-coeffs/conductivity </property>
       <property> buoyant_forces/gas-cell[7]/external-area-ft2 </property>
       <difference>
        <property> atmosphere/T-R </property>
-       <property> buoyant_forces/gas-cell/temp-R </property>
+       <property> buoyant_forces/gas-cell[7]/temp-R </property>
       </difference>
      </product>
     </function>
@@ -1400,7 +1424,7 @@
         <value> 4.0 </value>
        </pow>
        <pow>
-        <property> buoyant_forces/gas-cell/temp-R </property>
+        <property> buoyant_forces/gas-cell[7]/temp-R </property>
         <value> 4.0 </value>
        </pow>
       </difference>
@@ -1427,10 +1451,11 @@
     <!-- Heat transfer due to temperature difference. -->
     <function name="buoyant_forces/gas-cell[8]/dU_conduction">
      <product>
+      <property> buoyant_forces/heat-coeffs/conductivity </property>
       <property> buoyant_forces/gas-cell[8]/external-area-ft2 </property>
       <difference>
        <property> atmosphere/T-R </property>
-       <property> buoyant_forces/gas-cell/temp-R </property>
+       <property> buoyant_forces/gas-cell[8]/temp-R </property>
       </difference>
      </product>
     </function>
@@ -1446,7 +1471,7 @@
         <value> 4.0 </value>
        </pow>
        <pow>
-        <property> buoyant_forces/gas-cell/temp-R </property>
+        <property> buoyant_forces/gas-cell[8]/temp-R </property>
         <value> 4.0 </value>
        </pow>
       </difference>
@@ -1473,10 +1498,11 @@
     <!-- Heat transfer due to temperature difference. -->
     <function name="buoyant_forces/gas-cell[9]/dU_conduction">
      <product>
+      <property> buoyant_forces/heat-coeffs/conductivity </property>
       <property> buoyant_forces/gas-cell[9]/external-area-ft2 </property>
       <difference>
        <property> atmosphere/T-R </property>
-       <property> buoyant_forces/gas-cell/temp-R </property>
+       <property> buoyant_forces/gas-cell[9]/temp-R </property>
       </difference>
      </product>
     </function>
@@ -1492,7 +1518,7 @@
         <value> 4.0 </value>
        </pow>
        <pow>
-        <property> buoyant_forces/gas-cell/temp-R </property>
+        <property> buoyant_forces/gas-cell[9]/temp-R </property>
         <value> 4.0 </value>
        </pow>
       </difference>
@@ -1519,10 +1545,11 @@
     <!-- Heat transfer due to temperature difference. -->
     <function name="buoyant_forces/gas-cell[10]/dU_conduction">
      <product>
+      <property> buoyant_forces/heat-coeffs/conductivity </property>
       <property> buoyant_forces/gas-cell[10]/external-area-ft2 </property>
       <difference>
        <property> atmosphere/T-R </property>
-       <property> buoyant_forces/gas-cell/temp-R </property>
+       <property> buoyant_forces/gas-cell[10]/temp-R </property>
       </difference>
      </product>
     </function>
@@ -1538,7 +1565,7 @@
         <value> 4.0 </value>
        </pow>
        <pow>
-        <property> buoyant_forces/gas-cell/temp-R </property>
+        <property> buoyant_forces/gas-cell[10]/temp-R </property>
         <value> 4.0 </value>
        </pow>
       </difference>
@@ -1565,10 +1592,11 @@
     <!-- Heat transfer due to temperature difference. -->
     <function name="buoyant_forces/gas-cell[11]/dU_conduction">
      <product>
+      <property> buoyant_forces/heat-coeffs/conductivity </property>
       <property> buoyant_forces/gas-cell[11]/external-area-ft2 </property>
       <difference>
        <property> atmosphere/T-R </property>
-       <property> buoyant_forces/gas-cell/temp-R </property>
+       <property> buoyant_forces/gas-cell[11]/temp-R </property>
       </difference>
      </product>
     </function>
@@ -1584,7 +1612,7 @@
         <value> 4.0 </value>
        </pow>
        <pow>
-        <property> buoyant_forces/gas-cell/temp-R </property>
+        <property> buoyant_forces/gas-cell[11]/temp-R </property>
         <value> 4.0 </value>
        </pow>
       </difference>

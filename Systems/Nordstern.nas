@@ -2,7 +2,7 @@
 ##
 ## Zeppelin LZ 121 "Nordstern" airship for FlightGear.
 ##
-##  Copyright (C) 2010 - 2015  Anders Gidenstam  (anders(at)gidenstam.org)
+##  Copyright (C) 2010 - 2016  Anders Gidenstam  (anders(at)gidenstam.org)
 ##  This file is licensed under the GPL license v2 or later.
 ##
 ###############################################################################
@@ -384,9 +384,13 @@ var debug_display_view_handler = {
         me.right.add("instrumentation/airspeed-indicator/indicated-speed-kt");
         # Engines
         me.right.add("/engines/engine[0]/rpm",
+                     "/fdm/jsbsim/propulsion/engine[0]/power-hp",
                      "/engines/engine[1]/rpm",
+                     "/fdm/jsbsim/propulsion/engine[1]/power-hp",
                      "/engines/engine[2]/rpm",
-                     "/engines/engine[3]/rpm");
+                     "/fdm/jsbsim/propulsion/engine[2]/power-hp",
+                     "/engines/engine[3]/rpm",
+                     "/fdm/jsbsim/propulsion/engine[3]/power-hp");
 
         me.shown = 1;
         me.stop();
@@ -507,9 +511,9 @@ var dialog = {
         content.set("default-padding", 5);
         props.globals.initNode("sim/about/text",
              "Zeppelin LZ 121 \"Nordstern\" airship for FlightGear\n" ~
-             "Copyright (C) 2010 - 2015  Anders Gidenstam\n\n" ~
+             "Copyright (C) 2010 - 2016  Anders Gidenstam\n\n" ~
              "FlightGear flight simulator\n" ~
-             "Copyright (C) 1996 - 2015  http://www.flightgear.org\n\n" ~
+             "Copyright (C) 1996 - 2016  http://www.flightgear.org\n\n" ~
              "This is free software, and you are welcome to\n" ~
              "redistribute it under certain conditions.\n" ~
              "See the GNU GENERAL PUBLIC LICENSE Version 2 for the details.",

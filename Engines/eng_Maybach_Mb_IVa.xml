@@ -3,7 +3,7 @@
 
   Zeppelin LZ 121 "Nordstern" airship flight model for JSBSim.
 
-    Copyright (C) 2010 - 2012  Anders Gidenstam  (anders(at)gidenstam.org)
+    Copyright (C) 2010 - 2016  Anders Gidenstam  (anders(at)gidenstam.org)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -49,24 +49,37 @@
      Compression ratio: 5.94:1
      Clearance volume:  778.9 cm^3
 
+   [LD:1924:25YOAC, pages 78 - 79]
+     Bore:              165 mm
+     Stroke:            180 mm
+     Compression ratio: 6.08:1
+     "The performance of the engine on the ground was limited to 245 hp as at
+      this level the carburettor was not yet fully open; full flow was not
+      achieved until an altitude of 1800 m had been reached. Performance up to
+      this height was consequently maintained at 245 hp. Fuel consumption was
+      200 gm/hp hour. When dry the engine weighed 400 kg (1916), later 390 kg."
+
  </documentation>
 
  <displacement unit="LTR"> 23.09  </displacement>
  <bore unit="M">            0.165 </bore>
  <stroke unit="M">          0.180 </stroke>
- <compression-ratio>        5.94  </compression-ratio> 
+ <compression-ratio>        6.08  </compression-ratio>
  <cylinders>                6.00  </cylinders>
  <cycles>                   4.00  </cycles>
 
- <minmp unit="INHG">          9.0 </minmp>
- <maxmp unit="INHG">         27.9 </maxmp>
+ <minmp unit="INHG">         10.5 </minmp>
+ <maxmp unit="INHG">         28.5 </maxmp>
 
- <maxhp>                   240.00 </maxhp>
+ <maxhp>                   240.00 </maxhp> <!-- Needs to be adjusted so that
+                                                full throttle at 1800 m
+                                                delivers 240 hp @ 1400 RPM(?).
+                                           -->
 
- <idlerpm>                 200.00 </idlerpm>
+ <idlerpm>                 250.00 </idlerpm>
  <maxrpm>                 1400.00 </maxrpm>
 
- <!-- bsfc unit="LBS/HP*HR">     0.37 </bsfc -->
+ <bsfc unit="LBS/HP*HR">    0.443 </bsfc>
  <!-- volumetric_efficiency>          <volumetric_efficiency -->
  <sparkfaildrop>             0.10 </sparkfaildrop>
 
