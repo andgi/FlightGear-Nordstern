@@ -31,7 +31,7 @@
   <email>anders at gidenstam dot org</email>
 
   <filecreationdate>2010-04-20</filecreationdate>
-  <version>$Id: Nordstern.xml,v 1.15 2016/06/11 22:06:07 anders Exp $</version>
+  <version>$Id: Nordstern.xml,v 1.16 2016/06/12 20:16:09 anders Exp $</version>
 
   <description>JSBSim model of the Zeppelin LZ 121 "Nordstern".</description>
 
@@ -1896,7 +1896,7 @@
  </external_reactions>
 
  <system file="visual-reference-point-extensions"/>
- <system file="mooring-jsbsim">
+ <system file="airship-mooring">
 
   <!-- Configuration -->
   <!--  Mooring -->
