@@ -31,7 +31,7 @@
   <email>anders at gidenstam dot org</email>
 
   <filecreationdate>2010-04-20</filecreationdate>
-  <version>$Id: Nordstern.xml,v 1.16 2016/06/12 20:16:09 anders Exp $</version>
+  <version>$Id: Nordstern.xml,v 1.17 2016/06/18 21:30:18 anders Exp $</version>
 
   <description>JSBSim model of the Zeppelin LZ 121 "Nordstern".</description>
 
@@ -81,6 +81,12 @@
    author="Dr. Ludwig Dürr"
    title="25 Years Of Airship Construction"
    date="1924/"/>
+
+  <reference
+   refID="HE:1919:BIPZ"
+   author="Dr. Hugo Eckener"
+   title="Brief Instructions and Practical Hints for Piloting Zeppelin Airships for the Flight Personnel of the ''DELAG''"
+   date="1919"/>
 
  </fileheader>
 
@@ -1679,6 +1685,7 @@
    <summer name="fcs/elevator/pos-cmd-norm">
     <input>fcs/elevator-cmd-norm</input>
     <input>fcs/pitch-trim-cmd-norm</input>
+    <input>crew/elevatorman/elevator-cmd-norm</input>
     <clipto>
      <min>-1</min>
      <max>1</max>
@@ -1727,6 +1734,7 @@
     <input>-fcs/aileron-cmd-norm</input>
     <input>fcs/rudder-cmd-norm</input>
     <input>fcs/yaw-trim-cmd-norm</input>
+    <input>crew/helmsman/rudder-cmd-norm</input>
     <clipto>
      <min>-1</min>
      <max>1</max>
@@ -1949,6 +1957,7 @@
 
  <system file="airship_added_mass"/>
 
+ <system file="crew-jsbsim"/>
  <system file="shadow-jsbsim"/>
 
  <!-- aerodynamics file="Systems/gerris_aero"/ -->

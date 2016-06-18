@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Zeppelin LZ 121 "Nordstern" airship flight model for JSBSim.
+
+    Copyright (C) 2016  Anders Gidenstam  (anders(at)gidenstam.org)
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+-->
+<system name="crew">
+
+ <documentation>
+  This system provides autopilot components for performing some crew duties,
+  such as the elevator- and helmsman.
+ </documentation>
+
+ <!-- Helmsman -->
+ <property value="0.0">crew/helmsman/enabled</property>
+ <property value="0.0">crew/helmsman/heading-magnetic-cmd-deg</property>
+
+ <property value="2.00">crew/helmsman/heading-pid-kp</property>
+ <property value="0.05">crew/helmsman/heading-pid-ki</property>
+ <property value="0.00">crew/helmsman/heading-pid-kd</property>
+
+ <property value="1.00">crew/helmsman/turn-rate-pid-kp</property>
+ <property value="0.20">crew/helmsman/turn-rate-pid-ki</property>
+ <property value="0.00">crew/helmsman/turn-rate-pid-kd</property>
+
+ <property value="1.0">crew/helmsman/max-turn-deg_sec</property>
+
+ <channel name="helmsman">
+
+  <angle name="crew/helmsman/heading-error-deg" unit="DEG">
+   <source_angle unit="DEG">attitude/psi-deg</source_angle>
+   <target_angle unit="DEG">crew/helmsman/heading-magnetic-cmd-deg</target_angle>
+   <clipto>
+    <min>-180.0</min>
+    <max>180.0</max>
+   </clipto>
+  </angle>
+
+  <actuator name="crew/helmsman/heading-actuator-deg_sec">
+   <input>crew/helmsman/heading-pid-deg_sec</input>
+   <!-- lag> number </lag -->
+   <!-- rate_limit> number </rate_limit -->
+   <!-- bias> number </bias -->
+   <!-- deadband_width> number </deadband_width -->
+   <!-- hysteresis_width> number </hysteresis_width -->
+   <clipto>
+    <min>-crew/helmsman/max-turn-deg_sec</min>
+    <max>crew/helmsman/max-turn-deg_sec</max>
+   </clipto>
+  </actuator>
+
+  <pid name="crew/helmsman/heading-pid-deg_sec">
+   <input>crew/helmsman/heading-error-deg</input>
+   <kp>crew/helmsman/heading-pid-kp</kp>
+   <ki>crew/helmsman/heading-pid-ki</ki>
+   <kd>crew/helmsman/heading-pid-kd</kd>
+   <trigger>crew/helmsman/heading-actuator-deg_sec/saturated</trigger>
+  </pid>
+  <fcs_function name="crew/helmsman/turn-rate-cmd-deg_sec">
+   <function>
+    <property>crew/helmsman/heading-actuator-deg_sec</property>
+   </function>
+  </fcs_function>
+
+  <fcs_function name="crew/helmsman/turn-rate-error-deg_sec">
+   <function>
+    <difference>
+     <todegrees>
+      <property>velocities/psidot-rad_sec</property>
+     </todegrees>
+     <property>crew/helmsman/turn-rate-cmd-deg_sec</property>
+    </difference>
+   </function>
+  </fcs_function>
+
+  <actuator name="crew/helmsman/turn-rate-actuator-norm">
+   <input>crew/helmsman/turn-rate-pid-norm</input>
+   <!-- lag> number </lag -->
+   <!-- rate_limit> number </rate_limit -->
+   <!-- bias> number </bias -->
+   <!-- deadband_width> number </deadband_width -->
+   <!-- hysteresis_width> number </hysteresis_width -->
+   <clipto>
+    <min>-1.0</min>
+    <max> 1.0</max>
+   </clipto>
+  </actuator>
+
+  <pid name="crew/helmsman/turn-rate-pid-norm">
+   <input>crew/helmsman/turn-rate-error-deg_sec</input>
+   <kp>crew/helmsman/turn-rate-pid-kp</kp>
+   <ki>crew/helmsman/turn-rate-pid-ki</ki>
+   <kd>crew/helmsman/turn-rate-pid-kd</kd>
+   <trigger>crew/helmsman/turn-rate-actuator-norm/saturated</trigger>
+  </pid>
+  <fcs_function name="crew/helmsman/suggested-rudder-cmd-norm">
+   <function>
+    <property>crew/helmsman/turn-rate-actuator-norm</property>
+   </function>
+  </fcs_function>
+
+  <switch name="crew/helmsman/rudder-cmd-norm">
+   <default value="0.0"/>
+   <test value="crew/helmsman/suggested-rudder-cmd-norm">
+    crew/helmsman/enabled GT 0.5
+   </test>
+  </switch>
+
+ </channel>
+
+ <!-- Elevatorman -->
+ <property value="0.0">crew/elevatorman/enabled</property>
+ <property value="0.0">crew/elevatorman/altitude-cmd-ft</property>
+ <!-- property value="0.0">crew/elevatorman/pitch-cmd-deg</property -->
+
+ <property value="-0.05">crew/elevatorman/altitude-pid-kp</property>
+ <property value="-0.001">crew/elevatorman/altitude-pid-ki</property>
+ <property value="0.00">crew/elevatorman/altitude-pid-kd</property>
+
+ <property value="1.00">crew/elevatorman/pitch-pid-kp</property>
+ <property value="0.20">crew/elevatorman/pitch-pid-ki</property>
+ <property value="0.00">crew/elevatorman/pitch-pid-kd</property>
+
+ <property value="5.0">crew/elevatorman/max-pitch-deg</property>
+
+ <channel name="elevatorman">
+
+  <fcs_function name="crew/elevatorman/altitude-error-ft">
+   <function>
+    <difference>
+     <property>position/h-sl-ft</property>
+     <property>crew/elevatorman/altitude-cmd-ft</property>
+    </difference>
+   </function>
+  </fcs_function>
+
+  <actuator name="crew/elevatorman/altitude-actuator-deg">
+   <input>crew/elevatorman/altitude-pid-deg</input>
+   <!-- lag> number </lag -->
+   <!-- rate_limit> number </rate_limit -->
+   <!-- bias> number </bias -->
+   <!-- deadband_width> number </deadband_width -->
+   <!-- hysteresis_width> number </hysteresis_width -->
+   <clipto>
+    <min>-crew/elevatorman/max-pitch-deg</min>
+    <max>crew/elevatorman/max-pitch-deg</max>
+   </clipto>
+  </actuator>
+
+  <pid name="crew/elevatorman/altitude-pid-deg">
+   <input>crew/elevatorman/altitude-error-ft</input>
+   <kp>crew/elevatorman/altitude-pid-kp</kp>
+   <ki>crew/elevatorman/altitude-pid-ki</ki>
+   <kd>crew/elevatorman/altitude-pid-kd</kd>
+   <trigger>crew/elevatorman/altitude-actuator-deg/saturated</trigger>
+  </pid>
+  <fcs_function name="crew/elevatorman/pitch-cmd-deg">
+   <function>
+    <property>crew/elevatorman/altitude-actuator-deg</property>
+   </function>
+  </fcs_function>
+
+  <angle name="crew/elevatorman/pitch-error-deg" unit="DEG">
+   <source_angle unit="DEG">crew/elevatorman/pitch-cmd-deg</source_angle>
+   <target_angle unit="DEG">attitude/theta-deg</target_angle>
+   <clipto>
+    <min>-180.0</min>
+    <max>180.0</max>
+   </clipto>
+  </angle>
+
+  <actuator name="crew/elevatorman/pitch-actuator-norm">
+   <input>crew/elevatorman/pitch-pid-norm</input>
+   <!-- lag> number </lag -->
+   <!-- rate_limit> number </rate_limit -->
+   <!-- bias> number </bias -->
+   <!-- deadband_width> number </deadband_width -->
+   <!-- hysteresis_width> number </hysteresis_width -->
+   <clipto>
+    <min>-1.0</min>
+    <max>1.0</max>
+   </clipto>
+  </actuator>
+
+  <pid name="crew/elevatorman/pitch-pid-norm">
+   <input>crew/elevatorman/pitch-error-deg</input>
+   <kp>crew/elevatorman/pitch-pid-kp</kp>
+   <ki>crew/elevatorman/pitch-pid-ki</ki>
+   <kd>crew/elevatorman/pitch-pid-kd</kd>
+   <trigger>crew/elevatorman/pitch-actuator-norm/saturated</trigger>
+  </pid>
+  <fcs_function name="crew/elevatorman/suggested-elevator-cmd-norm">
+   <function>
+    <property>crew/elevatorman/pitch-actuator-norm</property>
+   </function>
+  </fcs_function>
+
+  <switch name="crew/elevatorman/elevator-cmd-norm">
+   <default value="0.0"/>
+   <test value="crew/elevatorman/suggested-elevator-cmd-norm">
+    crew/elevatorman/enabled GT 0.5
+   </test>
+  </switch>
+
+ </channel>
+
+</system>

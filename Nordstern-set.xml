@@ -11,7 +11,7 @@
 
   <description>Zeppelin LZ 121 "Nordstern" airship</description>
   <author>Anders Gidenstam</author>
-  <aircraft-version>$Id: Nordstern-set.xml,v 1.19 2016/06/11 22:06:07 anders Exp $</aircraft-version>
+  <aircraft-version>$Id: Nordstern-set.xml,v 1.20 2016/06/18 21:30:18 anders Exp $</aircraft-version>
 
   <status type="string">beta</status>
   <rating>
@@ -614,5 +614,30 @@
 
   </keyboard>
  </input>
+
+ <!--
+   Force the type and initial value of the aliased JSBSim control properties.
+   JSBSim does not write default values to properties that it finds already
+   exist even though they are of undefined type, as e.g. when created by
+   aliases. Setting the default values here allow them to be overriden from
+   the command line.
+
+   Currently the aircraft starts with most of the electrical system switched on.
+ -->
+ <fdm>
+  <jsbsim>
+   <crew>
+    <helmsman>
+     <heading-magnetic-cmd-deg type="double">0.0</heading-magnetic-cmd-deg>
+    </helmsman>
+   </crew>
+  </jsbsim>
+ </fdm>
+
+ <autopilot>
+  <settings>
+   <heading-bug-deg alias="/fdm/jsbsim/crew/helmsman/heading-magnetic-cmd-deg"/>
+  </settings>
+ </autopilot>
 
 </PropertyList>
