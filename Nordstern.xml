@@ -31,7 +31,7 @@
   <email>anders at gidenstam dot org</email>
 
   <filecreationdate>2010-04-20</filecreationdate>
-  <version>$Id: Nordstern.xml,v 1.17 2016/06/18 21:30:18 anders Exp $</version>
+  <version>$Id: Nordstern.xml,v 1.18 2016/07/10 21:35:34 anders Exp $</version>
 
   <description>JSBSim model of the Zeppelin LZ 121 "Nordstern".</description>
 
@@ -716,6 +716,9 @@
        2.2 kg/kW (implying an engine weight of 418kg)
        Specific fuel consumption: 270 g/kWh @ 1400 RPM
        Cruise consumption: about 45 kg/h (per engine)
+     Power settings (page 46 on the Bodensee test flights):
+       AK (all out):    1460 rpm (130.5 km/h @ 4 engines)
+       Marsch (cruise): 1360 rpm (119.6 km/h @ 4 engines)
 
    [Flight:1918:MB, pp. 960 - 965, 995 - 1000]
      Technical description of captured Maybach 300 HP aircraft engine.

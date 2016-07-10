@@ -130,11 +130,11 @@
  <!-- property value="0.0">crew/elevatorman/pitch-cmd-deg</property -->
 
  <property value="-0.05">crew/elevatorman/altitude-pid-kp</property>
- <property value="-0.001">crew/elevatorman/altitude-pid-ki</property>
+ <property value="-0.002">crew/elevatorman/altitude-pid-ki</property>
  <property value="0.00">crew/elevatorman/altitude-pid-kd</property>
 
  <property value="1.00">crew/elevatorman/pitch-pid-kp</property>
- <property value="0.20">crew/elevatorman/pitch-pid-ki</property>
+ <property value="0.30">crew/elevatorman/pitch-pid-ki</property>
  <property value="0.00">crew/elevatorman/pitch-pid-kd</property>
 
  <property value="5.0">crew/elevatorman/max-pitch-deg</property>
@@ -216,6 +216,227 @@
    <test value="crew/elevatorman/suggested-elevator-cmd-norm">
     crew/elevatorman/enabled GT 0.5
    </test>
+  </switch>
+
+ </channel>
+
+ <!-- Machinists -->
+ <property value="0.0">crew/machinists/enabled</property>
+
+ <property value="-0.050">crew/machinists/speed-pid-kp</property>
+ <property value="-0.005">crew/machinists/speed-pid-ki</property>
+ <property value="0.0">crew/machinists/speed-pid-kd</property>
+
+ <channel name="machinists">
+
+  <aerosurface_scale name="crew/machinists/speed-cmd-rpm[0]">
+   <input>fcs/throttle-cmd-norm[0]</input>
+   <domain>
+    <min>0</min>
+    <max>1</max>
+   </domain>
+   <range>
+    <min>300</min>
+    <max>1460</max>
+   </range>
+   <zero_centered>0</zero_centered>
+  </aerosurface_scale>
+  <aerosurface_scale name="crew/machinists/speed-cmd-rpm[1]">
+   <input>fcs/throttle-cmd-norm[1]</input>
+   <domain>
+    <min>0</min>
+    <max>1</max>
+   </domain>
+   <range>
+    <min>300</min>
+    <max>1460</max>
+   </range>
+   <zero_centered>0</zero_centered>
+  </aerosurface_scale>
+  <aerosurface_scale name="crew/machinists/speed-cmd-rpm[2]">
+   <input>fcs/throttle-cmd-norm[2]</input>
+   <domain>
+    <min>0</min>
+    <max>1</max>
+   </domain>
+   <range>
+    <min>300</min>
+    <max>1460</max>
+   </range>
+   <zero_centered>0</zero_centered>
+  </aerosurface_scale>
+  <aerosurface_scale name="crew/machinists/speed-cmd-rpm[3]">
+   <input>fcs/throttle-cmd-norm[3]</input>
+   <domain>
+    <min>0</min>
+    <max>1</max>
+   </domain>
+   <range>
+    <min>300</min>
+    <max>1460</max>
+   </range>
+   <zero_centered>0</zero_centered>
+  </aerosurface_scale>
+
+  <fcs_function name="crew/machinists/speed-error-rpm[0]">
+   <function>
+    <difference>
+     <property>propulsion/engine[0]/propeller-rpm</property>
+     <property>crew/machinists/speed-cmd-rpm[0]</property>
+    </difference>
+   </function>
+  </fcs_function>
+  <fcs_function name="crew/machinists/speed-error-rpm[1]">
+   <function>
+    <difference>
+     <property>propulsion/engine[1]/propeller-rpm</property>
+     <property>crew/machinists/speed-cmd-rpm[1]</property>
+    </difference>
+   </function>
+  </fcs_function>
+  <fcs_function name="crew/machinists/speed-error-rpm[2]">
+   <function>
+    <difference>
+     <property>propulsion/engine[2]/propeller-rpm</property>
+     <property>crew/machinists/speed-cmd-rpm[2]</property>
+    </difference>
+   </function>
+  </fcs_function>
+  <fcs_function name="crew/machinists/speed-error-rpm[3]">
+   <function>
+    <difference>
+     <property>propulsion/engine[3]/propeller-rpm</property>
+     <property>crew/machinists/speed-cmd-rpm[3]</property>
+    </difference>
+   </function>
+  </fcs_function>
+
+  <actuator name="crew/machinists/speed-actuator-norm[0]">
+   <input>crew/machinists/speed-pid-norm[0]</input>
+   <!-- lag> number </lag -->
+   <!-- rate_limit> number </rate_limit -->
+   <!-- bias> number </bias -->
+   <!-- deadband_width> number </deadband_width -->
+   <!-- hysteresis_width> number </hysteresis_width -->
+   <clipto>
+    <min>0.0</min>
+    <max>1.0</max>
+   </clipto>
+  </actuator>
+  <actuator name="crew/machinists/speed-actuator-norm[1]">
+   <input>crew/machinists/speed-pid-norm[1]</input>
+   <!-- lag> number </lag -->
+   <!-- rate_limit> number </rate_limit -->
+   <!-- bias> number </bias -->
+   <!-- deadband_width> number </deadband_width -->
+   <!-- hysteresis_width> number </hysteresis_width -->
+   <clipto>
+    <min>0.0</min>
+    <max>1.0</max>
+   </clipto>
+  </actuator>
+  <actuator name="crew/machinists/speed-actuator-norm[2]">
+   <input>crew/machinists/speed-pid-norm[2]</input>
+   <!-- lag> number </lag -->
+   <!-- rate_limit> number </rate_limit -->
+   <!-- bias> number </bias -->
+   <!-- deadband_width> number </deadband_width -->
+   <!-- hysteresis_width> number </hysteresis_width -->
+   <clipto>
+    <min>0.0</min>
+    <max>1.0</max>
+   </clipto>
+  </actuator>
+  <actuator name="crew/machinists/speed-actuator-norm[3]">
+   <input>crew/machinists/speed-pid-norm[3]</input>
+   <!-- lag> number </lag -->
+   <!-- rate_limit> number </rate_limit -->
+   <!-- bias> number </bias -->
+   <!-- deadband_width> number </deadband_width -->
+   <!-- hysteresis_width> number </hysteresis_width -->
+   <clipto>
+    <min>0.0</min>
+    <max>1.0</max>
+   </clipto>
+  </actuator>
+
+  <pid name="crew/machinists/speed-pid-norm[0]">
+   <input>crew/machinists/speed-error-rpm[0]</input>
+   <kp>crew/machinists/speed-pid-kp</kp>
+   <ki>crew/machinists/speed-pid-ki</ki>
+   <kd>crew/machinists/speed-pid-kd</kd>
+   <trigger>crew/machinists/speed-actuator-norm[0]/saturated</trigger>
+  </pid>
+  <pid name="crew/machinists/speed-pid-norm[1]">
+   <input>crew/machinists/speed-error-rpm[1]</input>
+   <kp>crew/machinists/speed-pid-kp</kp>
+   <ki>crew/machinists/speed-pid-ki</ki>
+   <kd>crew/machinists/speed-pid-kd</kd>
+   <trigger>crew/machinists/speed-actuator-norm[1]/saturated</trigger>
+  </pid>
+  <pid name="crew/machinists/speed-pid-norm[2]">
+   <input>crew/machinists/speed-error-rpm[2]</input>
+   <kp>crew/machinists/speed-pid-kp</kp>
+   <ki>crew/machinists/speed-pid-ki</ki>
+   <kd>crew/machinists/speed-pid-kd</kd>
+   <trigger>crew/machinists/speed-actuator-norm[2]/saturated</trigger>
+  </pid>
+  <pid name="crew/machinists/speed-pid-norm[3]">
+   <input>crew/machinists/speed-error-rpm[3]</input>
+   <kp>crew/machinists/speed-pid-kp</kp>
+   <ki>crew/machinists/speed-pid-ki</ki>
+   <kd>crew/machinists/speed-pid-kd</kd>
+   <trigger>crew/machinists/speed-actuator-norm[3]/saturated</trigger>
+  </pid>
+
+  <fcs_function name="crew/machinists/suggested-throttle-cmd-norm[0]">
+   <function>
+    <property>crew/machinists/speed-actuator-norm[0]</property>
+   </function>
+  </fcs_function>
+  <fcs_function name="crew/machinists/suggested-throttle-cmd-norm[1]">
+   <function>
+    <property>crew/machinists/speed-actuator-norm[1]</property>
+   </function>
+  </fcs_function>
+  <fcs_function name="crew/machinists/suggested-throttle-cmd-norm[2]">
+   <function>
+    <property>crew/machinists/speed-actuator-norm[2]</property>
+   </function>
+  </fcs_function>
+  <fcs_function name="crew/machinists/suggested-throttle-cmd-norm[3]">
+   <function>
+    <property>crew/machinists/speed-actuator-norm[3]</property>
+   </function>
+  </fcs_function>
+
+  <switch name="crew/machinists/throttle-cmd-norm[0]">
+   <default value="fcs/throttle-cmd-norm[0]"/>
+   <test value="crew/machinists/suggested-throttle-cmd-norm[0]">
+    crew/machinists/enabled GT 0.5
+   </test>
+   <output>fcs/throttle-pos-norm[0]</output>
+  </switch>
+  <switch name="crew/machinists/throttle-cmd-norm[1]">
+   <default value="fcs/throttle-cmd-norm[1]"/>
+   <test value="crew/machinists/suggested-throttle-cmd-norm[1]">
+    crew/machinists/enabled GT 0.5
+   </test>
+   <output>fcs/throttle-pos-norm[1]</output>
+  </switch>
+  <switch name="crew/machinists/throttle-cmd-norm[2]">
+   <default value="fcs/throttle-cmd-norm[2]"/>
+   <test value="crew/machinists/suggested-throttle-cmd-norm[2]">
+    crew/machinists/enabled GT 0.5
+   </test>
+   <output>fcs/throttle-pos-norm[2]</output>
+  </switch>
+  <switch name="crew/machinists/throttle-cmd-norm[3]">
+   <default value="fcs/throttle-cmd-norm[3]"/>
+   <test value="crew/machinists/suggested-throttle-cmd-norm[3]">
+    crew/machinists/enabled GT 0.5
+   </test>
+   <output>fcs/throttle-pos-norm[3]</output>
   </switch>
 
  </channel>
