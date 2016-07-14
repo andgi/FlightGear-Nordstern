@@ -129,8 +129,8 @@
  <property value="0.0">crew/elevatorman/altitude-cmd-ft</property>
  <!-- property value="0.0">crew/elevatorman/pitch-cmd-deg</property -->
 
- <property value="-0.05">crew/elevatorman/altitude-pid-kp</property>
- <property value="-0.002">crew/elevatorman/altitude-pid-ki</property>
+ <property value="-0.050">crew/elevatorman/altitude-pid-kp</property>
+ <property value="-0.001">crew/elevatorman/altitude-pid-ki</property>
  <property value="0.00">crew/elevatorman/altitude-pid-kd</property>
 
  <property value="1.00">crew/elevatorman/pitch-pid-kp</property>

@@ -3,7 +3,7 @@
 
   Zeppelin LZ 121 "Nordstern" airship flight model for JSBSim.
 
-    Copyright (C) 2010 - 2011  Anders Gidenstam  (anders(at)gidenstam.org)
+    Copyright (C) 2010 - 2016  Anders Gidenstam  (anders(at)gidenstam.org)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -57,21 +57,85 @@
 -->
  <aerodynamics>
 
-  <!-- Tuning parameter for CD, CL due to hull alpha. -->
+  <!--
+      The basis for the FDM tuning is
+      [HE:1919:BIPZ]:
+        Dynamic lift and speed tables for LZ 120 Bodensee as built.
+        This data is marked as obtained "both theoretically and according
+        to previous experience" and may thus be estimates computed before the
+        first flight.
+        For 4 engines at an unknown power setting (AK or Cruise? Looks like AK):
+          up angle (deg)   speed (kt)   lifting force (lb)
+           0                67.8             0
+           2                66.0          2310
+           4                62.4          4570
+           6                57.4          6800
+           8                52.1          8300
+          10                47.8          9530
+          12                43.6         10350
+          14                40.3         10680
+          16                37.4         11000
+
+      [PK:1994:LZ120]:
+        The following data points are from the first test flights of LZ 120
+        Bodensee (pages 44-46):
+
+        Drehkreisbestimmungen (Wendekreis/turning circle) with 4 engines at
+        AK (1460 rpm) and maximal rudder at 20 deg gave a speed of 56.2 kt and
+        a time of 103 seconds for the full circle, which had a diameter of
+        945 meter.
+
+        Speed (over ground or by pitot?) with
+          4 engines at
+            AK (full 1460 rpm)         70.2 kt (67.5 kt as lengthened, page 87)
+            Marsch (cruise 1360 rpm)   64.3 kt
+          3 engines at
+            AK (full 1460 rpm)         60.5 kt
+          2 engines at
+            AK (full 1460 rpm)         50.8 kt
+          1 aft engine at
+            AK (full 1460 rpm)         38.9 kt
+
+        Trim behaviour:
+          5 men (336 kg) moved 70 meters aft from (about) the control car
+          increased the pitch to 10 deg (presumably from 0 deg).
+          4 deg of elevator brought the pitch back to 0 (at which speed is not
+          stated).
+  -->
+
+  <!--
+      The tuning parameters below do not keep the generated forces and
+      moments entirely consistent and is a compromise between the various
+      data points above.
+
+      hull-lift-force-tweak-factor and aero/hull-drag-force-tweak-factor are
+      set to approach the speed / lift table in [HE:1919:BIPZ]. The lift is
+      still too high, requiring lower pitch angles, however.
+
+      aero/hull-moment-tweak-factor, aero/vtail-moment-tweak-factor and
+      aero/rudder-moment-tweak-factor have been set to approach the turning
+      test in [PK:1994:LZ120]. Turning time is close (~104 seconds),
+      speed (~47 kt) and the diameter (~835 m) are too low.
+  -->
+  <!-- Tuning parameter for CL due to hull alpha. -->
   <function name="aero/hull-lift-force-tweak-factor">
-   <value> 1.0 </value>
+   <value>0.60</value>
+  </function>
+  <!-- Tuning parameter for CD due to hull alpha. -->
+  <function name="aero/hull-drag-force-tweak-factor">
+   <value>1.00</value>
   </function>
   <!-- Tuning parameter for CM and CN due to alpha and beta. -->
   <function name="aero/hull-moment-tweak-factor">
-   <value> 1.0 </value>
+   <value>0.85</value>
   </function>
   <!-- Tuning parameter for CN for the vertical fins.
        Reduced to model the destabilizing contribution from the car. -->
   <function name="aero/vtail-moment-tweak-factor">
-   <value> 0.80 </value>
+   <value>0.80</value>
   </function>
   <function name="aero/rudder-moment-tweak-factor">
-   <value> 4.00 </value>
+   <value>2.00</value>
   </function>
 
   <!-- Relation between wind and body coordinate systems. -->
@@ -249,12 +313,12 @@
      <property>aero/qbar-psf</property>
      <property>metrics/Sw-sqft</property>
      <!-- Start CD -->
-     <property>aero/hull-lift-force-tweak-factor</property>
+     <property>aero/hull-drag-force-tweak-factor</property>
      <table>
       <independentVar lookup="row">aero/hull-aoa-mag-deg</independentVar>
       <!--  Body only coefficient computed by DATCOM. -->
       <tableData>
-        0	0.024
+        0	0.023
         2	0.024
         4	0.026
         6	0.028
@@ -547,9 +611,18 @@
           the hull of a large rigid contributes approximately
           60% to the total air resistance.
           I think they mean 'at zero alpha and beta'.
-     -->  
-     <value> 0.667 </value>
-     <value> 0.024 </value>
+          On a clean ship like Nordstern the hull contribution is probably
+          larger, although the control car is large.
+          Currently 100% is assumed here (excluding the fins which are
+          accounted for separately). Including the fins the hull's
+          contribution is currently 92.7% (0.023/(0.023+0.0011+0.0007)).
+     -->
+     <property>aero/hull-drag-force-tweak-factor</property>
+     <!-- value> 0.667 </value --> <!--  60% hull -->
+     <!-- value> 0.429 </value --> <!--  70% hull -->
+     <!-- value> 0.333 </value --> <!--  75% hull -->
+     <value> 0.000 </value>        <!-- 100% hull -->
+     <value> 0.023 </value>        <!-- CD for hull from DATCOM. -->
     </product>
    </function>
 
