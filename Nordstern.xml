@@ -31,7 +31,7 @@
   <email>anders at gidenstam dot org</email>
 
   <filecreationdate>2010-04-20</filecreationdate>
-  <version>$Id: Nordstern.xml,v 1.18 2016/07/10 21:35:34 anders Exp $</version>
+  <version>$Id: Nordstern.xml,v 1.19 2016/07/16 21:49:05 anders Exp $</version>
 
   <description>JSBSim model of the Zeppelin LZ 121 "Nordstern".</description>
 
@@ -1640,26 +1640,153 @@
  <!--
  ==== Initial static condition weigh-off ====================================
  -->
- <system name="Weigh_Off">
-  <channel name="Initial_Static_Weigh_Off">
+ <system name="Weight, lift and balance">
+  <channel name="static-condition">
    <!-- This system ensures that the ship starts slightly heavy. -->
    <!-- The weight of inertia/pointmass-weight-lbs[0] is set from Nasal. -->
 
    <summer name="static-condition/net-lift-lbs">
-    <input> buoyant_forces/gas-cell[0]/buoyancy-lbs </input>
-    <input> buoyant_forces/gas-cell[1]/buoyancy-lbs </input>
-    <input> buoyant_forces/gas-cell[2]/buoyancy-lbs </input>
-    <input> buoyant_forces/gas-cell[3]/buoyancy-lbs </input>
-    <input> buoyant_forces/gas-cell[4]/buoyancy-lbs </input>
-    <input> buoyant_forces/gas-cell[5]/buoyancy-lbs </input>
-    <input> buoyant_forces/gas-cell[6]/buoyancy-lbs </input>
-    <input> buoyant_forces/gas-cell[7]/buoyancy-lbs </input>
-    <input> buoyant_forces/gas-cell[8]/buoyancy-lbs </input>
-    <input> buoyant_forces/gas-cell[9]/buoyancy-lbs </input>
-    <input> buoyant_forces/gas-cell[10]/buoyancy-lbs </input>
-    <input> buoyant_forces/gas-cell[11]/buoyancy-lbs </input>
-    <input> -inertia/weight-lbs </input>
+    <input>buoyant_forces/gas-cell[0]/buoyancy-lbs</input>
+    <input>buoyant_forces/gas-cell[1]/buoyancy-lbs</input>
+    <input>buoyant_forces/gas-cell[2]/buoyancy-lbs</input>
+    <input>buoyant_forces/gas-cell[3]/buoyancy-lbs</input>
+    <input>buoyant_forces/gas-cell[4]/buoyancy-lbs</input>
+    <input>buoyant_forces/gas-cell[5]/buoyancy-lbs</input>
+    <input>buoyant_forces/gas-cell[6]/buoyancy-lbs</input>
+    <input>buoyant_forces/gas-cell[7]/buoyancy-lbs</input>
+    <input>buoyant_forces/gas-cell[8]/buoyancy-lbs</input>
+    <input>buoyant_forces/gas-cell[9]/buoyancy-lbs</input>
+    <input>buoyant_forces/gas-cell[10]/buoyancy-lbs</input>
+    <input>buoyant_forces/gas-cell[11]/buoyancy-lbs</input>
+    <input>-inertia/weight-lbs</input>
    </summer>
+
+   <fcs_function name="static-condition/static-pitch-moment-lbsft">
+    <function>
+     <sum>
+      <product>
+       <property>buoyant_forces/gas-cell[0]/buoyancy-lbs</property>
+       <sum>
+        <value>-377.29659</value>
+        <product>
+         <value>0.083333333</value>
+         <property>inertia/cg-x-in</property>
+        </product>
+       </sum>
+      </product>
+      <product>
+       <property>buoyant_forces/gas-cell[1]/buoyancy-lbs</property>
+       <sum>
+        <value>-344.48819</value>
+        <product>
+         <value>0.083333333</value>
+         <property>inertia/cg-x-in</property>
+        </product>
+       </sum>
+      </product>
+      <product>
+       <property>buoyant_forces/gas-cell[2]/buoyancy-lbs</property>
+       <sum>
+        <value>-311.67979</value>
+        <product>
+         <value>0.083333333</value>
+         <property>inertia/cg-x-in</property>
+        </product>
+       </sum>
+      </product>
+      <product>
+       <property>buoyant_forces/gas-cell[3]/buoyancy-lbs</property>
+       <sum>
+        <value>-278.87139</value>
+        <product>
+         <value>0.083333333</value>
+         <property>inertia/cg-x-in</property>
+        </product>
+       </sum>
+      </product>
+      <product>
+       <property>buoyant_forces/gas-cell[4]/buoyancy-lbs</property>
+       <sum>
+        <value>-246.06299</value>
+        <product>
+         <value>0.083333333</value>
+         <property>inertia/cg-x-in</property>
+        </product>
+       </sum>
+      </product>
+      <product>
+       <property>buoyant_forces/gas-cell[5]/buoyancy-lbs</property>
+       <sum>
+        <value>-213.25459</value>
+        <product>
+         <value>0.083333333</value>
+         <property>inertia/cg-x-in</property>
+        </product>
+       </sum>
+      </product>
+      <product>
+       <property>buoyant_forces/gas-cell[6]/buoyancy-lbs</property>
+       <sum>
+        <value>-180.44619</value>
+        <product>
+         <value>0.083333333</value>
+         <property>inertia/cg-x-in</property>
+        </product>
+       </sum>
+      </product>
+      <product>
+       <property>buoyant_forces/gas-cell[7]/buoyancy-lbs</property>
+       <sum>
+        <value>-147.6378</value>
+        <product>
+         <value>0.083333333</value>
+         <property>inertia/cg-x-in</property>
+        </product>
+       </sum>
+      </product>
+      <product>
+       <property>buoyant_forces/gas-cell[8]/buoyancy-lbs</property>
+       <sum>
+        <value>-114.8294</value>
+        <product>
+         <value>0.083333333</value>
+         <property>inertia/cg-x-in</property>
+        </product>
+       </sum>
+      </product>
+      <product>
+       <property>buoyant_forces/gas-cell[9]/buoyancy-lbs</property>
+       <sum>
+        <value>-82.020997</value>
+        <product>
+         <value>0.083333333</value>
+         <property>inertia/cg-x-in</property>
+        </product>
+       </sum>
+      </product>
+      <product>
+       <property>buoyant_forces/gas-cell[10]/buoyancy-lbs</property>
+       <sum>
+        <value>-49.212598</value>
+        <product>
+         <value>0.083333333</value>
+         <property>inertia/cg-x-in</property>
+        </product>
+       </sum>
+      </product>
+      <product>
+       <property>buoyant_forces/gas-cell[11]/buoyancy-lbs</property>
+       <sum>
+        <value>-16.404199</value>
+        <product>
+         <value>0.083333333</value>
+         <property>inertia/cg-x-in</property>
+        </product>
+       </sum>
+      </product>
+     </sum>
+    </function>
+   </fcs_function>
 
   </channel>
  </system>

@@ -355,26 +355,30 @@ var debug_display_view_handler = {
         me.right = screen.display.new(-250, 20);
         # Static condition
         me.left.add("/fdm/jsbsim/static-condition/net-lift-lbs");
-        me.left.add("/fdm/jsbsim/atmosphere/T-R");
-        me.left.add("/fdm/jsbsim/buoyant_forces/gas-cell[1]/temp-R",
-                    "/fdm/jsbsim/buoyant_forces/gas-cell[10]/temp-R");
+        me.left.add("/fdm/jsbsim/static-condition/static-pitch-moment-lbsft");
         # C.G.
         me.left.add("/fdm/jsbsim/inertia/cg-x-in");
+        # Atmosphere and gas temperatures
+        me.left.add("/fdm/jsbsim/atmosphere/T-R");
+        me.left.add("/fdm/jsbsim/buoyant_forces/gas-cell[0]/temp-R",
+                    "/fdm/jsbsim/buoyant_forces/gas-cell[1]/temp-R",
+                    "/fdm/jsbsim/buoyant_forces/gas-cell[10]/temp-R",
+                    "/fdm/jsbsim/buoyant_forces/gas-cell[11]/temp-R");
         # Pitch moments
-        me.left.add("/fdm/jsbsim/moments/m-buoyancy-lbsft",
-                    "/fdm/jsbsim/moments/m-aero-lbsft",
-                    "/fdm/jsbsim/moments/m-total-lbsft");
+        #me.left.add("/fdm/jsbsim/moments/m-buoyancy-lbsft",
+        #            "/fdm/jsbsim/moments/m-aero-lbsft",
+        #            "/fdm/jsbsim/moments/m-total-lbsft");
         # Mooring related
         me.left.add("/fdm/jsbsim/mooring/total-distance-ft",
                     "/fdm/jsbsim/mooring/latitude-diff-ft",
                     "/fdm/jsbsim/mooring/longitude-diff-ft",
                     "/fdm/jsbsim/mooring/altitude-diff-ft");
-        me.left.add("/fdm/jsbsim/velocities/vrp-v-north-fps",
-                    "/velocities/speed-north-fps");
-        me.left.add("/fdm/jsbsim/velocities/vrp-v-east-fps",
-                    "/velocities/speed-east-fps");
-        me.left.add("/fdm/jsbsim/velocities/vrp-v-down-fps",
-                    "/velocities/speed-down-fps");
+        #me.left.add("/fdm/jsbsim/velocities/vrp-v-north-fps",
+        #            "/velocities/speed-north-fps");
+        #me.left.add("/fdm/jsbsim/velocities/vrp-v-east-fps",
+        #            "/velocities/speed-east-fps");
+        #me.left.add("/fdm/jsbsim/velocities/vrp-v-down-fps",
+        #            "/velocities/speed-down-fps");
 
         # Flight information
         me.right.add("orientation/pitch-deg");
