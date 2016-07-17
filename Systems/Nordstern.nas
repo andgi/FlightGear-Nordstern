@@ -386,15 +386,25 @@ var debug_display_view_handler = {
         me.right.add("surface-positions/rudder-pos-norm");
         me.right.add("instrumentation/altimeter/indicated-altitude-ft");
         me.right.add("instrumentation/airspeed-indicator/indicated-speed-kt");
+        me.right.add("instrumentation/magnetic-compass/indicated-heading-deg");
         # Engines
         me.right.add("/engines/engine[0]/rpm",
-                     "/fdm/jsbsim/propulsion/engine[0]/power-hp",
                      "/engines/engine[1]/rpm",
-                     "/fdm/jsbsim/propulsion/engine[1]/power-hp",
                      "/engines/engine[2]/rpm",
-                     "/fdm/jsbsim/propulsion/engine[2]/power-hp",
                      "/engines/engine[3]/rpm",
-                     "/fdm/jsbsim/propulsion/engine[3]/power-hp");
+                     "/fdm/jsbsim/propulsion/engine[0]/power-hp",
+                     "/fdm/jsbsim/propulsion/engine[1]/power-hp",
+                     "/fdm/jsbsim/propulsion/engine[2]/power-hp",
+                     "/fdm/jsbsim/propulsion/engine[3]/power-hp",
+                     "/fdm/jsbsim/propulsion/engine[0]/egt-degF",
+                     "/fdm/jsbsim/propulsion/engine[1]/egt-degF",
+                     "/fdm/jsbsim/propulsion/engine[2]/egt-degF",
+                     "/fdm/jsbsim/propulsion/engine[3]/egt-degF",
+                     "/fdm/jsbsim/propulsion/engine[0]/fuel-flow-rate-pps",
+                     "/fdm/jsbsim/propulsion/engine[1]/fuel-flow-rate-pps",
+                     "/fdm/jsbsim/propulsion/engine[2]/fuel-flow-rate-pps",
+                     "/fdm/jsbsim/propulsion/engine[3]/fuel-flow-rate-pps"
+                     );
 
         me.shown = 1;
         me.stop();
