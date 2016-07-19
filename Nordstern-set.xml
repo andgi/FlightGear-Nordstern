@@ -11,7 +11,7 @@
 
   <description>Zeppelin LZ 121 "Nordstern" airship</description>
   <author>Anders Gidenstam</author>
-  <aircraft-version>$Id: Nordstern-set.xml,v 1.20 2016/06/18 21:30:18 anders Exp $</aircraft-version>
+  <aircraft-version>$Id: Nordstern-set.xml,v 1.21 2016/07/19 21:20:33 anders Exp $</aircraft-version>
 
   <status type="string">beta</status>
   <rating>
@@ -359,26 +359,26 @@
 
    <key n="101">
     <name>e</name>
-    <desc>Shift 100 lb trim ballast forwards</desc>
+    <desc>Shift 50 lb trim ballast forwards</desc>
     <repeatable type="bool">false</repeatable>
     <binding>
      <command>nasal</command>
      <script>
        gui.popupTip("Shifting ballast forward.");
-       Nordstern.shiftTrimBallast(Nordstern.FORWARD, 100);
+       Nordstern.shiftTrimBallast(Nordstern.FORWARD, 50);
      </script>
     </binding>
    </key>
    <key n="100">
     <name>d</name>
-    <desc>Shift 100 lb trim ballast aftwards</desc>
+    <desc>Shift 50 lb trim ballast aftwards</desc>
     <repeatable type="bool">false</repeatable>
     <binding>
      <command>nasal</command>
      <script>
        if (!walkview.side_step(0.5)) {
            gui.popupTip("Shifting ballast aftward.");
-           Nordstern.shiftTrimBallast(Nordstern.AFT, 100);
+           Nordstern.shiftTrimBallast(Nordstern.AFT, 50);
        }
      </script>
     </binding>
