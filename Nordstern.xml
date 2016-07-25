@@ -31,7 +31,7 @@
   <email>anders at gidenstam dot org</email>
 
   <filecreationdate>2010-04-20</filecreationdate>
-  <version>$Id: Nordstern.xml,v 1.19 2016/07/16 21:49:05 anders Exp $</version>
+  <version>$Id: Nordstern.xml,v 1.20 2016/07/25 20:24:29 anders Exp $</version>
 
   <description>JSBSim model of the Zeppelin LZ 121 "Nordstern".</description>
 
@@ -1001,7 +1001,41 @@
  <!--
  === Gas cell ==============================================================
  -->
+ <system name="Gas heat exchange - external factors">
+  <!-- External environment properties -->
+  <!-- Not yet used. -->
+  <property>environment/sun-angle-rad</property>
+  <property>environment/sun-radiation-norm</property>
 
+  <!-- Gas cell constants -->
+
+  <!-- Base conductivity [lb / (K ft sec)] (Guess) -->
+  <property value="0.05">buoyant_forces/heat-coeffs/base-conductivity</property>
+  <!-- Emissivity [0,1] (Guess) -->
+  <property value="0.1">buoyant_forces/heat-coeffs/emissivity</property>
+
+  <channel name="Conductivity">
+
+   <!-- The heat transfer to/from the cell should increase with the
+        airflow over the cell (or over the hull surrounding the cell).
+        Exactly how is still a mystery to me, so I'll just assume it is
+        proportional to qbar for now.
+   -->
+   <fcs_function name="buoyant_forces/heat-coeffs/conductivity">
+    <function>
+     <sum>
+      <property>buoyant_forces/heat-coeffs/base-conductivity</property>
+      <product>
+       <value>1.0</value>
+       <property>aero/qbar-psf</property>
+       <property>buoyant_forces/heat-coeffs/base-conductivity</property>
+      </product>
+     </sum>
+    </function>
+   </fcs_function>
+
+  </channel>
+ </system>
  <buoyant_forces>
   <documentation>
    According to [PK:1994:LZ120]:
@@ -1042,17 +1076,7 @@
   <limitations>
   </limitations>
 
-  <!-- External environment properties -->
-  <property> environment/sun-angle-rad </property>
-  <property> environment/sun-radiation-norm </property>
-
   <!-- Gas cell constants -->
-
-  <!-- Conductivity [lb / (K ft sec)] (Guess) -->
-  <property value="0.05">buoyant_forces/heat-coeffs/conductivity</property>
-  <!-- Emissivity [0,1] (Guess) -->
-  <property value="0.1">buoyant_forces/heat-coeffs/emissivity</property>
-
   <property value="3877.6">buoyant_forces/gas-cell[0]/external-area-ft2</property>
   <property value="6507.9">buoyant_forces/gas-cell[1]/external-area-ft2</property>
   <property value="9041.5">buoyant_forces/gas-cell[2]/external-area-ft2</property>
