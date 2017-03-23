@@ -2,7 +2,7 @@
 <!--
   Zeppelin LZ 121 "Nordstern" airship for FlightGear.
 
-  Copyright (C) 2010 - 2016  Anders Gidenstam  (anders(at)gidenstam.org)
+  Copyright (C) 2010 - 2017  Anders Gidenstam  (anders(at)gidenstam.org)
   This file is licensed under the GPL license version 2 or later.
 -->
 <PropertyList>
@@ -11,7 +11,20 @@
 
   <description>Zeppelin LZ 121 "Nordstern" airship</description>
   <author>Anders Gidenstam</author>
-  <aircraft-version>$Id: Nordstern-set.xml,v 1.21 2016/07/19 21:20:33 anders Exp $</aircraft-version>
+  <aircraft-version>$Id: Nordstern-set.xml,v 1.22 2017/03/23 21:05:06 anders Exp $</aircraft-version>
+
+  <long-description>
+Nordstern was the second of two small passenger airships built by Luftschiffsbau Zeppelin in 1919 and 1920. Nordstern was designed to carry about 25 passengers on a Friedrichshafen - Berlin - Stockholm route but this route was never opened. The older sister ship LZ 120 Bodensee did run a regular passenger sevice between Friedrichshafen and Berlin during Autumn 1919. In compliance with the terms of the peace treaty after WWI both airships were grounded early in 1920. Nordstern was handed over to France in 1921 where she remained in (sparse) service with the french military until 1926 under the name Mediterrannee. Bodensee was handed over to Italy and remained in service there until 1928 under the name Esperia.
+  </long-description>
+
+  <tags>
+   <tag>airship</tag>
+   <tag>passenger</tag>
+   <tag>piston</tag>
+   <tag>4-engine</tag>
+   <tag>fixed-gear</tag>
+   <tag>1920s</tag>
+  </tags>
 
   <status type="string">beta</status>
   <rating>
