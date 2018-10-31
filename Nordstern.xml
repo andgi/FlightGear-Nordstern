@@ -3,7 +3,7 @@
 
   Zeppelin LZ 121 "Nordstern" airship flight model for JSBSim.
 
-    Copyright (C) 2010 - 2016  Anders Gidenstam  (anders(at)gidenstam.org)
+    Copyright (C) 2010 - 2018  Anders Gidenstam  (anders(at)gidenstam.org)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@
   <email>anders at gidenstam dot org</email>
 
   <filecreationdate>2010-04-20</filecreationdate>
-  <version>$Id: Nordstern.xml,v 1.20 2016/07/25 20:24:29 anders Exp $</version>
+  <version>$Id: Nordstern.xml,v 1.21 2018/10/31 20:26:06 anders Exp $</version>
 
   <description>JSBSim model of the Zeppelin LZ 121 "Nordstern".</description>
 
@@ -889,6 +889,7 @@
     <y> -0.8</y>
     <z> -7.8 </z>
    </location>
+   <type>AVGAS</type>
    <capacity unit="KG"> 185.0 </capacity>
    <contents unit="KG"> 150.0 </contents>
   </tank>
@@ -898,6 +899,7 @@
     <y>  0.8</y>
     <z> -7.8 </z>
    </location>
+   <type>AVGAS</type>
    <capacity unit="KG"> 185.0 </capacity>
    <contents unit="KG"> 150.0 </contents>
   </tank>
@@ -907,6 +909,7 @@
     <y> -0.8</y>
     <z> -7.8 </z>
    </location>
+   <type>AVGAS</type>
    <capacity unit="KG"> 185.0 </capacity>
    <contents unit="KG"> 150.0 </contents>
   </tank>
@@ -916,6 +919,7 @@
     <y>  0.8</y>
     <z> -7.8 </z>
    </location>
+   <type>AVGAS</type>
    <capacity unit="KG"> 185.0 </capacity>
    <contents unit="KG"> 150.0 </contents>
   </tank>
@@ -927,6 +931,7 @@
     <y> -0.8</y>
     <z> -8.0 </z>
    </location>
+   <type>AVGAS</type>
    <capacity unit="KG"> 185.0 </capacity>
    <contents unit="KG"> 150.0 </contents>
   </tank>
@@ -936,6 +941,7 @@
     <y>  0.8</y>
     <z> -8.0 </z>
    </location>
+   <type>AVGAS</type>
    <capacity unit="KG"> 185.0 </capacity>
    <contents unit="KG"> 150.0 </contents>
   </tank>
@@ -945,6 +951,7 @@
     <y> -0.8</y>
     <z> -8.0 </z>
    </location>
+   <type>AVGAS</type>
    <capacity unit="KG"> 185.0 </capacity>
    <contents unit="KG"> 150.0 </contents>
   </tank>
@@ -954,6 +961,7 @@
     <y>  0.8</y>
     <z> -8.0 </z>
    </location>
+   <type>AVGAS</type>
    <capacity unit="KG"> 185.0 </capacity>
    <contents unit="KG"> 150.0 </contents>
   </tank>
@@ -965,6 +973,7 @@
     <y> -0.8</y>
     <z> -8.0 </z>
    </location>
+   <type>AVGAS</type>
    <capacity unit="KG"> 185.0 </capacity>
    <contents unit="KG"> 150.0 </contents>
   </tank>
@@ -974,6 +983,7 @@
     <y>  0.8</y>
     <z> -8.0 </z>
    </location>
+   <type>AVGAS</type>
    <capacity unit="KG"> 185.0 </capacity>
    <contents unit="KG"> 150.0 </contents>
   </tank>
@@ -983,6 +993,7 @@
     <y> -0.8</y>
     <z> -8.0 </z>
    </location>
+   <type>AVGAS</type>
    <capacity unit="KG"> 185.0 </capacity>
    <contents unit="KG"> 150.0 </contents>
   </tank>
@@ -992,6 +1003,7 @@
     <y>  0.8</y>
     <z> -8.0 </z>
    </location>
+   <type>AVGAS</type>
    <capacity unit="KG"> 185.0 </capacity>
    <contents unit="KG"> 150.0 </contents>
   </tank>
@@ -2005,55 +2017,27 @@
    </direction>
   </force>
 
-  <force name="added-mass-pitch[0]" frame="BODY">
-   <location unit="M">
-    <x> 56.4 </x>
-    <y>  0.0 </y>
-    <z> -6.0048 </z>
-   </location>
+  <moment name="added-mass-pitch" frame="BODY" unit="LBSFT">
+   <direction>
+    <x> 0.0 </x>
+    <y> 1.0 </y>
+    <z> 0.0 </z>
+   </direction>
+  </moment>
+  <moment name="added-mass-roll" frame="BODY" unit="LBSFT">
    <direction>
     <x> 1.0 </x>
     <y> 0.0 </y>
     <z> 0.0 </z>
    </direction>
-  </force>
-  <force name="added-mass-pitch[1]" frame="BODY">
-   <location unit="M">
-    <x> 56.4 </x>
-    <y>  0.0 </y>
-    <z> -5.3952 </z>
-   </location>
+  </moment>
+  <moment name="added-mass-yaw" frame="BODY" unit="LBSFT">
    <direction>
-    <x> 1.0 </x>
+    <x> 0.0 </x>
     <y> 0.0 </y>
-    <z> 0.0 </z>
+    <z> 1.0 </z>
    </direction>
-  </force>
-
-  <force name="added-mass-yaw[0]" frame="BODY">
-   <location unit="M">
-    <x> 56.4 </x>
-    <y> -0.3048 </y>
-    <z> -5.7 </z>
-   </location>
-   <direction>
-    <x> 1.0 </x>
-    <y> 0.0 </y>
-    <z> 0.0 </z>
-   </direction>
-  </force>
-  <force name="added-mass-yaw[1]" frame="BODY">
-   <location unit="M">
-    <x> 56.4 </x>
-    <y>  0.3048 </y>
-    <z> -5.7 </z>
-   </location>
-   <direction>
-    <x> 1.0 </x>
-    <y> 0.0 </y>
-    <z> 0.0 </z>
-   </direction>
-  </force>
+  </moment>
 
  </external_reactions>
 
@@ -2086,15 +2070,13 @@
 
   <!-- Added mass constants. -->
   <!-- k-axial -0.02; k-transverse -0.94; k-rotational -0.81 -->
-  <property value="-0.02"> aero/constants/added-mass/k-axial </property>
-  <property value="-0.00"> aero/constants/added-mass/k-traverse </property>
-  <property value="-0.00"> aero/constants/added-mass/k-transverse </property>
-  <property value="-0.81"> aero/constants/added-mass/k-rotational </property>
+  <property value="0.02"> aero/constants/added-mass/k-axial </property>
+  <property value="0.94"> aero/constants/added-mass/k-transverse </property>
+  <property value="0.81"> aero/constants/added-mass/k-rotational </property>
 
   <channel name="Temporary hack to prevent oscillations.">
    <fcs_function name="aero/constants/added-mass/tweak-factor">
     <function>
-     <!-- value>1.0</value -->
      <difference>
       <value> 1.0 </value>
       <property> mooring/moored </property>

@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
-<!-- $Id: help.xml,v 1.8 2011-02-21 20:49:07 anders Exp $ -->
+<!-- $Id: help.xml,v 1.9 2018/10/31 20:26:06 anders Exp $ -->
 <!--
   Zeppelin LZ 121 "Nordstern" airship for FlightGear.
 
-  Copyright (C) 2010  Anders Gidenstam  (anders(at)gidenstam.org)
+  Copyright (C) 2010, 2016  Anders Gidenstam  (anders(at)gidenstam.org)
   This file is licensed under the GPL license version 2 or later.
 -->
 <PropertyList>
