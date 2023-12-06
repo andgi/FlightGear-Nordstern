@@ -3,7 +3,7 @@
 
   Zeppelin LZ 121 "Nordstern" airship flight model for JSBSim.
 
-    Copyright (C) 2010 - 2018  Anders Gidenstam  (anders(at)gidenstam.org)
+    Copyright (C) 2010 - 2023  Anders Gidenstam  (anders(at)gidenstam.org)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -36,8 +36,8 @@
   <description>JSBSim model of the Zeppelin LZ 121 "Nordstern".</description>
 
   <license>
-   <licenseName>GPL</licenseName>
-   <licenseURL>http://www.gnu.org/licenses/gpl.html</licenseURL>
+   <licenseName>GPL v2+</licenseName>
+   <licenseURL>http://www.gnu.org/licenses/old-licenses/gpl-2.0.html</licenseURL>
   </license>
   <note>
    This model was created using publicly available data, publicly available
@@ -750,16 +750,6 @@
   -->
   <!-- Left engine -->
   <engine file="eng_Maybach_Mb_IVa">
-   <location unit="M">
-    <x>  60.0 </x>
-    <y>  -6.5 </y>
-    <z> -10.0 </z>
-   </location>
-   <orient unit="DEG">
-    <roll>  0.0 </roll>
-    <pitch> 0.0 </pitch>
-    <yaw>   0.0 </yaw>
-   </orient>
    <feed>4</feed>
    <feed>6</feed>
    <feed>8</feed>
@@ -779,16 +769,6 @@
   </engine>
   <!-- Right engine -->
   <engine file="eng_Maybach_Mb_IVa">
-   <location unit="M">
-    <x>  60.0 </x>
-    <y>   6.5 </y>
-    <z> -10.0 </z>
-   </location>
-   <orient unit="DEG">
-    <roll>  0.0 </roll>
-    <pitch> 0.0 </pitch>
-    <yaw>   0.0 </yaw>
-   </orient>
    <feed>5</feed>
    <feed>7</feed>
    <feed>9</feed>
@@ -808,16 +788,6 @@
   </engine>
   <!-- Aft engines -->
   <engine file="eng_Maybach_Mb_IVa">
-   <location unit="M">
-    <x>  90.00 </x>
-    <y>  -1.00 </y>
-    <z> -11.20 </z>
-   </location>
-   <orient unit="DEG">
-    <roll>  0.0 </roll>
-    <pitch> 0.0 </pitch>
-    <yaw>   0.0 </yaw>
-   </orient>
    <feed>0</feed>
    <feed>1</feed>
    <feed>2</feed>
@@ -836,16 +806,6 @@
    </thruster>
   </engine>
   <engine file="eng_Maybach_Mb_IVa">
-   <location unit="M">
-    <x>  90.00 </x>
-    <y>   1.00 </y>
-    <z> -11.20 </z>
-   </location>
-   <orient unit="DEG">
-    <roll>  0.0 </roll>
-    <pitch> 0.0 </pitch>
-    <yaw>   0.0 </yaw>
-   </orient>
    <feed>0</feed>
    <feed>1</feed>
    <feed>2</feed>
@@ -2069,7 +2029,7 @@
   <property value="8591.5"> aero/constants/volume-ft3_2_3 </property>
 
   <!-- Added mass constants. -->
-  <!-- k-axial -0.02; k-transverse -0.94; k-rotational -0.81 -->
+  <!-- k-axial 0.02; k-transverse 0.94; k-rotational 0.81 -->
   <property value="0.02"> aero/constants/added-mass/k-axial </property>
   <property value="0.94"> aero/constants/added-mass/k-transverse </property>
   <property value="0.81"> aero/constants/added-mass/k-rotational </property>

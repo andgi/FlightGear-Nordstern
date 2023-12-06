@@ -2,7 +2,7 @@
 <!--
   Zeppelin LZ 121 "Nordstern" airship for FlightGear.
 
-  Copyright (C) 2010 - 2015  Anders Gidenstam  (anders(at)gidenstam.org)
+  Copyright (C) 2010 - 2023  Anders Gidenstam  (anders(at)gidenstam.org)
   This file is licensed under the GPL license version 2 or later.
 -->
 <PropertyList>
@@ -82,7 +82,7 @@
 
  <model>
   <name>Altimeter</name>
-  <path>Aircraft/Superwal/Models/Instruments/Hoehenmesser/Hoehenmesser.xml</path>
+  <path>Aircraft/Nordstern/Instruments/Altimeter/Altimeter.xml</path>
   <offsets>
    <!-- x/y/z == back/right/up -->
    <x-m>  2.232 </x-m>
