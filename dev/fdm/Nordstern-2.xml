@@ -1,0 +1,201 @@
+<?xml version="1.0"?>
+<runscript name="Nordstern-2 free flight test">
+ <!--
+   This run is for testing free flight of a lighter-than-air aircraft.
+
+   If you visualize it in FlightGear start with -lat=37 -lon=-122.
+ -->
+
+ <use aircraft="Nordstern" initialize="dev/fdm/reset01"/>
+ <run start="0.0" end="480.1" dt="0.004166666667">
+
+  <property value="0">simulation/course-time-trigger</property>
+  <property value="0">simulation/notify-time-trigger</property>
+
+  <event name="Initialize 1">
+   <description>Configure the aircraft</description>
+   <condition>
+    simulation/sim-time-sec GT 0.0
+   </condition>
+   <notify>
+    <property>static-condition/net-lift-lbs</property>
+    <property>inertia/cg-x-in</property>
+    <property>mooring/moored</property>
+    <property>position/vrp-latitude-deg</property>
+    <property>position/vrp-longitude-deg</property>
+    <property>position/vrp-altitude-ft</property>
+   </notify>
+   <!-- Mooring mast position. -->
+   <set name="mooring/latitude-deg" value="37.00"/>
+   <set name="mooring/longitude-deg" value="-122.00"/>
+   <set name="mooring/altitude-ft" value="39.0"/>
+   <!-- Set elevator. -->
+   <set name="fcs/elevator-cmd-norm" value="0.0"/>
+  </event>
+
+  <event name="Initialize 2">
+   <description>Configure the aircraft 2</description>
+   <condition>
+    simulation/sim-time-sec GT 0.9
+   </condition>
+   <notify>
+    <property>static-condition/net-lift-lbs</property>
+    <property>inertia/cg-x-in</property>
+    <property>mooring/moored</property>
+    <property>mooring/total-distance-ft</property>
+    <property>position/vrp-latitude-deg</property>
+    <property>position/vrp-longitude-deg</property>
+    <property>position/vrp-altitude-ft</property>
+   </notify>
+   <!-- Connect the mooring. -->
+   <!-- set name="mooring/wire-connected" value="1.0"/ -->
+  </event>
+
+  <event name="Engine start 1">
+   <description>Start the engines</description>
+   <condition>
+    simulation/sim-time-sec GE 1.0
+   </condition>
+   <notify/>
+   <set name="fcs/throttle-cmd-norm[0]" value="1.0"/>
+   <set name="fcs/mixture-cmd-norm[0]"  value="1.0"/>
+   <set name="fcs/throttle-cmd-norm[1]" value="1.0"/>
+   <set name="fcs/mixture-cmd-norm[1]"  value="1.0"/>
+   <set name="fcs/throttle-cmd-norm[2]" value="1.0"/>
+   <set name="fcs/mixture-cmd-norm[2]"  value="1.0"/>
+   <set name="fcs/throttle-cmd-norm[3]" value="1.0"/>
+   <set name="fcs/mixture-cmd-norm[3]"  value="1.0"/>
+   <set name="propulsion/magneto_cmd"   value="3"/>
+   <set name="propulsion/starter_cmd"   value="1"/>
+  </event>
+  <event name="Engine start 2">
+   <description>The engines have started</description>
+   <condition>
+    propulsion/engine[0]/engine-rpm GE 600
+   </condition>
+   <notify>
+    <property>propulsion/engine[0]/engine-rpm</property>
+    <property>propulsion/engine[1]/engine-rpm</property>
+    <property>propulsion/engine[2]/engine-rpm</property>
+    <property>propulsion/engine[3]/engine-rpm</property>
+    <property>propulsion/engine[0]/power-hp</property>
+    <property>propulsion/engine[1]/power-hp</property>
+    <property>propulsion/engine[2]/power-hp</property>
+    <property>propulsion/engine[3]/power-hp</property>
+   </notify>
+   <set name="propulsion/starter_cmd"   value="0"/>
+   <set name="fcs/throttle-cmd-norm[0]" value="0.83"/>
+   <set name="fcs/throttle-cmd-norm[1]" value="0.83"/>
+   <set name="fcs/throttle-cmd-norm[2]" value="0.83"/>
+   <set name="fcs/throttle-cmd-norm[3]" value="0.83"/>
+  </event>
+
+  <event name="Set the elevator for climbing" persistent="true">
+   <description>Set the elevator for climbing</description>
+   <condition>
+    position/h-agl-ft LE 990
+   </condition>
+   <set name="fcs/elevator-cmd-norm" value="-0.25"/>
+  </event>
+  <event name="Reset the elevator for constant elevation" persistent="true">
+   <description>Reset the elevator for constant elevation</description>
+   <condition logic="AND">
+    position/h-agl-ft GT  990
+    position/h-agl-ft LT 1010
+   </condition>
+   <set name="fcs/elevator-cmd-norm" value="0.00"/>
+  </event>
+  <event name="Set the elevator for sinking" persistent="true">
+   <description>Set the elevator for sinking</description>
+   <condition>
+    position/h-agl-ft GE 1010
+   </condition>
+   <set name="fcs/elevator-cmd-norm" value="0.05"/>
+  </event>
+
+  <event name="Stay at course" persistent="true">
+   <description>Check course at 1 second intervals</description>
+   <condition logic="AND">
+    simulation/sim-time-sec GE simulation/course-time-trigger
+    attitude/psi-deg LT 4
+    attitude/psi-deg GT 1
+   </condition>
+   <set name="fcs/rudder-cmd-norm" value="0.0"/>
+   <set name="simulation/course-time-trigger" value="1" type="FG_DELTA"/>
+  </event>
+  <event name="Reduce course" persistent="true">
+   <description>Check course at 1 second intervals</description>
+   <condition logic="AND">
+    simulation/sim-time-sec GE simulation/course-time-trigger
+    attitude/psi-deg GT 5
+    attitude/psi-deg LT 180
+   </condition>
+   <notify>
+    <property>fcs/rudder-pos-norm</property>
+    <property>attitude/psi-deg</property>
+   </notify>
+   <set name="fcs/rudder-cmd-norm" value="0.5"/>
+   <set name="simulation/course-time-trigger" value="1" type="FG_DELTA"/>
+  </event>
+  <event name="Increase course" persistent="true">
+   <description>Check course at 1 second intervals</description>
+   <condition logic="AND">
+    simulation/sim-time-sec GE simulation/course-time-trigger
+    attitude/psi-deg GT 200
+   </condition>
+   <notify>
+    <property>fcs/rudder-pos-norm</property>
+    <property>attitude/psi-deg</property>
+   </notify>
+   <set name="fcs/rudder-cmd-norm" value="-0.5"/>
+   <set name="simulation/course-time-trigger" value="1" type="FG_DELTA"/>
+  </event>
+
+  <event name="Time notify" persistent="true">
+   <description>Output message at 5 second intervals</description>
+   <notify>
+    <property>position/distance-from-start-mag-mt</property>
+    <property>velocities/vc-kts</property>
+    <property>position/h-agl-ft</property>
+    <property>velocities/u-fps</property>
+    <property>velocities/v-fps</property>
+    <property>velocities/w-fps</property>
+    <property>attitude/phi-deg</property>
+    <property>attitude/theta-deg</property>
+    <property>attitude/psi-deg</property>
+    <property>aero/alpha-deg</property>
+    <property>aero/beta-deg</property>
+    <property>inertia/cg-x-in</property>
+    <property>inertia/cg-y-in</property>
+    <property>inertia/cg-z-in</property>
+    <property>static-condition/net-lift-lbs</property>
+    <property>position/vrp-latitude-deg</property>
+    <property>position/vrp-longitude-deg</property>
+    <property>position/vrp-altitude-ft</property>
+    <property>buoyant_forces/gas-cell/contents-mol</property>
+    <property>buoyant_forces/gas-cell/pressure-psf</property>
+    <property>buoyant_forces/gas-cell/volume-ft3</property>
+    <property>fcs/rudder-pos-norm</property>
+    <property>fcs/elevator-pos-norm</property>
+    <property>fcs/throttle-pos-norm[0]</property>
+    <property>fcs/throttle-pos-norm[1]</property>
+    <property>fcs/throttle-pos-norm[2]</property>
+    <property>fcs/throttle-pos-norm[3]</property>
+    <property>propulsion/engine[0]/engine-rpm</property>
+    <property>propulsion/engine[1]/engine-rpm</property>
+    <property>propulsion/engine[2]/engine-rpm</property>
+    <property>propulsion/engine[3]/engine-rpm</property>
+    <property>propulsion/engine[0]/power-hp</property>
+    <property>propulsion/engine[1]/power-hp</property>
+    <property>propulsion/engine[2]/power-hp</property>
+    <property>propulsion/engine[3]/power-hp</property>
+    <property>atmosphere/wind-mag-fps</property>
+   </notify>
+   <condition>
+    simulation/sim-time-sec GE simulation/notify-time-trigger
+   </condition>
+   <set name="simulation/notify-time-trigger" value="5" type="FG_DELTA"/>
+  </event>
+
+ </run>
+</runscript>
