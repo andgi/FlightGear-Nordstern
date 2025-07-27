@@ -2,7 +2,7 @@
 <!--
   Zeppelin LZ 121 "Nordstern" airship for FlightGear.
 
-  Copyright (C) 2010 - 2023  Anders Gidenstam  (anders(at)gidenstam.org)
+  Copyright (C) 2010 - 2025  Anders Gidenstam  (anders(at)gidenstam.org)
   This file is licensed under the GPL license version 2 or later.
 -->
 <PropertyList>
@@ -11,7 +11,7 @@
 
   <description>Zeppelin LZ 121 "Nordstern" airship</description>
   <author>Anders Gidenstam</author>
-  <aircraft-version>$Id: Nordstern-set.xml,v 1.22 2017/03/23 21:05:06 anders Exp $</aircraft-version>
+  <aircraft-version>2025-07-27</aircraft-version>
 
   <long-description>
 Nordstern was the second of two small passenger airships built by Luftschiffsbau Zeppelin in 1919 and 1920. Nordstern was designed to carry about 25 passengers on a Friedrichshafen - Berlin - Stockholm route but this route was never opened. The older sister ship LZ 120 Bodensee did run a regular passenger sevice between Friedrichshafen and Berlin during Autumn 1919. In compliance with the terms of the peace treaty after WWI both airships were grounded early in 1920. Nordstern was handed over to France in 1921 where she remained in (sparse) service with the french military until 1926 under the name Mediterrannee. Bodensee was handed over to Italy and remained in service there until 1928 under the name Esperia.
@@ -73,6 +73,7 @@ Nordstern was the second of two small passenger airships built by Luftschiffsbau
     <y-offset-m type="double"> -9.00 </y-offset-m>
     <z-offset-m type="double"> 22.00 </z-offset-m>
     <pitch-offset-deg type="double"> -10.0 </pitch-offset-deg>
+    <default-field-of-view-deg type="double"> 65 </default-field-of-view-deg>
    </config>
   </view>
   <!-- Views -->
@@ -88,7 +89,7 @@ Nordstern was the second of two small passenger airships built by Luftschiffsbau
     <y-offset-m type="double"> -9.00 </y-offset-m>
     <z-offset-m type="double"> 20.50 </z-offset-m>
     <pitch-offset-deg type="double"> -20.0 </pitch-offset-deg>
-    <default-field-of-view-deg type="double"> 65 </default-field-of-view-deg>
+    <default-field-of-view-deg type="double"> 75 </default-field-of-view-deg>
    </config>
   </view>
   <view n="101">
@@ -104,7 +105,7 @@ Nordstern was the second of two small passenger airships built by Luftschiffsbau
     <z-offset-m type="double"> 22.22 </z-offset-m>
     <pitch-offset-deg type="double"> -20.0 </pitch-offset-deg>
     <heading-offset-deg type="double"> 90.0 </heading-offset-deg>
-    <default-field-of-view-deg type="double"> 65 </default-field-of-view-deg>
+    <default-field-of-view-deg type="double"> 75 </default-field-of-view-deg>
    </config>
   </view>
   <view n="102">
@@ -640,9 +641,21 @@ Nordstern was the second of two small passenger airships built by Luftschiffsbau
  <fdm>
   <jsbsim>
    <crew>
+    <elevatorman>
+     <enabled type="double">0.0</enabled>
+     <altitude-cmd-ft type="double">0.0</altitude-cmd-ft>
+    </elevatorman>
     <helmsman>
+     <enabled type="double">0.0</enabled>
      <heading-magnetic-cmd-deg type="double">0.0</heading-magnetic-cmd-deg>
     </helmsman>
+    <machinists>
+     <enabled type="double">0.0</enabled>
+     <speed-cmd-rpm n="0" type="double">250.0</speed-cmd-rpm>
+     <speed-cmd-rpm n="1" type="double">250.0</speed-cmd-rpm>
+     <speed-cmd-rpm n="2" type="double">250.0</speed-cmd-rpm>
+     <speed-cmd-rpm n="3" type="double">250.0</speed-cmd-rpm>
+    </machinists>
    </crew>
   </jsbsim>
  </fdm>
@@ -652,5 +665,24 @@ Nordstern was the second of two small passenger airships built by Luftschiffsbau
    <heading-bug-deg alias="/fdm/jsbsim/crew/helmsman/heading-magnetic-cmd-deg"/>
   </settings>
  </autopilot>
+
+ <crew>
+  <elevatorman>
+   <enabled alias="/fdm/jsbsim/crew/elevatorman/enabled"/>
+   <altitude-cmd-ft alias="/fdm/jsbsim/crew/elevatorman/altitude-cmd-ft"/>
+  </elevatorman>
+  <helmsman>
+   <enabled alias="/fdm/jsbsim/crew/helmsman/enabled"/>
+   <heading-magnetic-cmd-deg
+     alias="/fdm/jsbsim/crew/helmsman/heading-magnetic-cmd-deg"/>
+  </helmsman>
+  <machinists>
+   <enabled alias="/fdm/jsbsim/crew/machinists/enabled"/>
+   <speed-cmd-rpm n="0" alias="/fdm/jsbsim/crew/machinists/speed-cmd-rpm[0]"/>
+   <speed-cmd-rpm n="1" alias="/fdm/jsbsim/crew/machinists/speed-cmd-rpm[1]"/>
+   <speed-cmd-rpm n="2" alias="/fdm/jsbsim/crew/machinists/speed-cmd-rpm[2]"/>
+   <speed-cmd-rpm n="3" alias="/fdm/jsbsim/crew/machinists/speed-cmd-rpm[3]"/>
+  </machinists>
+ </crew>
 
 </PropertyList>
