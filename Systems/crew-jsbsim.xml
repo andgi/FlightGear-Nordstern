@@ -221,7 +221,7 @@
  </channel>
 
  <!-- Machinists -->
- <property value="0.0">crew/machinists/enabled</property>
+ <property value="1.0">crew/machinists/enabled</property>
 
  <property value="-0.050">crew/machinists/speed-pid-kp</property>
  <property value="-0.005">crew/machinists/speed-pid-ki</property>

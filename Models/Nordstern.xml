@@ -123,6 +123,330 @@
   </overlay>
  </model>
 
+ <!-- Crew =================================================================-->
+ <!-- Watch Officer -->
+ <model>
+  <name>Watch Officer View</name>
+  <path>Aircraft/Nordstern/Models/Crew/crew-base.xml</path>
+  <offsets>
+   <!-- x/y/z == back/right/up -->
+   <x-m> 0.00 </x-m>
+   <y-m> 0.00 </y-m>
+   <z-m> 0.00 </z-m>
+  </offsets>
+  <overlay>
+   <params>
+    <view-name>Watch Officer View</view-name>
+    <visible>crew/watch-officer-view/visible</visible>
+   </params>
+  </overlay>
+ </model>
+ <!-- Connect the Watch Officer view model with the WalkView stuff. -->
+ <animation>
+  <type>translate</type>
+  <object-name>Watch Officer View</object-name>
+  <property>crew/watch-officer-view/position-Z-norm</property>
+  <factor>100</factor>
+  <offset-m>0</offset-m>
+  <axis>
+   <x>0</x>
+   <y>0</y>
+   <z>1</z>
+  </axis>
+ </animation>
+ <animation>
+  <type>translate</type>
+  <object-name>Watch Officer View</object-name>
+  <property>crew/watch-officer-view/position-Y-norm</property>
+  <factor>100</factor>
+  <offset-m>0</offset-m>
+  <axis>
+   <x>0</x>
+   <y>1</y>
+   <z>0</z>
+  </axis>
+ </animation>
+ <animation>
+  <type>translate</type>
+  <object-name>Watch Officer View</object-name>
+  <property>crew/watch-officer-view/position-X-norm</property>
+  <factor>100</factor>
+  <offset-m>0</offset-m>
+  <axis>
+   <x>1</x>
+   <y>0</y>
+   <z>0</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <object-name>Watch Officer View</object-name>
+  <type>rotate</type>
+  <property>/crew/watch-officer-view/heading-offset-deg</property>
+  <factor>1</factor>
+  <offset-deg>0</offset-deg>
+  <center>
+   <x-m> 0.00 </x-m>
+   <y-m> 0.00 </y-m>
+   <z-m> 0.00 </z-m>
+  </center>
+  <axis>
+   <x>0</x>
+   <y>0</y>
+   <z>1</z>
+  </axis>
+ </animation>
+ <!--animation>
+  <object-name>Watch Officer View</object-name>
+  <type>rotate</type>
+  <property>/crew/watch-officer-view/pitch-offset-deg</property>
+  <factor>1</factor>
+  <offset-deg>0</offset-deg>
+  <center>
+   <x-m> 0.00 </x-m>
+   <y-m> 0.00 </y-m>
+   <z-m> 0.00 </z-m>
+  </center>
+  <axis>
+   <x>0</x>
+   <y>1</y>
+   <z>0</z>
+  </axis>
+ </animation-->
+
+ <!-- Rudder Man -->
+ <model>
+  <name>Rudder Man View</name>
+  <path>Aircraft/Nordstern/Models/Crew/crew-base.xml</path>
+  <offsets>
+   <!-- x/y/z == back/right/up -->
+   <x-m>  20.50 </x-m>
+   <y-m>   0.00 </y-m>
+   <z-m> -10.75 </z-m>
+  </offsets>
+  <overlay>
+   <params>
+    <view-name>Rudder Man View</view-name>
+    <visible>crew/rudder-man-view/visible</visible>
+   </params>
+  </overlay>
+ </model>
+
+ <!-- Elevator Man -->
+ <model>
+  <name>Elevator Man View</name>
+  <path>Aircraft/Nordstern/Models/Crew/crew-base.xml</path>
+  <offsets>
+   <!-- x/y/z == back/right/up -->
+   <x-m>  22.22 </x-m>
+   <y-m>  -0.50 </y-m>
+   <z-m> -10.77 </z-m>
+  </offsets>
+  <overlay>
+   <params>
+    <view-name>Elevator Man View</view-name>
+    <visible>crew/elevator-man-view/visible</visible>
+   </params>
+  </overlay>
+ </model>
+ <animation>
+  <object-name>Elevator Man View</object-name>
+  <type>rotate</type>
+  <property>/crew/elevator-man-view/heading-offset-deg</property>
+  <factor>1</factor>
+  <offset-deg>0</offset-deg>
+  <center>
+   <x-m>  22.22 </x-m>
+   <y-m>  -0.50 </y-m>
+   <z-m> -10.77 </z-m>
+  </center>
+  <axis>
+   <x>0</x>
+   <y>0</y>
+   <z>1</z>
+  </axis>
+ </animation>
+
+ <!-- Rigger -->
+ <model>
+  <name>Rigger View</name>
+  <path>Aircraft/Nordstern/Models/Crew/crew-base.xml</path>
+  <offsets>
+   <!-- x/y/z == back/right/up -->
+   <x-m> 0.00 </x-m>
+   <y-m> 0.00 </y-m>
+   <z-m> 0.00 </z-m>
+  </offsets>
+  <overlay>
+   <params>
+    <view-name>Rigger View</view-name>
+    <visible>crew/rigger-view/visible</visible>
+   </params>
+  </overlay>
+ </model>
+ <!-- Connect the Rigger view model with the WalkView stuff. -->
+ <animation>
+  <type>translate</type>
+  <object-name>Rigger View</object-name>
+  <property>crew/rigger-view/position-Z-norm</property>
+  <factor>100</factor>
+  <offset-m>0</offset-m>
+  <axis>
+   <x>0</x>
+   <y>0</y>
+   <z>1</z>
+  </axis>
+ </animation>
+ <animation>
+  <type>translate</type>
+  <object-name>Rigger View</object-name>
+  <property>crew/rigger-view/position-Y-norm</property>
+  <factor>100</factor>
+  <offset-m>0</offset-m>
+  <axis>
+   <x>0</x>
+   <y>1</y>
+   <z>0</z>
+  </axis>
+ </animation>
+ <animation>
+  <type>translate</type>
+  <object-name>Rigger View</object-name>
+  <property>crew/rigger-view/position-X-norm</property>
+  <factor>100</factor>
+  <offset-m>0</offset-m>
+  <axis>
+   <x>1</x>
+   <y>0</y>
+   <z>0</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <object-name>Rigger View</object-name>
+  <type>rotate</type>
+  <property>/crew/rigger-view/heading-offset-deg</property>
+  <factor>1</factor>
+  <offset-deg>0</offset-deg>
+  <center>
+   <x-m> 0.00 </x-m>
+   <y-m> 0.00 </y-m>
+   <z-m> 0.00 </z-m>
+  </center>
+  <axis>
+   <x>0</x>
+   <y>0</y>
+   <z>1</z>
+  </axis>
+ </animation>
+ <!--animation>
+  <object-name>Rigger View</object-name>
+  <type>rotate</type>
+  <property>/crew/rigger-view/pitch-offset-deg</property>
+  <factor>1</factor>
+  <offset-deg>0</offset-deg>
+  <center>
+   <x-m> 0.00 </x-m>
+   <y-m> 0.00 </y-m>
+   <z-m> 0.00 </z-m>
+  </center>
+  <axis>
+   <x>0</x>
+   <y>1</y>
+   <z>0</z>
+  </axis>
+ </animation-->
+
+ <!-- Stewart -->
+ <model>
+  <name>Steward View</name>
+  <path>Aircraft/Nordstern/Models/Crew/crew-base.xml</path>
+  <offsets>
+   <!-- x/y/z == back/right/up -->
+   <x-m> 0.00 </x-m>
+   <y-m> 0.00 </y-m>
+   <z-m> 0.00 </z-m>
+  </offsets>
+  <overlay>
+   <params>
+    <view-name>Steward View</view-name>
+    <visible>crew/steward-view/visible</visible>
+   </params>
+  </overlay>
+ </model>
+ <!-- Connect the Steward view model with the WalkView stuff. -->
+ <animation>
+  <type>translate</type>
+  <object-name>Steward View</object-name>
+  <property>crew/steward-view/position-Z-norm</property>
+  <factor>100</factor>
+  <offset-m>0</offset-m>
+  <axis>
+   <x>0</x>
+   <y>0</y>
+   <z>1</z>
+  </axis>
+ </animation>
+ <animation>
+  <type>translate</type>
+  <object-name>Steward View</object-name>
+  <property>crew/steward-view/position-Y-norm</property>
+  <factor>100</factor>
+  <offset-m>0</offset-m>
+  <axis>
+   <x>0</x>
+   <y>1</y>
+   <z>0</z>
+  </axis>
+ </animation>
+ <animation>
+  <type>translate</type>
+  <object-name>Steward View</object-name>
+  <property>crew/steward-view/position-X-norm</property>
+  <factor>100</factor>
+  <offset-m>0</offset-m>
+  <axis>
+   <x>1</x>
+   <y>0</y>
+   <z>0</z>
+  </axis>
+ </animation>
+
+ <animation>
+  <object-name>Steward View</object-name>
+  <type>rotate</type>
+  <property>/crew/steward-view/heading-offset-deg</property>
+  <factor>1</factor>
+  <offset-deg>0</offset-deg>
+  <center>
+   <x-m> 0.00 </x-m>
+   <y-m> 0.00 </y-m>
+   <z-m> 0.00 </z-m>
+  </center>
+  <axis>
+   <x>0</x>
+   <y>0</y>
+   <z>1</z>
+  </axis>
+ </animation>
+ <!--animation>
+  <object-name>Steward View</object-name>
+  <type>rotate</type>
+  <property>/crew/steward-view/pitch-offset-deg</property>
+  <factor>1</factor>
+  <offset-deg>0</offset-deg>
+  <center>
+   <x-m> 0.00 </x-m>
+   <y-m> 0.00 </y-m>
+   <z-m> 0.00 </z-m>
+  </center>
+  <axis>
+   <x>0</x>
+   <y>1</y>
+   <z>0</z>
+  </axis>
+ </animation-->
+
  <!-- Control surface animations ===========================================-->
  <animation>
   <type>rotate</type>
@@ -214,13 +538,6 @@
   <object-name>Aft propeller</object-name>
   <min-m>0</min-m>
   <max-m>5000</max-m>
- </animation>
-
- <!-- LOD for the model as a whole =========================================-->
- <animation>
-  <type>range</type>
-  <min-m>0</min-m>
-  <max-m>15000</max-m>
  </animation>
 
  <nasal>

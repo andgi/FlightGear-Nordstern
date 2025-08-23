@@ -11,7 +11,7 @@
 
   <description>Zeppelin LZ 121 "Nordstern" airship</description>
   <author>Anders Gidenstam</author>
-  <aircraft-version>2025-07-27</aircraft-version>
+  <aircraft-version>2025-08-23</aircraft-version>
 
   <long-description>
 Nordstern was the second of two small passenger airships built by Luftschiffsbau Zeppelin in 1919 and 1920. Nordstern was designed to carry about 25 passengers on a Friedrichshafen - Berlin - Stockholm route but this route was never opened. The older sister ship LZ 120 Bodensee did run a regular passenger sevice between Friedrichshafen and Berlin during Autumn 1919. In compliance with the terms of the peace treaty after WWI both airships were grounded early in 1920. Nordstern was handed over to France in 1921 where she remained in (sparse) service with the french military until 1926 under the name Mediterrannee. Bodensee was handed over to Italy and remained in service there until 1928 under the name Esperia.
@@ -69,11 +69,17 @@ Nordstern was the second of two small passenger airships built by Luftschiffsbau
    <internal>true</internal>
    <config>
     <!-- x/y/z == right/up/back -->
+    <from-model type="bool">true</from-model>
+    <from-model-idx type="int">0</from-model-idx>
     <x-offset-m type="double">  0.50 </x-offset-m>
     <y-offset-m type="double"> -9.00 </y-offset-m>
     <z-offset-m type="double"> 22.00 </z-offset-m>
     <pitch-offset-deg type="double"> -10.0 </pitch-offset-deg>
     <default-field-of-view-deg type="double"> 65 </default-field-of-view-deg>
+    <dynamic-view type="bool">false</dynamic-view>
+    <limits>
+     <enabled type="bool">false</enabled>
+    </limits>
    </config>
   </view>
   <!-- Views -->
@@ -86,10 +92,10 @@ Nordstern was the second of two small passenger airships built by Luftschiffsbau
     <from-model type="bool">true</from-model>
     <from-model-idx type="int">0</from-model-idx>
     <x-offset-m type="double">  0.00 </x-offset-m>
-    <y-offset-m type="double"> -9.00 </y-offset-m>
+    <y-offset-m type="double"> -9.15 </y-offset-m>
     <z-offset-m type="double"> 20.50 </z-offset-m>
-    <pitch-offset-deg type="double"> -20.0 </pitch-offset-deg>
-    <default-field-of-view-deg type="double"> 75 </default-field-of-view-deg>
+    <pitch-offset-deg type="double"> -17.0 </pitch-offset-deg>
+    <default-field-of-view-deg type="double"> 80 </default-field-of-view-deg>
    </config>
   </view>
   <view n="101">
@@ -101,11 +107,11 @@ Nordstern was the second of two small passenger airships built by Luftschiffsbau
     <from-model type="bool">true</from-model>
     <from-model-idx type="int">0</from-model-idx>
     <x-offset-m type="double"> -0.50 </x-offset-m>
-    <y-offset-m type="double"> -9.00 </y-offset-m>
+    <y-offset-m type="double"> -9.17 </y-offset-m>
     <z-offset-m type="double"> 22.22 </z-offset-m>
     <pitch-offset-deg type="double"> -20.0 </pitch-offset-deg>
     <heading-offset-deg type="double"> 90.0 </heading-offset-deg>
-    <default-field-of-view-deg type="double"> 75 </default-field-of-view-deg>
+    <default-field-of-view-deg type="double"> 80 </default-field-of-view-deg>
    </config>
   </view>
   <view n="102">
@@ -586,6 +592,25 @@ Nordstern was the second of two small passenger airships built by Luftschiffsbau
      </binding>
     </mod-up>
    </key>
+   <key n="83">
+    <name>S</name>
+    <desc>Run the starters in a WalkView.</desc>
+    <binding>
+     <command>nasal</command>
+     <script>
+      controls.startEngine(1);
+     </script>
+    </binding>
+    <mod-up>
+     <binding>
+      <command>nasal</command>
+      <script>
+       walkview.forward(0);
+       controls.startEngine(0);
+      </script>
+     </binding>
+    </mod-up>
+   </key>
 
    <key n="65">
     <name>A</name>
@@ -683,6 +708,49 @@ Nordstern was the second of two small passenger airships built by Luftschiffsbau
    <speed-cmd-rpm n="2" alias="/fdm/jsbsim/crew/machinists/speed-cmd-rpm[2]"/>
    <speed-cmd-rpm n="3" alias="/fdm/jsbsim/crew/machinists/speed-cmd-rpm[3]"/>
   </machinists>
+  <watch-officer-view>
+   <visible type="bool">0</visible>
+   <position-X-m />
+   <position-Y-m />
+   <position-Z-m />
+   <maximum-move-m />
+   <position-X-norm />
+   <position-Y-norm />
+   <position-Z-norm />
+   <heading-offset-deg />
+   <pitch-offset-deg />
+  </watch-officer-view>
+  <rudder-man-view>
+   <visible type="bool">0</visible>
+  </rudder-man-view>
+  <elevator-man-view>
+   <visible type="bool">0</visible>
+   <heading-offset-deg>-90.0</heading-offset-deg>
+  </elevator-man-view>
+  <rigger-view>
+   <visible type="bool">0</visible>
+   <position-X-m />
+   <position-Y-m />
+   <position-Z-m />
+   <maximum-move-m />
+   <position-X-norm />
+   <position-Y-norm />
+   <position-Z-norm />
+   <heading-offset-deg />
+   <pitch-offset-deg />
+  </rigger-view>
+  <steward-view>
+   <visible type="bool">0</visible>
+   <position-X-m />
+   <position-Y-m />
+   <position-Z-m />
+   <maximum-move-m />
+   <position-X-norm />
+   <position-Y-norm />
+   <position-Z-norm />
+   <heading-offset-deg />
+   <pitch-offset-deg />
+  </steward-view>
  </crew>
 
 </PropertyList>

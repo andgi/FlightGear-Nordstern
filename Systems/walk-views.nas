@@ -3,7 +3,7 @@
 ## Zeppelin LZ 121 "Nordstern" airship for FlightGear.
 ## Walk view configuration.
 ##
-##  Copyright (C) 2010 - 2011  Anders Gidenstam  (anders(at)gidenstam.org)
+##  Copyright (C) 2010 - 2025  Anders Gidenstam  (anders(at)gidenstam.org)
 ##  This file is licensed under the GPL license v2 or later.
 ##
 ###############################################################################
@@ -81,12 +81,79 @@ var climbLadder = func {
     }
 }
 
-# Create the view managers.
-var steward_walker = walkview.Walker.new("Steward View",
-                                         carConstraint,
-                                         [walkview.JSBSimPointmass.new(29)]);
-var rigger_walker = walkview.Walker.new("Rigger View",
-                                        keelConstraint,
-                                        [walkview.JSBSimPointmass.new(30)]);
+# ThreeDModel manager.
+#   Moves a 3d model representing the crew member together with the view.
+#   The position is in the main 3d coordinate system.
+# CONSTRUCTOR:
+#       ThreeDModel.new(name, maximumMoveValue);
+#
+#         name             ... Name of the view : string
+#         maximumMoveValue ... Maximum movement of the view i meters : double
+#
+var ThreeDModelManager = {
+    new : func (name, maximumMoveValue) {
+        var base = props.globals.getNode("crew/" ~ name ~ "/");
+        var prefix  = "position-";
+        var postfix = "-m";
+        var obj = { parents : [ThreeDModelManager] };
+        obj.pos_m =
+            [
+             base.getNode(prefix ~ "X" ~ postfix),
+             base.getNode(prefix ~ "Y" ~ postfix),
+             base.getNode(prefix ~ "Z" ~ postfix)
+            ];
+        obj.maximumMoveValue = maximumMoveValue;
+        base.getNode("maximum-move-m").setValue(obj.maximumMoveValue);
+        postfix = "-norm";
+        obj.pos_norm =
+            [
+             base.getNode(prefix ~ "X" ~ postfix),
+             base.getNode(prefix ~ "Y" ~ postfix),
+             base.getNode(prefix ~ "Z" ~ postfix)
+            ];
+        postfix = "-offset-deg";
+        obj.orientation_deg =
+            [
+             base.getNode("heading" ~ postfix),
+             base.getNode("pitch" ~ postfix),
+            ];
+        return obj;
+    },
+    update : func (walker) {
+        # Position.
+        var pos = walker.get_pos();
+        me.pos_m[0].setValue(pos[0]);
+        me.pos_m[1].setValue(pos[1]);
+        me.pos_m[2].setValue(pos[2] - walker.get_eye_height());
+        # Normalized position.
+        me.pos_norm[0].setValue(pos[0]/me.maximumMoveValue);
+        me.pos_norm[1].setValue(pos[1]/me.maximumMoveValue);
+        me.pos_norm[2].setValue((pos[2] - walker.get_eye_height())/me.maximumMoveValue);
+        # Orientation is not yet stored in the walker but is stored in the view.
+        me.orientation_deg[0].setValue(
+            props.globals.getNode("/sim/current-view/heading-offset-deg").getValue());
+        me.orientation_deg[1].setValue(
+            props.globals.getNode("/sim/current-view/pitch-offset-deg").getValue());
+    }
+};
 
+# Create the view managers.
+var watch_officer_walker =
+    walkview.Walker.new("Watch Officer View",
+                        carConstraint,
+                        [walkview.JSBSimPointmass.new(26),
+                         ThreeDModelManager.new("watch-officer-view", 100.0)]);
+watch_officer_walker.managers[1].update(watch_officer_walker); # Place the 3d object.
+var steward_walker =
+    walkview.Walker.new("Steward View",
+                        carConstraint,
+                        [walkview.JSBSimPointmass.new(29),
+                         ThreeDModelManager.new("steward-view", 100.0)]);
+steward_walker.managers[1].update(steward_walker); # Place the 3d object.
+var rigger_walker =
+    walkview.Walker.new("Rigger View",
+                        keelConstraint,
+                        [walkview.JSBSimPointmass.new(30),
+                         ThreeDModelManager.new("rigger-view", 100.0)]);
+rigger_walker.managers[1].update(rigger_walker); # Place the 3d object.
 

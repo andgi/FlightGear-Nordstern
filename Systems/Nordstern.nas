@@ -113,53 +113,6 @@ var initial_weighoff = func {
 #    }, 0.8);
 }
 
-var init_all = func(reinit=0) {
-    initial_weighoff();
-
-#    fake_electrical();
-    # Disable the autopilot menu.
-    gui.menuEnable("autopilot", 0);
-
-    if (!reinit) {
-        # Hobbs counters.
-#        aircraft.timer.new("/sim/time/hobbs/engine[0]", 73).start();
-#        aircraft.timer.new("/sim/time/hobbs/engine[0]", 73).start();
-#        aircraft.timer.new("/sim/time/hobbs/engine[0]", 73).start();
-        # Livery support.
-#        aircraft.livery.init("Aircraft/ZLT-NT/Models/Liveries")
-
-        # Create FG /controls/gas/ aliases for FDM owned controls.
-        var fdm = "fdm/jsbsim/buoyant_forces/gas-cell";
-        props.globals.getNode(gascell ~ "[0]", 1).
-            alias(props.globals.getNode(fdm ~ "[11]/valve_open"));
-        props.globals.getNode(gascell ~ "[1]", 1).
-            alias(props.globals.getNode(fdm ~ "[10]/valve_open"));
-        props.globals.getNode(gascell ~ "[2]", 1).
-            alias(props.globals.getNode(fdm ~ "[1]/valve_open"));
-        props.globals.getNode(gascell ~ "[3]", 1).
-            alias(props.globals.getNode(fdm ~ "[0]/valve_open"));
-    }
-
-    # Add some AI moorings.
-    if (!reinit) {
-        # Timed initialization.
-        settimer(func {
-            # Add some AI moorings.
-            foreach (var c;
-                     props.globals.getNode("/ai/models").
-                         getChildren("carrier")) {
-                mooring.add_ai_mooring(c, 160.0);
-            }
-        }, 0.0);
-    }
-    print("Nordstern Systems ... Check");
-}
-
-var _nordstern_initialized = 0;
-setlistener("/sim/signals/fdm-initialized", func {
-    init_all(_nordstern_initialized);
-    _nordstern_initialized = 1;
-});
 
 ###############################################################################
 # Ballast controls
@@ -303,7 +256,7 @@ var switchEngineDirection = func (eng) {
 ###############################################################################
 # Utility functions
 
-# Set up aTransfer fluid between two properties without losing or creating any.
+# Set up a transfer fluid between two properties without losing or creating any.
 #  amount [lb]
 #  rate   [lb/sec]
 var SmoothTransfer = {
@@ -427,7 +380,7 @@ var debug_display_view_handler = {
 
 # Install the debug display for some views.
 setlistener("/sim/signals/fdm-initialized", func {
-    view.manager.register("Watch Officer View", debug_display_view_handler);
+    #view.manager.register("Watch Officer View", debug_display_view_handler);
     view.manager.register("Rudder Man View", debug_display_view_handler);
     view.manager.register("Elevator Man View", debug_display_view_handler);
     print("Debug instrumentation ... check");
@@ -464,6 +417,57 @@ var fake_electrical = func {
                                     "/controls/lighting/strobe");
 }
 ###############################################################################
+
+###############################################################################
+var init_all = func(reinit=0) {
+    initial_weighoff();
+
+#    fake_electrical();
+    # Disable the autopilot menu.
+    gui.menuEnable("autopilot", 0);
+
+    if (!reinit) {
+        # Hobbs counters.
+#        aircraft.timer.new("/sim/time/hobbs/engine[0]", 73).start();
+#        aircraft.timer.new("/sim/time/hobbs/engine[0]", 73).start();
+#        aircraft.timer.new("/sim/time/hobbs/engine[0]", 73).start();
+        # Livery support.
+#        aircraft.livery.init("Aircraft/ZLT-NT/Models/Liveries")
+
+        # Create FG /controls/gas/ aliases for FDM owned controls.
+        var fdm = "fdm/jsbsim/buoyant_forces/gas-cell";
+        props.globals.getNode(gascell ~ "[0]", 1).
+            alias(props.globals.getNode(fdm ~ "[11]/valve_open"));
+        props.globals.getNode(gascell ~ "[1]", 1).
+            alias(props.globals.getNode(fdm ~ "[10]/valve_open"));
+        props.globals.getNode(gascell ~ "[2]", 1).
+            alias(props.globals.getNode(fdm ~ "[1]/valve_open"));
+        props.globals.getNode(gascell ~ "[3]", 1).
+            alias(props.globals.getNode(fdm ~ "[0]/valve_open"));
+    }
+
+    # Add some AI moorings.
+    if (!reinit) {
+        # Timed initialization.
+        settimer(func {
+            # Add some AI moorings.
+            foreach (var c;
+                     props.globals.getNode("/ai/models").
+                         getChildren("carrier")) {
+                mooring.add_ai_mooring(c, 160.0);
+            }
+        }, 0.0);
+    }
+    print("Nordstern Systems ... Check");
+}
+
+var _nordstern_initialized = 0;
+init_all(_nordstern_initialized);
+_nordstern_initialized = 1;
+
+# Set crew autopilot settings.
+setprop("/crew/machinists/enabled", 1.0);
+
 
 ###########################################################################
 ## MP integration of user's fixed local mooring locations.

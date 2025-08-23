@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<!--
+  Fake crew model for the airship Nordstern for FlightGear.
+
+  Based on the fgdata/Aircraft/ufo/Models/cursor.ac.
+
+  Copyright (C)       FlightGear
+  Copyright (C) 2025  Anders Gidenstam
+
+  This file is licensed under the GPL license version 2 or later.
+-->
+<PropertyList>
+
+ <path>cursor.ac</path> <!-- Ground center point. -->
+ <offsets>
+  <!-- x/y/z == back/right/up. -->
+  <x-m> 0.00 </x-m>
+  <y-m> 0.00 </y-m>
+  <z-m> 0.00 </z-m>
+ </offsets>
+
+ <model>
+  <name>Head</name>
+  <path>cursor.ac</path> <!-- Eyes center point. -->
+  <offsets>
+   <!-- x/y/z == back/right/up. -->
+   <x-m>  0.00 </x-m>
+   <y-m>  0.00 </y-m>
+   <z-m> 16.00 </z-m> <!-- Note the scaling. -->
+  </offsets>
+ </model>
+ <animation>
+  <object-name>Head</object-name>
+  <type>scale</type>
+  <x-factor>0.1</x-factor>
+  <y-factor>0.1</y-factor>
+  <z-factor>0.1</z-factor>
+ </animation>
+
+ <model>
+  <name>Left hand</name>
+  <path>cursor.ac</path>
+  <offsets>
+   <!-- x/y/z == back/right/up. -->
+   <x-m> -1.50 </x-m> <!-- Note the scaling. -->
+   <y-m> -2.00 </y-m>
+   <z-m> 10.00 </z-m>
+  </offsets>
+ </model>
+ <animation>
+  <object-name>Left hand</object-name>
+  <type>scale</type>
+  <x-factor>0.1</x-factor>
+  <y-factor>0.1</y-factor>
+  <z-factor>0.1</z-factor>
+ </animation>
+
+ <model>
+  <name>Right hand</name>
+  <path>cursor.ac</path>
+  <offsets>
+   <!-- x/y/z == back/right/up. -->
+   <x-m> -1.50 </x-m> <!-- Note the scaling. -->
+   <y-m>  2.00 </y-m>
+   <z-m> 10.00 </z-m>
+  </offsets>
+ </model>
+ <animation>
+  <object-name>Right hand</object-name>
+  <type>scale</type>
+  <x-factor>0.1</x-factor>
+  <y-factor>0.1</y-factor>
+  <z-factor>0.1</z-factor>
+ </animation>
+
+</PropertyList>
