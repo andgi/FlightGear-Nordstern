@@ -381,8 +381,8 @@ var debug_display_view_handler = {
 # Install the debug display for some views.
 setlistener("/sim/signals/fdm-initialized", func {
     #view.manager.register("Watch Officer View", debug_display_view_handler);
-    view.manager.register("Rudder Man View", debug_display_view_handler);
-    view.manager.register("Elevator Man View", debug_display_view_handler);
+    view.manager.register("Helmsman", debug_display_view_handler);
+    view.manager.register("Elevatorman", debug_display_view_handler);
     print("Debug instrumentation ... check");
 });
 

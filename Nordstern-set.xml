@@ -11,7 +11,7 @@
 
   <description>Zeppelin LZ 121 "Nordstern" airship</description>
   <author>Anders Gidenstam</author>
-  <aircraft-version>2025-08-23</aircraft-version>
+  <aircraft-version>2025-08-26</aircraft-version>
 
   <long-description>
 Nordstern was the second of two small passenger airships built by Luftschiffsbau Zeppelin in 1919 and 1920. Nordstern was designed to carry about 25 passengers on a Friedrichshafen - Berlin - Stockholm route but this route was never opened. The older sister ship LZ 120 Bodensee did run a regular passenger sevice between Friedrichshafen and Berlin during Autumn 1919. In compliance with the terms of the peace treaty after WWI both airships were grounded early in 1920. Nordstern was handed over to France in 1921 where she remained in (sparse) service with the french military until 1926 under the name Mediterrannee. Bodensee was handed over to Italy and remained in service there until 1928 under the name Esperia.
@@ -82,39 +82,24 @@ Nordstern was the second of two small passenger airships built by Luftschiffsbau
     </limits>
    </config>
   </view>
-  <!-- Views -->
   <view n="100">
-   <!-- Rudder helmsman's position. -->
-   <name>Rudder Man View</name>
+   <!-- Rigger's position. -->
+   <name>Rigger View</name>
    <internal>true</internal>
    <config>
     <!-- x/y/z == right/up/back -->
     <from-model type="bool">true</from-model>
     <from-model-idx type="int">0</from-model-idx>
     <x-offset-m type="double">  0.00 </x-offset-m>
-    <y-offset-m type="double"> -9.15 </y-offset-m>
-    <z-offset-m type="double"> 20.50 </z-offset-m>
-    <pitch-offset-deg type="double"> -17.0 </pitch-offset-deg>
-    <default-field-of-view-deg type="double"> 80 </default-field-of-view-deg>
+    <y-offset-m type="double"> -7.50 </y-offset-m>
+    <z-offset-m type="double"> 51.00 </z-offset-m>
+    <heading-offset-deg type="double"> 0.0 </heading-offset-deg>
+    <pitch-offset-deg type="double"> 0.0 </pitch-offset-deg>
+    <default-field-of-view-deg type="double"> 65 </default-field-of-view-deg>
    </config>
   </view>
   <view n="101">
-   <!-- Elevator helmsman's position. -->
-   <name>Elevator Man View</name>
-   <internal>true</internal>
-   <config>
-    <!-- x/y/z == right/up/back -->
-    <from-model type="bool">true</from-model>
-    <from-model-idx type="int">0</from-model-idx>
-    <x-offset-m type="double"> -0.50 </x-offset-m>
-    <y-offset-m type="double"> -9.17 </y-offset-m>
-    <z-offset-m type="double"> 22.22 </z-offset-m>
-    <pitch-offset-deg type="double"> -20.0 </pitch-offset-deg>
-    <heading-offset-deg type="double"> 90.0 </heading-offset-deg>
-    <default-field-of-view-deg type="double"> 80 </default-field-of-view-deg>
-   </config>
-  </view>
-  <view n="102">
+   <!-- Steward's position. -->
    <name>Steward View</name>
    <internal>true</internal>
    <config>
@@ -129,19 +114,55 @@ Nordstern was the second of two small passenger airships built by Luftschiffsbau
     <default-field-of-view-deg type="double"> 65 </default-field-of-view-deg>
    </config>
   </view>
+  <view n="102">
+   <!-- Elevator helmsman's position. -->
+   <name>Elevatorman</name>
+   <internal>true</internal>
+   <config>
+    <!-- x/y/z == right/up/back -->
+    <from-model type="bool">true</from-model>
+    <from-model-idx type="int">0</from-model-idx>
+    <x-offset-m type="double"> -0.50 </x-offset-m>
+    <y-offset-m type="double"> -9.17 </y-offset-m>
+    <z-offset-m type="double"> 22.22 </z-offset-m>
+    <pitch-offset-deg type="double"> -20.0 </pitch-offset-deg>
+    <heading-offset-deg type="double"> 90.0 </heading-offset-deg>
+    <default-field-of-view-deg type="double"> 80 </default-field-of-view-deg>
+    <dynamic-view type="bool">true</dynamic-view>
+    <limits>
+     <enabled type="bool">true</enabled>
+     <left>
+      <heading-max-deg type="double">110</heading-max-deg>
+     </left>
+     <right>
+      <heading-max-deg type="double">110</heading-max-deg>
+     </right>
+    </limits>
+   </config>
+  </view>
   <view n="103">
-   <name>Rigger View</name>
+   <!-- Rudder helmsman's position. -->
+   <name>Helmsman</name>
    <internal>true</internal>
    <config>
     <!-- x/y/z == right/up/back -->
     <from-model type="bool">true</from-model>
     <from-model-idx type="int">0</from-model-idx>
     <x-offset-m type="double">  0.00 </x-offset-m>
-    <y-offset-m type="double"> -7.50 </y-offset-m>
-    <z-offset-m type="double"> 51.00 </z-offset-m>
-    <heading-offset-deg type="double"> 0.0 </heading-offset-deg>
-    <pitch-offset-deg type="double"> 0.0 </pitch-offset-deg>
-    <default-field-of-view-deg type="double"> 65 </default-field-of-view-deg>
+    <y-offset-m type="double"> -9.15 </y-offset-m>
+    <z-offset-m type="double"> 20.50 </z-offset-m>
+    <pitch-offset-deg type="double"> -17.0 </pitch-offset-deg>
+    <default-field-of-view-deg type="double"> 80 </default-field-of-view-deg>
+    <dynamic-view type="bool">true</dynamic-view>
+    <limits>
+     <enabled type="bool">true</enabled>
+     <left>
+      <heading-max-deg type="double">110</heading-max-deg>
+     </left>
+     <right>
+      <heading-max-deg type="double">110</heading-max-deg>
+     </right>
+    </limits>
    </config>
   </view>
 
@@ -695,11 +716,14 @@ Nordstern was the second of two small passenger airships built by Luftschiffsbau
   <elevatorman>
    <enabled alias="/fdm/jsbsim/crew/elevatorman/enabled"/>
    <altitude-cmd-ft alias="/fdm/jsbsim/crew/elevatorman/altitude-cmd-ft"/>
+   <visible type="bool">0</visible>
+   <heading-offset-deg>-90.0</heading-offset-deg>
   </elevatorman>
   <helmsman>
    <enabled alias="/fdm/jsbsim/crew/helmsman/enabled"/>
    <heading-magnetic-cmd-deg
      alias="/fdm/jsbsim/crew/helmsman/heading-magnetic-cmd-deg"/>
+   <visible type="bool">0</visible>
   </helmsman>
   <machinists>
    <enabled alias="/fdm/jsbsim/crew/machinists/enabled"/>
@@ -720,13 +744,6 @@ Nordstern was the second of two small passenger airships built by Luftschiffsbau
    <heading-offset-deg />
    <pitch-offset-deg />
   </watch-officer-view>
-  <rudder-man-view>
-   <visible type="bool">0</visible>
-  </rudder-man-view>
-  <elevator-man-view>
-   <visible type="bool">0</visible>
-   <heading-offset-deg>-90.0</heading-offset-deg>
-  </elevator-man-view>
   <rigger-view>
    <visible type="bool">0</visible>
    <position-X-m />

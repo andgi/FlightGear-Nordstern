@@ -53,20 +53,22 @@
  </effect>
 
  <!-- Volumetric shadow object =============================================-->
- <model>
+ <!--model>
   <name>shadow</name>
   <path>Aircraft/Nordstern/Models/shadow.xml</path>
   <offsets>
-   <!-- x/y/z == back/right/up -->
+   <!- - x/y/z == back/right/up - ->
    <x-m> 0.00 </x-m>
    <y-m> 0.00 </y-m>
    <z-m> 0.00 </z-m>
   </offsets>
- </model>
+ </model-->
 
  <model>
   <name>Control car interior</name>
   <path>Aircraft/Nordstern/Models/Nordstern-car-interior.xml</path>
+  <!-- Could perhaps use the "interior" information? -->
+  <!--usage>interior</usage-->
   <offsets>
    <!-- x/y/z == back/right/up -->
    <x-m>  20.00 </x-m>
@@ -216,7 +218,7 @@
 
  <!-- Rudder Man -->
  <model>
-  <name>Rudder Man View</name>
+  <name>Helmsman</name>
   <path>Aircraft/Nordstern/Models/Crew/crew-base.xml</path>
   <offsets>
    <!-- x/y/z == back/right/up -->
@@ -226,15 +228,15 @@
   </offsets>
   <overlay>
    <params>
-    <view-name>Rudder Man View</view-name>
-    <visible>crew/rudder-man-view/visible</visible>
+    <view-name>Helmsman</view-name>
+    <visible>crew/helmsman/visible</visible>
    </params>
   </overlay>
  </model>
 
  <!-- Elevator Man -->
  <model>
-  <name>Elevator Man View</name>
+  <name>Elevatorman</name>
   <path>Aircraft/Nordstern/Models/Crew/crew-base.xml</path>
   <offsets>
    <!-- x/y/z == back/right/up -->
@@ -244,15 +246,15 @@
   </offsets>
   <overlay>
    <params>
-    <view-name>Elevator Man View</view-name>
-    <visible>crew/elevator-man-view/visible</visible>
+    <view-name>Elevatorman</view-name>
+    <visible>crew/elevatorman/visible</visible>
    </params>
   </overlay>
  </model>
  <animation>
-  <object-name>Elevator Man View</object-name>
+  <object-name>Elevatorman</object-name>
   <type>rotate</type>
-  <property>/crew/elevator-man-view/heading-offset-deg</property>
+  <property>/crew/elevatorman/heading-offset-deg</property>
   <factor>1</factor>
   <offset-deg>0</offset-deg>
   <center>

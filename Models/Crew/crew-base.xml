@@ -21,7 +21,6 @@
 
  <params>
   <view-name type="string" /> <!-- Doesn't work as intended. -->
-  <view-number type="int" />  <!-- Doesn't work as intended. -->
   <visible type="string" />
   <texture type="string">default.png</texture>
   <!-- Below probably doesn't work as intended. -->

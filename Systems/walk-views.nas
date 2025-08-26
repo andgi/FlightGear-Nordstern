@@ -138,22 +138,24 @@ var ThreeDModelManager = {
 };
 
 # Create the view managers.
-var watch_officer_walker =
-    walkview.Walker.new("Watch Officer View",
-                        carConstraint,
-                        [walkview.JSBSimPointmass.new(26),
-                         ThreeDModelManager.new("watch-officer-view", 100.0)]);
-watch_officer_walker.managers[1].update(watch_officer_walker); # Place the 3d object.
 var steward_walker =
     walkview.Walker.new("Steward View",
                         carConstraint,
                         [walkview.JSBSimPointmass.new(29),
                          ThreeDModelManager.new("steward-view", 100.0)]);
 steward_walker.managers[1].update(steward_walker); # Place the 3d object.
+
 var rigger_walker =
     walkview.Walker.new("Rigger View",
                         keelConstraint,
                         [walkview.JSBSimPointmass.new(30),
                          ThreeDModelManager.new("rigger-view", 100.0)]);
 rigger_walker.managers[1].update(rigger_walker); # Place the 3d object.
+
+var watch_officer_walker =
+    walkview.Walker.new("Watch Officer View",
+                        carConstraint,
+                        [walkview.JSBSimPointmass.new(26),
+                         ThreeDModelManager.new("watch-officer-view", 100.0)]);
+watch_officer_walker.managers[1].update(watch_officer_walker); # Place the 3d object.
 
