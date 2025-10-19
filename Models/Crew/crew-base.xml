@@ -11,13 +11,30 @@
 -->
 <PropertyList>
 
+ <!-- Start cursors. - ->
  <path>Cursors/cursors.xml</path>
  <offsets>
-  <!-- x/y/z == back/right/up. -->
+  <!- - x/y/z == back/right/up. - ->
   <x-m> 0.00 </x-m>
   <y-m> 0.00 </y-m>
   <z-m> 0.00 </z-m>
  </offsets>
+ <!- - End cursors. -->
+ <!-- Start Generic/Pilot/ -->
+ <path>Aircraft/Generic/Pilot/WWI/pilot.ac</path>
+ <offsets>
+  <!-- x/y/z == back/right/up. -->
+  <x-m>-0.18 </x-m>
+  <y-m> 0.02 </y-m>
+  <z-m> 0.70 </z-m> <!-- Needs to be applied to the animations below? Or? -->
+ </offsets>
+ <animation>
+  <type>scale</type>
+  <x-offset type="float">1.05</x-offset>
+  <y-offset type="float">1.05</y-offset>
+  <z-offset type="float">1.05</z-offset>
+ </animation>
+ <!-- End Generic/Pilot/ -->
 
  <params>
   <view-name type="string" /> <!-- Doesn't work as intended. -->
@@ -183,8 +200,8 @@
   </axis>
   <center>
    <x-m>0.341</x-m>
-   <y-m>0</y-m>
-   <z-m>1.268</z-m><!-- z-m>0.568</z-m -->
+   <y-m>0.000</y-m>
+   <z-m>0.568</z-m><!-- z-m>1.268</z-m --><!-- z-m>0.568</z-m -->
   </center>
  </animation>
  <animation>

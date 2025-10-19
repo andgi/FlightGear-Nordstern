@@ -140,6 +140,16 @@
    <params>
     <view-name>Watch Officer View</view-name>
     <visible>crew/watch-officer-view/visible</visible>
+    <arms>
+     <upper-animation>
+      <property type="string">/constants/zero</property>
+      <!-- property type="string">/surface-positions/elevator-pos-norm</property -->
+      <factor type="float">140.0</factor>
+      <offset-deg type="float">-50.0</offset-deg>
+      <min type="float">-20.0</min>
+      <max type="float">140.0</max>
+     </upper-animation>
+    </arms>
    </params>
   </overlay>
  </model>
@@ -230,6 +240,16 @@
    <params>
     <view-name>Helmsman</view-name>
     <visible>crew/helmsman/visible</visible>
+    <arms>
+     <upper-animation>
+      <property type="string">/constants/zero</property>
+      <!-- property type="string">/surface-positions/rudder-pos-norm</property -->
+      <factor type="float">140.0</factor>
+      <offset-deg type="float">-5.0</offset-deg>
+      <min type="float">-65.0</min>
+      <max type="float">95.0</max>
+     </upper-animation>
+    </arms>
    </params>
   </overlay>
  </model>
@@ -248,6 +268,16 @@
    <params>
     <view-name>Elevatorman</view-name>
     <visible>crew/elevatorman/visible</visible>
+    <arms>
+     <upper-animation>
+      <property type="string">/constants/zero</property>
+      <!-- property type="string">/surface-positions/elevator-pos-norm</property -->
+      <factor type="float">140.0</factor>
+      <offset-deg type="float">-5.0</offset-deg>
+      <min type="float">-65.0</min>
+      <max type="float">95.0</max>
+     </upper-animation>
+    </arms>
    </params>
   </overlay>
  </model>
@@ -283,6 +313,15 @@
    <params>
     <view-name>Rigger View</view-name>
     <visible>crew/rigger-view/visible</visible>
+    <arms>
+     <upper-animation>
+      <property type="string">/constants/zero</property>
+      <factor type="float">140.0</factor>
+      <offset-deg type="float">-50.0</offset-deg>
+      <min type="float">-20.0</min>
+      <max type="float">140.0</max>
+     </upper-animation>
+    </arms>
    </params>
   </overlay>
  </model>
@@ -373,6 +412,15 @@
    <params>
     <view-name>Steward View</view-name>
     <visible>crew/steward-view/visible</visible>
+    <arms>
+     <upper-animation>
+      <property type="string">/constants/zero</property>
+      <factor type="float">140.0</factor>
+      <offset-deg type="float">-50.0</offset-deg>
+      <min type="float">-20.0</min>
+      <max type="float">140.0</max>
+     </upper-animation>
+    </arms>
    </params>
   </overlay>
  </model>
