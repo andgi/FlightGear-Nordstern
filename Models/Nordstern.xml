@@ -138,17 +138,28 @@
   </offsets>
   <overlay>
    <params>
-    <view-name>Watch Officer View</view-name>
+    <view-name type="string">Watch Officer View</view-name>
     <visible>crew/watch-officer-view/visible</visible>
     <arms>
-     <upper-animation>
-      <property type="string">/constants/zero</property>
-      <!-- property type="string">/surface-positions/elevator-pos-norm</property -->
-      <factor type="float">140.0</factor>
-      <offset-deg type="float">-50.0</offset-deg>
-      <min type="float">-20.0</min>
-      <max type="float">140.0</max>
-     </upper-animation>
+     <left>
+      <upper-animation>
+       <property type="string">/constants/zero</property>
+       <!-- property type="string">/surface-positions/elevator-pos-norm</property -->
+       <factor type="float">140.0</factor>
+       <offset-deg type="float">-45.0</offset-deg>
+       <min type="float">-20.0</min>
+       <max type="float">140.0</max>
+      </upper-animation>
+     </left>
+     <right>
+      <upper-animation>
+       <property type="string">/constants/zero</property>
+       <factor type="float">140.0</factor>
+       <offset-deg type="float">-55.0</offset-deg>
+       <min type="float">-20.0</min>
+       <max type="float">140.0</max>
+      </upper-animation>
+     </right>
     </arms>
    </params>
   </overlay>
@@ -194,7 +205,7 @@
  <animation>
   <object-name>Watch Officer View</object-name>
   <type>rotate</type>
-  <property>/crew/watch-officer-view/heading-offset-deg</property>
+  <property>crew/watch-officer-view/heading-offset-deg</property>
   <factor>1</factor>
   <offset-deg>0</offset-deg>
   <center>
@@ -211,7 +222,7 @@
  <!--animation>
   <object-name>Watch Officer View</object-name>
   <type>rotate</type>
-  <property>/crew/watch-officer-view/pitch-offset-deg</property>
+  <property>crew/watch-officer-view/pitch-offset-deg</property>
   <factor>1</factor>
   <offset-deg>0</offset-deg>
   <center>
@@ -238,17 +249,29 @@
   </offsets>
   <overlay>
    <params>
-    <view-name>Helmsman</view-name>
+    <view-name type="string">Helmsman</view-name>
     <visible>crew/helmsman/visible</visible>
     <arms>
-     <upper-animation>
-      <property type="string">/constants/zero</property>
-      <!-- property type="string">/surface-positions/rudder-pos-norm</property -->
-      <factor type="float">140.0</factor>
-      <offset-deg type="float">-5.0</offset-deg>
-      <min type="float">-65.0</min>
-      <max type="float">95.0</max>
-     </upper-animation>
+     <left>
+      <upper-animation>
+       <property type="string">/constants/zero</property>
+       <!-- property type="string">/surface-positions/rudder-pos-norm</property -->
+       <factor type="float">140.0</factor>
+       <offset-deg type="float">-5.0</offset-deg>
+       <min type="float">-65.0</min>
+       <max type="float">95.0</max>
+      </upper-animation>
+     </left>
+     <right>
+      <upper-animation>
+       <property type="string">/constants/zero</property>
+       <!-- property type="string">/surface-positions/rudder-pos-norm</property -->
+       <factor type="float">140.0</factor>
+       <offset-deg type="float">-5.0</offset-deg>
+       <min type="float">-65.0</min>
+       <max type="float">95.0</max>
+      </upper-animation>
+     </right>
     </arms>
    </params>
   </overlay>
@@ -266,17 +289,29 @@
   </offsets>
   <overlay>
    <params>
-    <view-name>Elevatorman</view-name>
+    <view-name type="string">Elevatorman</view-name>
     <visible>crew/elevatorman/visible</visible>
     <arms>
-     <upper-animation>
-      <property type="string">/constants/zero</property>
-      <!-- property type="string">/surface-positions/elevator-pos-norm</property -->
-      <factor type="float">140.0</factor>
-      <offset-deg type="float">-5.0</offset-deg>
-      <min type="float">-65.0</min>
-      <max type="float">95.0</max>
-     </upper-animation>
+     <left>
+      <upper-animation>
+       <property type="string">/constants/zero</property>
+       <!-- property type="string">/surface-positions/elevator-pos-norm</property -->
+       <factor type="float">140.0</factor>
+       <offset-deg type="float">-5.0</offset-deg>
+       <min type="float">-65.0</min>
+       <max type="float">95.0</max>
+      </upper-animation>
+     </left>
+     <right>
+      <upper-animation>
+       <property type="string">/constants/zero</property>
+       <!-- property type="string">/surface-positions/elevator-pos-norm</property -->
+       <factor type="float">140.0</factor>
+       <offset-deg type="float">-5.0</offset-deg>
+       <min type="float">-65.0</min>
+       <max type="float">95.0</max>
+      </upper-animation>
+     </right>
     </arms>
    </params>
   </overlay>
@@ -284,7 +319,7 @@
  <animation>
   <object-name>Elevatorman</object-name>
   <type>rotate</type>
-  <property>/crew/elevatorman/heading-offset-deg</property>
+  <property>crew/elevatorman/heading-offset-deg</property>
   <factor>1</factor>
   <offset-deg>0</offset-deg>
   <center>
@@ -311,16 +346,27 @@
   </offsets>
   <overlay>
    <params>
-    <view-name>Rigger View</view-name>
+    <view-name type="string">Rigger View</view-name>
     <visible>crew/rigger-view/visible</visible>
     <arms>
-     <upper-animation>
-      <property type="string">/constants/zero</property>
-      <factor type="float">140.0</factor>
-      <offset-deg type="float">-50.0</offset-deg>
-      <min type="float">-20.0</min>
-      <max type="float">140.0</max>
-     </upper-animation>
+     <left>
+      <upper-animation>
+       <property type="string">/constants/zero</property>
+       <factor type="float">140.0</factor>
+       <offset-deg type="float">-45.0</offset-deg>
+       <min type="float">-20.0</min>
+       <max type="float">140.0</max>
+      </upper-animation>
+     </left>
+     <right>
+      <upper-animation>
+       <property type="string">/constants/zero</property>
+       <factor type="float">140.0</factor>
+       <offset-deg type="float">-55.0</offset-deg>
+       <min type="float">-20.0</min>
+       <max type="float">140.0</max>
+      </upper-animation>
+     </right>
     </arms>
    </params>
   </overlay>
@@ -366,7 +412,7 @@
  <animation>
   <object-name>Rigger View</object-name>
   <type>rotate</type>
-  <property>/crew/rigger-view/heading-offset-deg</property>
+  <property>crew/rigger-view/heading-offset-deg</property>
   <factor>1</factor>
   <offset-deg>0</offset-deg>
   <center>
@@ -383,7 +429,7 @@
  <!--animation>
   <object-name>Rigger View</object-name>
   <type>rotate</type>
-  <property>/crew/rigger-view/pitch-offset-deg</property>
+  <property>crew/rigger-view/pitch-offset-deg</property>
   <factor>1</factor>
   <offset-deg>0</offset-deg>
   <center>
@@ -410,17 +456,46 @@
   </offsets>
   <overlay>
    <params>
-    <view-name>Steward View</view-name>
+    <view-name type="string">Steward View</view-name>
     <visible>crew/steward-view/visible</visible>
     <arms>
-     <upper-animation>
-      <property type="string">/constants/zero</property>
-      <factor type="float">140.0</factor>
-      <offset-deg type="float">-50.0</offset-deg>
-      <min type="float">-20.0</min>
-      <max type="float">140.0</max>
-     </upper-animation>
+     <left>
+      <upper-animation>
+       <property type="string">/constants/zero</property>
+       <factor type="float">140.0</factor>
+       <offset-deg type="float">-45.0</offset-deg>
+       <min type="float">-20.0</min>
+       <max type="float">140.0</max>
+      </upper-animation>
+     </left>
+     <right>
+      <upper-animation>
+       <property type="string">/constants/zero</property>
+       <factor type="float">140.0</factor>
+       <offset-deg type="float">-55.0</offset-deg>
+       <min type="float">-20.0</min>
+       <max type="float">140.0</max>
+      </upper-animation>
+     </right>
     </arms>
+    <legs>
+     <left>
+      <upper-animation>
+       <property type="string">/constants/zero</property>
+       <factor type="float">0</factor>
+       <offset-deg type="float">20.0</offset-deg>
+       <min type="float">0.0</min>
+       <max type="float">0.0</max>
+      </upper-animation>
+      <lower-animation>
+       <property type="string">/constants/zero</property>
+       <factor type="float">0</factor>
+       <offset-deg type="float">-20.0</offset-deg>
+       <min type="float">0.0</min>
+       <max type="float">0.0</max>
+      </lower-animation>
+     </left>
+    </legs>
    </params>
   </overlay>
  </model>
@@ -465,7 +540,7 @@
  <animation>
   <object-name>Steward View</object-name>
   <type>rotate</type>
-  <property>/crew/steward-view/heading-offset-deg</property>
+  <property>crew/steward-view/heading-offset-deg</property>
   <factor>1</factor>
   <offset-deg>0</offset-deg>
   <center>
@@ -482,7 +557,7 @@
  <!--animation>
   <object-name>Steward View</object-name>
   <type>rotate</type>
-  <property>/crew/steward-view/pitch-offset-deg</property>
+  <property>crew/steward-view/pitch-offset-deg</property>
   <factor>1</factor>
   <offset-deg>0</offset-deg>
   <center>
