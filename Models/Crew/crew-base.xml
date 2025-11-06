@@ -37,7 +37,7 @@
  <!-- End Generic/Pilot/ -->
 
  <params>
-  <view-name type="string" /> <!-- Doesn't work as intended. -->
+  <view-name type="string" />
   <visible type="string" />
   <texture type="string">default.png</texture>
   <head>
@@ -142,11 +142,16 @@
 
  <animation>
   <type>select</type>
-  <condition>
-   <not-equals>
-    <property>/sim/current-view/view-number</property>
-    <property alias="../../../../params/view-number" />
-   </not-equals>
+  <object-name>Head</object-name>
+  <object-name>Head_0</object-name>
+  <object-name>Head_1</object-name>
+  <condition> <!-- Doesn't work. Why? -->
+   <not>
+    <equals>
+     <property>/sim/current-view/name</property>
+     <property alias="../../../../../params/view-name" />
+    </equals>
+   </not>
   </condition>
  </animation>
 
